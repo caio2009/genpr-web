@@ -1,11 +1,11 @@
 import React from 'react'
 import { useDrawer } from '../../hooks/drawer';
 
-import { FiMenu } from 'react-icons/fi';
+import { FiMenu, FiX } from 'react-icons/fi';
 import { Container, ToggleMenu, Logo } from './styles';
 
 const Header = () => {
-  const { toggleDrawer } = useDrawer();
+  const { isOpened, toggleDrawer } = useDrawer();
 
   const handleToggle = () => {
     toggleDrawer()
@@ -18,7 +18,7 @@ const Header = () => {
       </Logo>
 
       <ToggleMenu onClick={handleToggle}>
-        <FiMenu size={24} />
+        {isOpened ? <FiX size={24} /> : <FiMenu size={24} />}
       </ToggleMenu>
     </Container>
   )

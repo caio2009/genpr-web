@@ -10,9 +10,9 @@ export const Container = styled.header`
   left: 0;
   
   width: 100%;
-  padding: .25rem;
+  padding: .25rem 1rem;
   color: #fff;
-  background: #0001;
+  background: #311b92;
 `
 
 export const ToggleMenu = styled.button`
@@ -40,5 +40,4 @@ export const Logo = styled.div`
   flex: 1;
   font-size: 1.5rem;
   font-weight: bold;
-  margin-left: 8px;
 `

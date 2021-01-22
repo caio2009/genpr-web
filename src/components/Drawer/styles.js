@@ -9,11 +9,12 @@ export const Container = styled.div`
   `}
 
   position: absolute;
-  top: 49px;
+  top: 48px;
 
   width: 100%;
   padding: .25rem;
-  background: #fff;
+  background: #eee;
+  border-bottom: 1px solid #ccc;
 `
 
 export const Item = styled.div`
