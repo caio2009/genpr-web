@@ -14,6 +14,12 @@ export default createGlobalStyle`
     font-family: 'Nunito', serif;
   }
 
+  h1, h2, h3, h4, h5, h6, p {
+    @media screen and (max-width: 375px) {
+      user-select: none;
+    }
+  }
+
   button {
     cursor: pointer;
   }
