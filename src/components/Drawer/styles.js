@@ -1,20 +1,35 @@
 import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
-  ${props => props.show ? css`
-    display: flex;
-    flex-direction: column;
-  ` : css`
-    display: none;
-  `}
+${props => props.show ? css`
+  display: flex;
+  flex-direction: column;
+` : css`
+  display: none;
+`}
 
-  position: absolute;
+  position: fixed;
   top: 48px;
+
+  width: 100%;
+  height: calc(100vh - 48px);
+  background: #0005;
+`
+
+export const DrawerContainer = styled.div`
+  position: absolute;
+  top: 0px;
 
   width: 100%;
   padding: .25rem;
   background: #eee;
-  border-bottom: 1px solid #ccc;
+
+  &:after {
+    content: '';
+    display: block;
+    box-shadow: 0 0 2px 2px #0005;
+    transform: translateY(6px);
+  }
 `
 
 export const Item = styled.div`

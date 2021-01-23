@@ -2,7 +2,7 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { useDrawer } from '../../hooks/drawer'
 
-import { Container, Item } from './styles'
+import { Container, DrawerContainer, Item } from './styles'
 
 const Drawer = () => {
   const { isOpened, toggleDrawer } = useDrawer();
@@ -25,9 +25,11 @@ const Drawer = () => {
 
   return (
     <Container show={isOpened}>
-      {items.map((item, index) => (
-        <Item key={index} onClick={() => goTo(item.path)}>{item.text}</Item>
-      ))}
+      <DrawerContainer>
+        {items.map((item, index) => (
+          <Item key={index} onClick={() => goTo(item.path)}>{item.text}</Item>
+        ))}
+      </DrawerContainer>
     </Container>
   )
 }
