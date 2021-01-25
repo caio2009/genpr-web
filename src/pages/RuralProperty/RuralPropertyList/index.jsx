@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-// import { useHistory } from 'react-router-dom'
 
 import { FiChevronRight, FiX } from 'react-icons/fi'
 import { Container, Title, Subtitle, List, ListItemBox } from '../../../styles/components'
@@ -8,8 +7,6 @@ import LongPressListItem from '../../../components/LongPressListItem'
 import api from '../../../services/api'
 
 const RuralProperty = () => {
-  // const history = useHistory()
-
   const [ruralProperties, setRuralProperties] = useState([])
 
   const [selected, setSelected] = useState([])
@@ -66,9 +63,9 @@ const RuralProperty = () => {
 
             <ListItemBox>
               {
-                isSelected(index) ? 
-                <FiX size={24} onClick={() => handleSelect(index)} /> : 
-                <FiChevronRight size={24} />
+                isSelected(index) ?
+                  <FiX size={24} onClick={() => handleSelect(index)} /> :
+                  <FiChevronRight size={24} />
               }
             </ListItemBox>
           </LongPressListItem>

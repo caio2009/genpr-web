@@ -1,0 +1,249 @@
+{
+  "ruralProperties": [
+    {
+      "name": "PR-1",
+      "address": "Incra 6 - Brazlândia",
+      "description": "Plantação de morango e abacaxi.",
+      "id": 1
+    },
+    {
+      "name": "PR-2",
+      "address": "Incra 9 - Brazlândia",
+      "description": "Plantação de chuchu.",
+      "id": 2
+    },
+    {
+      "name": "PR-3",
+      "address": "Incra 7 - Brazlândia",
+      "description": "Plantação de morango e flores.",
+      "id": 3
+    }
+  ],
+  "cultivations": [
+    {
+      "name": "Maçã",
+      "variety": "Golden Delicius",
+      "image": "https://www.markon.com/sites/default/files/styles/large/public/pi_photos/Apples_Golden_Delicious_Hero.jpg",
+      "id": 1
+    },
+    {
+      "name": "Tomate",
+      "variety": "Cereja",
+      "image": "https://images.squarespace-cdn.com/content/v1/5b8edfa12714e508f756f481/1538681443982-L8FV5J7802OB8LOU6193/ke17ZwdGBToddI8pDm48kNvrBVc0ymoq3U_sZnUX5bRZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpwG_ofHRvd0O7TTnlpvL4SkSnP_gO3plyatgALEDNqDGdq00d1cJdw1WJh_6jZLMPI/tomate-cereja.jpg?format=500w",
+      "id": 2
+    },
+    {
+      "name": "Abobrinha",
+      "variety": "Itália",
+      "image": "https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_900x506.jpg",
+      "id": 3
+    },
+    {
+      "name": "Doge",
+      "variety": "Doge",
+      "image": "https://i.kym-cdn.com/entries/icons/original/000/013/564/doge.jpg",
+      "id": 4
+    }
+  ],
+  "classifications": [
+    {
+      "id": 2,
+      "name": "Médio"
+    },
+    {
+      "id": 3,
+      "name": "Extra"
+    },
+    {
+      "name": "Bolinha",
+      "id": 6
+    },
+    {
+      "name": "GG",
+      "id": 7
+    },
+    {
+      "name": "Teste",
+      "id": 8
+    }
+  ],
+  "unitMeasures": [
+    {
+      "name": "Quilograma",
+      "abbreviation": "KG",
+      "id": 1
+    },
+    {
+      "id": 2,
+      "name": "Gramas",
+      "abbreviation": "G"
+    },
+    {
+      "name": "Caixa de 22 KG",
+      "abbreviation": "CX. 22 KG",
+      "id": 3
+    },
+    {
+      "name": "Teste",
+      "abbreviation": "Teste",
+      "id": 4
+    }
+  ],
+  "fields": [
+    {
+      "openingDate": "2021-01-03T03:00:00.000Z",
+      "area": 0.5,
+      "name": "T-2",
+      "cultivationId": 2,
+      "ruralPropertyId": 1,
+      "id": 2
+    },
+    {
+      "id": 3,
+      "name": "Talhão 3",
+      "area": 2,
+      "openingDate": "2021-01-04",
+      "closureDate": null,
+      "ruralPropertyId": 3,
+      "cultivationId": 2
+    },
+    {
+      "openingDate": "2021-01-12T03:00:00.000Z",
+      "area": 1.5,
+      "name": "T-3",
+      "cultivationId": 3,
+      "ruralPropertyId": 1,
+      "id": 4
+    },
+    {
+      "openingDate": "2021-01-13T03:00:00.000Z",
+      "area": 5,
+      "name": "T-1",
+      "cultivationId": 4,
+      "ruralPropertyId": 2,
+      "id": 5
+    }
+  ],
+  "productions": [
+    {
+      "registerDate": "2021-01-12T03:00:00.000Z",
+      "quantity": 10,
+      "unitMeasureId": 3,
+      "classificationId": 3,
+      "ruralPropertyId": 1,
+      "fieldId": 2,
+      "cultivationId": 2,
+      "id": 7
+    },
+    {
+      "registerDate": "2021-01-12T03:00:00.000Z",
+      "quantity": 5,
+      "unitMeasureId": 3,
+      "classificationId": 3,
+      "ruralPropertyId": 1,
+      "fieldId": 2,
+      "cultivationId": 2,
+      "id": 8
+    },
+    {
+      "registerDate": "2021-01-12T03:00:00.000Z",
+      "quantity": 10,
+      "unitMeasureId": 3,
+      "classificationId": 2,
+      "ruralPropertyId": 1,
+      "fieldId": 4,
+      "cultivationId": 3,
+      "id": 9
+    },
+    {
+      "registerDate": "2021-01-12T03:00:00.000Z",
+      "quantity": 40,
+      "unitMeasureId": 3,
+      "classificationId": 3,
+      "ruralPropertyId": 1,
+      "fieldId": 4,
+      "cultivationId": 3,
+      "id": 10
+    },
+    {
+      "registerDate": "2021-01-12T03:00:00.000Z",
+      "quantity": 5,
+      "unitMeasureId": 3,
+      "classificationId": 7,
+      "ruralPropertyId": 1,
+      "fieldId": 4,
+      "cultivationId": 3,
+      "id": 11
+    },
+    {
+      "registerDate": "2021-01-12T03:00:00.000Z",
+      "quantity": 200,
+      "unitMeasureId": 1,
+      "classificationId": 3,
+      "ruralPropertyId": 1,
+      "fieldId": 2,
+      "cultivationId": 2,
+      "id": 15
+    },
+    {
+      "registerDate": "2021-01-12T03:00:00.000Z",
+      "quantity": 100,
+      "unitMeasureId": 4,
+      "classificationId": 3,
+      "ruralPropertyId": 1,
+      "fieldId": 2,
+      "cultivationId": 2,
+      "id": 16
+    },
+    {
+      "registerDate": "2021-01-13T03:00:00.000Z",
+      "quantity": 50,
+      "unitMeasureId": 4,
+      "classificationId": 8,
+      "ruralPropertyId": 2,
+      "fieldId": 5,
+      "cultivationId": 4,
+      "id": 17
+    },
+    {
+      "registerDate": "2021-01-13T03:00:00.000Z",
+      "quantity": 30,
+      "unitMeasureId": 3,
+      "classificationId": 2,
+      "ruralPropertyId": 1,
+      "fieldId": 4,
+      "cultivationId": 3,
+      "id": 18
+    },
+    {
+      "registerDate": "2021-01-13T03:00:00.000Z",
+      "quantity": 75,
+      "unitMeasureId": 4,
+      "classificationId": 8,
+      "ruralPropertyId": 2,
+      "fieldId": 5,
+      "cultivationId": 4,
+      "id": 19
+    },
+    {
+      "registerDate": "2021-01-13T03:00:00.000Z",
+      "quantity": 5,
+      "unitMeasureId": 1,
+      "classificationId": 2,
+      "ruralPropertyId": 3,
+      "fieldId": 3,
+      "cultivationId": 2,
+      "id": 20
+    },
+    {
+      "registerDate": "2021-01-18T03:00:00.000Z",
+      "quantity": 20,
+      "unitMeasureId": 3,
+      "classificationId": 3,
+      "ruralPropertyId": 3,
+      "fieldId": 3,
+      "cultivationId": 2,
+      "id": 21
+    }
+  ]
+}
