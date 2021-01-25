@@ -1,15 +1,16 @@
 import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
-${props => props.show ? css`
-  display: flex;
-  flex-direction: column;
-` : css`
-  display: none;
-`}
+  ${props => props.show ? css`
+    display: flex;
+    flex-direction: column;
+  ` : css`
+    display: none;
+  `}
 
   position: fixed;
   top: 48px;
+  z-index: 10;
 
   width: 100%;
   height: calc(100vh - 48px);

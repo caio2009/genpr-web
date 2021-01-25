@@ -25,12 +25,12 @@ const Input = React.forwardRef(({ name, label, defaultValue, error, onFocus, onB
 
       <input 
         ref={ref}
-        id={name} 
+        id={name}
         name={name}
-        {...rest} 
+        {...rest}
         defaultValue={defaultValue}
-        onFocus={handleFocus} 
-        onBlur={handleBlur} 
+        onFocus={handleFocus}
+        onBlur={handleBlur}
       />
 
       <Line focus={focus} error={error}></Line>

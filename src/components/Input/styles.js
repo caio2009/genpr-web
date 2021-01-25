@@ -26,7 +26,7 @@ export const InputContainer = styled.div`
 
   input {
     width: 100%;
-    background: ${props => props.error ? '#ffcdd2' : '#ddd'};
+    background: ${props => props.error ? '#ffa4a2' : '#ddd'};
     border: none;
     border-radius: 4px;
     padding: .75rem;
@@ -34,7 +34,7 @@ export const InputContainer = styled.div`
   }
 
   & + div {
-    /* margin-top: .25rem; */
+    margin-top: .25rem;
   }
 `
 
