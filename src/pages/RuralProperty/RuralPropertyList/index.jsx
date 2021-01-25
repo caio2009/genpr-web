@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { FiChevronRight, FiX } from 'react-icons/fi'
 import { Container, Title, Subtitle, List, ListItemBox } from '../../../styles/components'
 import LongPressListItem from '../../../components/LongPressListItem'
+import ActionsBar from '../../../components/ActionsBar'
+import Button from '../../../components/Button'
 
 import api from '../../../services/api'
 
@@ -10,6 +12,7 @@ const RuralProperty = () => {
   const [ruralProperties, setRuralProperties] = useState([])
 
   const [selected, setSelected] = useState([])
+  const [actionsBar, setActionsBar] = useState(false)
 
   const loadRuralProperties = async () => {
     const res = await api.get('ruralProperties')
@@ -43,6 +46,14 @@ const RuralProperty = () => {
     loadRuralProperties()
   }, [])
 
+  useEffect(() => {
+    if (selected.length) {
+      setActionsBar(true)
+    } else {
+      setActionsBar(false)
+    }
+  }, [selected])
+
   return (
     <Container page>
       <Title>Propriedades Rurais</Title>
@@ -71,6 +82,11 @@ const RuralProperty = () => {
           </LongPressListItem>
         ))}
       </List>
+
+      <ActionsBar show={actionsBar}>
+        <Button variant="error">Excluir</Button>
+        <Button variant="info">Gerenciar</Button>
+      </ActionsBar>
     </Container>
   )
 }
