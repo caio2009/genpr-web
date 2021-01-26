@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { InputContainer, ErrorContainer, Line } from './styles'
 
-const Input = React.forwardRef(({ name, label, defaultValue, error, onFocus, onBlur, ...rest }, ref) => {
+const Input = React.forwardRef(({ name, label, defaultValue, error, onFocus, onBlur, onChange, ...rest }, ref) => {
   const [focus, setFocus] = useState(false)
 
   const handleFocus = (e) => {
@@ -27,10 +27,11 @@ const Input = React.forwardRef(({ name, label, defaultValue, error, onFocus, onB
         ref={ref}
         id={name}
         name={name}
-        {...rest}
         defaultValue={defaultValue}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        onChange={e => onChange(e.target.value)}
+        {...rest}
       />
 
       <Line focus={focus} error={error}></Line>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { SelectContainer, InputContainer, Label, Input, Line, ErrorContainer, OptionsContainer, Option } from './styles'
 
-const Select = ({ name, label, options, value, defaultValue, error, ...rest }) => {
+const Select = React.forwardRef(({ name, label, options, defaultValue, error, onChange, ...rest }, ref) => {
   const [innerValue, setInnerValue] = useState(null)
   const [focus, setFocus] = useState(false)
   const [showOptionsContainer, setShowOptionsContainer] = useState(false)
@@ -19,8 +19,7 @@ const Select = ({ name, label, options, value, defaultValue, error, ...rest }) =
 
   const handleOptionClick = (selected) => {
     toggleOptionsContainer()
-    value = selected
-    setInnerValue(value)
+    setInnerValue(selected)
   }
 
   const toggleOptionsContainer = (value = undefined) => {
@@ -36,8 +35,14 @@ const Select = ({ name, label, options, value, defaultValue, error, ...rest }) =
     !!defaultValue && setFocus(true)
   }, [defaultValue])
 
+  useEffect(() => {
+    onChange(innerValue)
+  }, [onChange, innerValue])
+
   return (
-    <SelectContainer {...rest} tabIndex={1} onBlur={handleBlur}>
+    <SelectContainer tabIndex={1} onBlur={handleBlur}>
+      <input ref={ref} name={name} type="hidden" defaultValue={defaultValue} {...rest} />
+
       <InputContainer focus={focus} onClick={handleClick}>
         <Label focus={focus} error={error}>
           {label}
@@ -68,6 +73,6 @@ const Select = ({ name, label, options, value, defaultValue, error, ...rest }) =
       </OptionsContainer>
     </SelectContainer>
   )
-}
+})
 
 export default Select;

@@ -64,3 +64,13 @@ export const FlexRow = styled.div`
   ${props => props.alignItems && css`align-items: ${props.alignItems};`}
   ${props => props.justifyContent && css`justify-content: ${props.justifyContent};`}
 `
+
+export const IconButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+`

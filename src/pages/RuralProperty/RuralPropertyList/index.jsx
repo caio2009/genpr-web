@@ -7,12 +7,12 @@ import LongPressListItem from '../../../components/LongPressListItem'
 import ActionsBar from '../../../components/ActionsBar'
 import Button from '../../../components/Button'
 import Modal from '../../../components/Modal'
+import CreateruralPropertyForm from '../../../components/Forms/CreateRuralPropertyForm'
 
 import api from '../../../services/api'
 
 const RuralProperty = () => {
   const { isShowing, registerModal, toggleModal } = useModal();
-  // registerModal('createRuralProperty')
 
   const [ruralProperties, setRuralProperties] = useState([])
 
@@ -47,6 +47,11 @@ const RuralProperty = () => {
     }
   }
 
+  const onCreated = () => {
+    toggleModal('createRuralProperty')
+    loadRuralProperties()
+  }
+
   useEffect(() => {
     loadRuralProperties()
   }, [])
@@ -71,7 +76,7 @@ const RuralProperty = () => {
           Propriedades Rurais
         </Title>
 
-        <Button variant="primary" onClick={() => toggleModal('createRuralProperty')}>
+        <Button variant="default" onClick={() => toggleModal('createRuralProperty')}>
           Criar
         </Button>
       </FlexRow>
@@ -108,7 +113,7 @@ const RuralProperty = () => {
         hide={() => toggleModal('createRuralProperty')}
         title="Nova Propriedade Rural"
         content={(
-          <div>Formulário de cadastro de nova propriedade rural.</div>
+          <CreateruralPropertyForm onCreated={onCreated} />
         )}
       />
 

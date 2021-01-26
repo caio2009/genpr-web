@@ -10,8 +10,12 @@ export default createGlobalStyle`
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    outline: 0;
+    outline: none;
     font-family: 'Nunito', serif;
+  }
+
+  *:focus {
+    outline: none;
   }
 
   h1, h2, h3, h4, h5, h6, p {

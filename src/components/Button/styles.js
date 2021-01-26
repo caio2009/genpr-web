@@ -22,11 +22,20 @@ export const Button = styled.button`
   color: ${props => props.variant ? variant[props.variant].color : variant.default.color};
   transition: background-color .2s;
 
+  ${props => props.isTransparent && css`
+    background: transparent;
+    color: ${props => props.variant ? variant[props.variant].background : variant.default.background};
+  `}
+
   ${props => props.isFull && css`
     width: 100%;
   `}
 
   &:hover {
-    background: ${props => shade(0.1, props.variant ? variant[props.variant].background : variant.default.background)};
+    ${props => !props.isTransparent ? css`
+      background: ${props => shade(0.1, props.variant ? variant[props.variant].background : variant.default.background)};
+    ` : css`
+      background: #0002;
+    `}
   }
 `

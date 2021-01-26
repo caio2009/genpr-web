@@ -2,9 +2,9 @@ import React from 'react'
 
 import { Button as ButtonElement } from './styles'
 
-const Button = ({ children, full = false, ...rest }) => {
+const Button = ({ children, type = 'button', full = false, transparent = false, ...rest }) => {
   return (
-    <ButtonElement isFull={full} {...rest}>
+    <ButtonElement type={type} isFull={full} isTransparent={transparent} {...rest}>
       {children}
     </ButtonElement>
   )
