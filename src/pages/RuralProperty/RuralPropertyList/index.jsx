@@ -50,9 +50,22 @@ const RuralProperty = () => {
     }
   }
 
-  const refresh = () => {
-    toggleModal('createRuralProperty', false)
-    toggleModal('editRuralProperty', false)
+  const handleRemove = async () => {
+    for (let index of selected) {
+      await api.delete(`ruralProperties/${ruralProperties[index].id}`)
+    }
+
+    loadRuralProperties()
+    setActionsBar(false)
+  }
+
+  const handleCreated = () => {
+    toggleModal('createRuralProperty')
+    loadRuralProperties()
+  }
+
+  const handleEdited = () => {
+    toggleModal('editRuralProperty')
     loadRuralProperties()
   }
 
@@ -118,8 +131,8 @@ const RuralProperty = () => {
         title="Nova Propriedade Rural"
         content={(
           <CreateRuralPropertyForm 
-            onCreated={refresh} 
-            onCancel={() => toggleModal('editRuralProperty')} 
+            onCreated={handleCreated} 
+            onCancel={() => toggleModal('createRuralProperty')} 
           />
         )}
       />
@@ -131,15 +144,19 @@ const RuralProperty = () => {
         content={(
           <EditRuralPropertyForm 
             entityId={selectedId} 
-            onEdited={refresh} 
+            onEdited={handleEdited} 
             onCancel={() => toggleModal('editRuralProperty')} 
           />
         )}
       />
 
       <ActionsBar show={actionsBar}>
-        <ActionButton color="red">Excluir</ActionButton>
-        <ActionButton color="blue">Gerenciar</ActionButton>
+        <ActionButton color="red" onClick={handleRemove}>
+          Excluir
+        </ActionButton>
+        <ActionButton color="blue">
+          Gerenciar
+        </ActionButton>
       </ActionsBar>
     </Container>
   )
