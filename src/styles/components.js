@@ -63,6 +63,23 @@ export const FlexRow = styled.div`
   display: flex;
   ${props => props.alignItems && css`align-items: ${props.alignItems};`}
   ${props => props.justifyContent && css`justify-content: ${props.justifyContent};`}
+
+  ${props => props.gap && css`
+    & > *:first-child {
+      margin-left: 0;
+      margin-right: ${props => `calc(.25rem * ${props.gap})`};
+    }
+
+    & > * {
+      margin-left: ${props => `calc(.25rem * ${props.gap})`};
+      margin-right: ${props => `calc(.25rem * ${props.gap})`};
+    }
+
+    & > *:last-child {
+      margin-left: ${props => `calc(.25rem * ${props.gap})`};
+      margin-right: 0;
+    } 
+  `}
 `
 
 export const IconButton = styled.button`

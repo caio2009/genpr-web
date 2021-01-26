@@ -7,7 +7,8 @@ import LongPressListItem from '../../../components/LongPressListItem'
 import ActionsBar from '../../../components/ActionsBar'
 import Button from '../../../components/Button'
 import Modal from '../../../components/Modal'
-import CreateruralPropertyForm from '../../../components/Forms/CreateRuralPropertyForm'
+import CreateRuralPropertyForm from '../../../components/Forms/CreateRuralPropertyForm'
+import EditRuralPropertyForm from '../../../components/Forms/EditRuralPropertyForm'
 
 import api from '../../../services/api'
 
@@ -15,6 +16,7 @@ const RuralProperty = () => {
   const { isShowing, registerModal, toggleModal } = useModal();
 
   const [ruralProperties, setRuralProperties] = useState([])
+  const [selectedId, setSelectedId] = useState(null)
 
   const [selected, setSelected] = useState([])
   const [actionsBar, setActionsBar] = useState(false)
@@ -41,14 +43,16 @@ const RuralProperty = () => {
     return selected.indexOf(value) !== -1
   }
 
-  const handleClick = () => {
+  const handleListItemClick = (id) => {
     if (selected.length === 0) {
+      setSelectedId(id)
       toggleModal('editRuralProperty')
     }
   }
 
-  const onCreated = () => {
-    toggleModal('createRuralProperty')
+  const refresh = () => {
+    toggleModal('createRuralProperty', false)
+    toggleModal('editRuralProperty', false)
     loadRuralProperties()
   }
 
@@ -89,7 +93,7 @@ const RuralProperty = () => {
             key={index}
             isSelected={isSelected(index)}
             onLongPress={() => handleSelect(index)}
-            customOnClick={handleClick}
+            customOnClick={() => handleListItemClick(el.id)}
           >
             <ListItemBox grow={1}>
               <Subtitle>{el.name}</Subtitle>
@@ -113,7 +117,10 @@ const RuralProperty = () => {
         hide={() => toggleModal('createRuralProperty')}
         title="Nova Propriedade Rural"
         content={(
-          <CreateruralPropertyForm onCreated={onCreated} />
+          <CreateRuralPropertyForm 
+            onCreated={refresh} 
+            onCancel={() => toggleModal('editRuralProperty')} 
+          />
         )}
       />
 
@@ -122,7 +129,11 @@ const RuralProperty = () => {
         hide={() => toggleModal('editRuralProperty')}
         title="Propriedade Rural"
         content={(
-          <div>Formulário de edição de propriedade rural</div>
+          <EditRuralPropertyForm 
+            entityId={selectedId} 
+            onEdited={refresh} 
+            onCancel={() => toggleModal('editRuralProperty')} 
+          />
         )}
       />
 

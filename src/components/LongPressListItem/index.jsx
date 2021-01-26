@@ -12,7 +12,7 @@ const LongPressListItem = ({ children, onLongPress, customOnClick, isSelected, .
     pressTimeout = setTimeout(() => {
       onLongPress()
       clearTimeout(pressTimeout)
-    }, 200)
+    }, 400)
   }
 
   const onMouseUp = () => {

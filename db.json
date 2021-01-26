@@ -3,6 +3,7 @@
     {
       "name": "PR-1",
       "address": "Incra 6 - Brazlândia",
+      "area": 5,
       "description": "Plantação de morango e abacaxi.",
       "id": 1
     },

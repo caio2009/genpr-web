@@ -20,11 +20,17 @@ const useModal = () => {
     }
   }
 
-  const toggleModal = (name) => {
+  const toggleModal = (name, value) => {
     if (modals[name] === undefined) throw new Error(`Modal "${name}" does not exist`)
 
     const newModals = {...modals}
-    newModals[name] = !newModals[name]
+
+    if (value === undefined) {
+      newModals[name] = !newModals[name]
+    } else {
+      newModals[name] = value
+    }
+
     setModals(newModals)
   }
 
