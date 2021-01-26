@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import useModal from '../../../hooks/modal'
 
 import { FiChevronRight, FiX } from 'react-icons/fi'
-import { Container, Title, Subtitle, List, ListItemBox, FlexRow } from '../../../styles/components'
+import { Container, Title, Subtitle, List, ListItemBox, FlexRow, ActionButton } from '../../../styles/components'
 import LongPressListItem from '../../../components/LongPressListItem'
 import ActionsBar from '../../../components/ActionsBar'
 import Button from '../../../components/Button'
@@ -138,8 +138,8 @@ const RuralProperty = () => {
       />
 
       <ActionsBar show={actionsBar}>
-        <Button variant="error">Excluir</Button>
-        <Button variant="info">Gerenciar</Button>
+        <ActionButton color="red">Excluir</ActionButton>
+        <ActionButton color="blue">Gerenciar</ActionButton>
       </ActionsBar>
     </Container>
   )

@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components'
 import { shade } from 'polished'
+import colors from './colors'
 
 export const Container = styled.section`
   ${props => props.page && css`
@@ -89,5 +90,17 @@ export const IconButton = styled.button`
 
   border: none;
   border-radius: 50%;
+  background: transparent;
+`
+
+export const ActionButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: .25rem .5rem;
+  border: none;
+  font-size: 1rem;
+  color: ${props => colors[props.color] || colors.black};
   background: transparent;
 `

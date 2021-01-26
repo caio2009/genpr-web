@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components'
 export const ActionsBarContainer = styled.div`
   ${props => props.show ? css`
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
   ` : css`
     display: none;
   `}
