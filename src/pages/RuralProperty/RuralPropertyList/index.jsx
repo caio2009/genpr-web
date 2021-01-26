@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react'
+import useModal from '../../../hooks/modal'
 
 import { FiChevronRight, FiX } from 'react-icons/fi'
-import { Container, Title, Subtitle, List, ListItemBox } from '../../../styles/components'
+import { Container, Title, Subtitle, List, ListItemBox, FlexRow } from '../../../styles/components'
 import LongPressListItem from '../../../components/LongPressListItem'
 import ActionsBar from '../../../components/ActionsBar'
 import Button from '../../../components/Button'
+import Modal from '../../../components/Modal'
 
 import api from '../../../services/api'
 
 const RuralProperty = () => {
+  const { isShowing, registerModal, toggleModal } = useModal();
+  // registerModal('createRuralProperty')
+
   const [ruralProperties, setRuralProperties] = useState([])
 
   const [selected, setSelected] = useState([])
@@ -38,7 +43,7 @@ const RuralProperty = () => {
 
   const handleClick = () => {
     if (selected.length === 0) {
-      console.log('click')
+      toggleModal('editRuralProperty')
     }
   }
 
@@ -54,9 +59,24 @@ const RuralProperty = () => {
     }
   }, [selected])
 
+  useEffect(() => {
+    registerModal(['createRuralProperty', 'editRuralProperty'])
+    // eslint-disable-next-line
+  }, [])
+
   return (
     <Container page>
-      <Title>Propriedades Rurais</Title>
+      <FlexRow alignItems="center">
+        <Title marginBottom={0} flex={1}>
+          Propriedades Rurais
+        </Title>
+
+        <Button variant="primary" onClick={() => toggleModal('createRuralProperty')}>
+          Criar
+        </Button>
+      </FlexRow>
+
+      <br />
 
       <List>
         {ruralProperties.map((el, index) => (
@@ -82,6 +102,24 @@ const RuralProperty = () => {
           </LongPressListItem>
         ))}
       </List>
+
+      <Modal
+        isShowing={isShowing('createRuralProperty')}
+        hide={() => toggleModal('createRuralProperty')}
+        title="Nova Propriedade Rural"
+        content={(
+          <div>Formulário de cadastro de nova propriedade rural.</div>
+        )}
+      />
+
+      <Modal
+        isShowing={isShowing('editRuralProperty')}
+        hide={() => toggleModal('editRuralProperty')}
+        title="Propriedade Rural"
+        content={(
+          <div>Formulário de edição de propriedade rural</div>
+        )}
+      />
 
       <ActionsBar show={actionsBar}>
         <Button variant="error">Excluir</Button>

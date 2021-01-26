@@ -10,9 +10,11 @@ export const Container = styled.section`
 `
 
 export const Title = styled.h1`
+  ${props => props.flex && css`flex: ${props.flex};`}
+
   font-size: ${props => props.size ? `${props.size}rem` : '1.5rem'};
   font-weight: bold;
-  margin-bottom: 1.25rem;
+  margin-bottom: ${props => props.marginBottom !== undefined ? props.marginBottom : '1.25rem'};
 `
 
 export const Subtitle = styled.h2`
@@ -55,4 +57,10 @@ export const ListItem = styled.div`
 
 export const ListItemBox = styled.div`
   flex-grow: ${props => props.grow ? props.grow : 'auto'};
+`
+
+export const FlexRow = styled.div`
+  display: flex;
+  ${props => props.alignItems && css`align-items: ${props.alignItems};`}
+  ${props => props.justifyContent && css`justify-content: ${props.justifyContent};`}
 `
