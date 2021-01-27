@@ -1,13 +1,21 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
-import { ListItem } from '../../styles/components'
+// import { ListItem } from '../../styles/components'
+import { LongPressListItem as LongPressListItemContainer } from './styles'
 
 const LongPressListItem = ({ children, onLongPress, customOnClick, isSelected, ...rest }) => {
+  const ref = useRef(null)
+
   let pressTime = null
   let pressTimeout = null
+  let rippleTimeout = null
 
   const onMouseDown = () => {
     pressTime = new Date().getTime()
+
+    rippleTimeout = setTimeout(() => {
+      ref.current.classList.add('ripple')
+    }, 100)
 
     pressTimeout = setTimeout(() => {
       onLongPress()
@@ -16,30 +24,40 @@ const LongPressListItem = ({ children, onLongPress, customOnClick, isSelected, .
   }
 
   const onMouseUp = () => {
+    clearTimeout(rippleTimeout)
     clearTimeout(pressTimeout)
   }
 
   const onMouseLeave = () => {
+    clearTimeout(rippleTimeout)
     clearTimeout(pressTimeout)
   }
 
   const onTouchStart = () => {
     pressTime = new Date().getTime()
 
+    rippleTimeout = setTimeout(() => {
+      ref.current.classList.add('ripple')
+    }, 100)
+
     pressTimeout = setTimeout(() => {
       onLongPress()
       clearTimeout(pressTimeout)
-    }, 200)
+    }, 400)
   }
 
   const onTouchEnd = () => {
+    clearTimeout(rippleTimeout)
     clearTimeout(pressTimeout)
   }
 
   const onClick = () => {
     const now = new Date().getTime()
 
-    if (now - pressTime < 200) customOnClick()
+    if (now - pressTime < 100) { 
+      ref.current.classList.remove('ripple')
+      customOnClick()
+    }
   }
 
   const bind = {
@@ -52,9 +70,9 @@ const LongPressListItem = ({ children, onLongPress, customOnClick, isSelected, .
   }
  
   return (
-    <ListItem isSelected={isSelected} {...bind} {...rest}>
+    <LongPressListItemContainer ref={ref} isSelected={isSelected} {...bind} {...rest}>
       {children}
-    </ListItem>
+    </LongPressListItemContainer>
   )
 }
 

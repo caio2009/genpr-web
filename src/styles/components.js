@@ -49,30 +49,6 @@ export const ListItem = styled.div`
     margin-top: .5rem;
   }
 
-  @keyframes ripple {
-    to {
-      transform: scaleX(1)
-    }
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #fff5;
-    transform: scaleX(0);
-    transform-origin: 0% 50%;
-    /* transition: transform .4s; */
-  }
-
-  &:active::after {
-    /* transform: scale(1); */
-    animation: ripple .4s linear;
-  }
-
   /* &:hover {
     background: ${shade(0.05, '#eee')};
   } */
