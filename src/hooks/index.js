@@ -2,12 +2,15 @@ import React from 'react'
 
 import { DrawerProvider } from './drawer'
 import { ToastProvider } from './Toast/toast'
+import { ConfirmDialogProvider } from './confirmDialog'
 
 const AppProvider = ({ children }) => {
   return (
     <DrawerProvider>
       <ToastProvider>
-        {children}
+        <ConfirmDialogProvider>
+          {children}
+        </ConfirmDialogProvider>
       </ToastProvider>
     </DrawerProvider>
   )

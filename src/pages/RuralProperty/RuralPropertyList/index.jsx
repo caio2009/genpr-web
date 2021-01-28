@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import useModal from '../../../hooks/modal'
 import { useToast } from '../../../hooks/Toast/toast'
+import { useConfirmDialog } from '../../../hooks/confirmDialog'
 
 import { FiChevronRight, FiX } from 'react-icons/fi'
 import { Container, Title, Subtitle, List, ListItemBox, FlexRow, ActionButton } from '../../../styles/components'
@@ -16,6 +17,7 @@ import api from '../../../services/api'
 const RuralProperty = () => {
   const { isShowing, registerModal, toggleModal } = useModal()
   const { addToast } = useToast()
+  const { openConfirmDialog } = useConfirmDialog()
 
   const [ruralProperties, setRuralProperties] = useState([])
   const [selectedId, setSelectedId] = useState(null)
@@ -52,14 +54,21 @@ const RuralProperty = () => {
     }
   }
 
-  const handleRemove = async () => {
-    for (let index of selected) {
-      await api.delete(`ruralProperties/${ruralProperties[index].id}`)
-    }
+  const handleRemove = () => {
+    openConfirmDialog({
+      title: 'Confirmação de Exclusão',
+      message: 'Realmente tem certeza de realizar essa operação de exclusão?'
+    }).then(async res => {
+      if (res) {
+        for (let index of selected) {
+          await api.delete(`ruralProperties/${ruralProperties[index].id}`)
+        }
 
-    addToast({ title: 'Sucesso', description: 'Exclusão realizada com sucesso!' })
-    setActionsBar(false)
-    loadRuralProperties()
+        addToast({ title: 'Sucesso', description: 'Exclusão realizada com sucesso!' })
+        setActionsBar(false)
+        loadRuralProperties()
+      }
+    })
   }
 
   const handleCreated = () => {
@@ -135,9 +144,9 @@ const RuralProperty = () => {
         hide={() => toggleModal('createRuralProperty')}
         title="Nova Propriedade Rural"
         content={(
-          <CreateRuralPropertyForm 
-            onCreated={handleCreated} 
-            onCancel={() => toggleModal('createRuralProperty')} 
+          <CreateRuralPropertyForm
+            onCreated={handleCreated}
+            onCancel={() => toggleModal('createRuralProperty')}
           />
         )}
       />
@@ -147,10 +156,10 @@ const RuralProperty = () => {
         hide={() => toggleModal('editRuralProperty')}
         title="Propriedade Rural"
         content={(
-          <EditRuralPropertyForm 
-            entityId={selectedId} 
-            onEdited={handleEdited} 
-            onCancel={() => toggleModal('editRuralProperty')} 
+          <EditRuralPropertyForm
+            entityId={selectedId}
+            onEdited={handleEdited}
+            onCancel={() => toggleModal('editRuralProperty')}
           />
         )}
       />
