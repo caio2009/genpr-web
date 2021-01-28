@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useModal from '../../../hooks/modal'
+import { useToast } from '../../../hooks/Toast/toast'
 
 import { FiChevronRight, FiX } from 'react-icons/fi'
 import { Container, Title, Subtitle, List, ListItemBox, FlexRow, ActionButton } from '../../../styles/components'
@@ -13,7 +14,8 @@ import EditRuralPropertyForm from '../../../components/Forms/EditRuralPropertyFo
 import api from '../../../services/api'
 
 const RuralProperty = () => {
-  const { isShowing, registerModal, toggleModal } = useModal();
+  const { isShowing, registerModal, toggleModal } = useModal()
+  const { addToast } = useToast()
 
   const [ruralProperties, setRuralProperties] = useState([])
   const [selectedId, setSelectedId] = useState(null)
@@ -55,16 +57,19 @@ const RuralProperty = () => {
       await api.delete(`ruralProperties/${ruralProperties[index].id}`)
     }
 
-    loadRuralProperties()
+    addToast({ title: 'Sucesso', description: 'Exclusão realizada com sucesso!' })
     setActionsBar(false)
+    loadRuralProperties()
   }
 
   const handleCreated = () => {
+    addToast({ title: 'Sucesso', description: 'Propriedade rural criada com sucesso!' })
     toggleModal('createRuralProperty')
     loadRuralProperties()
   }
 
   const handleEdited = () => {
+    addToast({ title: 'Sucesso', description: 'Propriedade rural editada com sucesso!' })
     toggleModal('editRuralProperty')
     loadRuralProperties()
   }

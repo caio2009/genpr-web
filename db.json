@@ -3,19 +3,21 @@
     {
       "name": "PR-1",
       "address": "Incra 6 - Brazlândia",
-      "area": 5,
+      "area": 10,
       "description": "Plantação de morango e abacaxi.",
       "id": 1
     },
     {
       "name": "PR-2",
       "address": "Incra 9 - Brazlândia",
+      "area": 5,
       "description": "Plantação de chuchu.",
       "id": 2
     },
     {
       "name": "PR-3",
       "address": "Incra 7 - Brazlândia",
+      "area": 5,
       "description": "Plantação de morango e flores.",
       "id": 3
     }
