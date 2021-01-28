@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+import colors from '../../styles/colors'
 
 export const ActionsBarContainer = styled.div`
   ${props => props.show ? css`
@@ -13,8 +14,9 @@ export const ActionsBarContainer = styled.div`
   left: 0;
 
   width: 100%;
-  background: #ddd;
+  background: #eee;
   padding: .5rem;
+  border-top: 1px solid ${colors.lightPurple};
 
   button + button {
     margin-left: .25rem;

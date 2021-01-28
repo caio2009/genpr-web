@@ -16,7 +16,7 @@ const Input = React.forwardRef(({ name, label, defaultValue, error, onFocus, onB
   }
 
   useEffect(() => {
-    !!defaultValue && setFocus(true)
+    (!!defaultValue || defaultValue === 0) && setFocus(true)
   }, [defaultValue])
 
   return (

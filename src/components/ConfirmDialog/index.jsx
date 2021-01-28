@@ -1,26 +1,26 @@
 import React from 'react'
 
-import { Wrapper, Centralizer, DialogWrapper, Header, Content, Actions } from './styles'
+import { DialogOverlay, Centralizer, Dialog, DialogHeader, DialogContent, DialogActions } from './styles'
 import { Title, FlexRow, ActionButton } from '../../styles/components'
 
 
 const ConfirmDialog = ({ show, title, message, onConfirm, onCancel }) => {
   return (
-    <Wrapper show={show}>
+    <DialogOverlay show={show}>
       <Centralizer>
-        <DialogWrapper>
+        <Dialog>
           {title &&
-            <Header>
+            <DialogHeader>
               <Title size={1.25} marginBottom={0}>
                 {title}
               </Title>
-            </Header>}
+            </DialogHeader>}
 
-          <Content>
+          <DialogContent>
             {message}
-          </Content>
+          </DialogContent>
 
-          <Actions>
+          <DialogActions>
             <FlexRow gap={1}>
               <ActionButton color="purple" onClick={onConfirm}>
                 Confirmar
@@ -29,10 +29,10 @@ const ConfirmDialog = ({ show, title, message, onConfirm, onCancel }) => {
                 Cancelar
               </ActionButton>
             </FlexRow>
-          </Actions>
-        </DialogWrapper>
+          </DialogActions>
+        </Dialog>
       </Centralizer>
-    </Wrapper>
+    </DialogOverlay>
   )
 }
 

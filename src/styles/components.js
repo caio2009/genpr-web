@@ -7,7 +7,7 @@ export const Container = styled.section`
     margin-top: 48px;
   `}
 
-  padding: 1.25rem 1rem;
+  padding: 1.25rem 1rem 70px;
 `
 
 export const Title = styled.h1`

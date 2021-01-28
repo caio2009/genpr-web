@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 
 // import { ListItem } from '../../styles/components'
 import { LongPressListItem as LongPressListItemContainer } from './styles'
@@ -59,6 +59,19 @@ const LongPressListItem = ({ children, onLongPress, customOnClick, isSelected, .
       customOnClick()
     }
   }
+
+  const handleTouchmove = useCallback(() => {
+    clearTimeout(rippleTimeout)
+    clearTimeout(pressTimeout)
+  }, [pressTimeout, rippleTimeout])
+
+  useEffect(() => {
+    window.addEventListener('touchmove', handleTouchmove, true)
+
+    return () => {
+      window.removeEventListener('touchmove', handleTouchmove)
+    }
+  }, [handleTouchmove])
 
   const bind = {
     onMouseDown,

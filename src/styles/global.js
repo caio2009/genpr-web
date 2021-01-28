@@ -26,6 +26,7 @@ export default createGlobalStyle`
 
   button {
     cursor: pointer;
+    user-select: none;
   }
 
   .ripple {

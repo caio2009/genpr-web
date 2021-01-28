@@ -66,6 +66,7 @@ const RuralProperty = () => {
 
         addToast({ title: 'Sucesso', description: 'Exclusão realizada com sucesso!' })
         setActionsBar(false)
+        setSelected([])
         loadRuralProperties()
       }
     })

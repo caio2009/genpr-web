@@ -1,13 +1,13 @@
 import styled, { css } from 'styled-components'
 
-export const Wrapper = styled.div`
+export const DialogOverlay = styled.div`
   ${props => props.show ? css`
     display: block;
   ` : css`
     display: none;
   `}
 
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 15;
@@ -26,7 +26,7 @@ export const Centralizer = styled.div`
   height: 100%;
 `
 
-export const DialogWrapper = styled.div`
+export const Dialog = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -39,10 +39,10 @@ export const DialogWrapper = styled.div`
   }
 `
 
-export const Header = styled.div``
+export const DialogHeader = styled.div``
 
-export const Content = styled.div``
+export const DialogContent = styled.div``
 
-export const Actions = styled.div`
+export const DialogActions = styled.div`
   display: flex;
 `
