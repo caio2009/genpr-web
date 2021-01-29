@@ -5,9 +5,9 @@ import { FiX } from 'react-icons/fi'
 import { Title } from '../../styles/components'
 import { ModalOverlay, Centralizer, Modal as Wrapper, ModalHeader, CloseButton, ModalContent, ModalActions } from './styles'
 
-const Modal = ({ title, content, actions, isShowing = false, hide }) => {
-  return isShowing ? ReactDOM.createPortal(
-    <ModalOverlay isShowing={isShowing}>
+const Modal = ({ show, closeModal, title, content, actions }) => {
+  return ReactDOM.createPortal(
+    <ModalOverlay show={show}>
       <Centralizer>
         <Wrapper>
           <ModalHeader>
@@ -15,7 +15,7 @@ const Modal = ({ title, content, actions, isShowing = false, hide }) => {
               {title}
             </Title>
 
-            <CloseButton onClick={hide}>
+            <CloseButton onClick={closeModal}>
               <FiX size={24} />
             </CloseButton>
           </ModalHeader>
@@ -32,7 +32,7 @@ const Modal = ({ title, content, actions, isShowing = false, hide }) => {
         </Wrapper>
       </Centralizer>
     </ModalOverlay>, document.body
-  ) : null
+  )
 }
 
 export default Modal

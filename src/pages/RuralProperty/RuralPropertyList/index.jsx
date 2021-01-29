@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import useModal from '../../../hooks/modal'
 import { useToast } from '../../../hooks/Toast/toast'
 import { useConfirmDialog } from '../../../hooks/confirmDialog'
+import { useOptionDialog } from '../../../hooks/optionDialog'
 
-import { FiChevronRight, FiX } from 'react-icons/fi'
-import { Container, Title, Subtitle, List, ListItemBox, FlexRow, ActionButton } from '../../../styles/components'
-import LongPressListItem from '../../../components/LongPressListItem'
-import ActionsBar from '../../../components/ActionsBar'
+import { FiMoreVertical } from 'react-icons/fi'
+import { Container, Title, Subtitle, List, ListItem, ListItemBox, FlexRow, IconButton } from '../../../styles/components'
 import Button from '../../../components/Button'
 import Modal from '../../../components/Modal'
 import CreateRuralPropertyForm from '../../../components/Forms/CreateRuralPropertyForm'
@@ -15,91 +13,69 @@ import EditRuralPropertyForm from '../../../components/Forms/EditRuralPropertyFo
 import api from '../../../services/api'
 
 const RuralProperty = () => {
-  const { isShowing, registerModal, toggleModal } = useModal()
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
+  const { openOptionDialog } = useOptionDialog()
 
   const [ruralProperties, setRuralProperties] = useState([])
   const [selectedId, setSelectedId] = useState(null)
 
-  const [selected, setSelected] = useState([])
-  const [actionsBar, setActionsBar] = useState(false)
+  // create rural property modal status
+  const [modalCreate, setModalCreate] = useState(false)
+  const [keyCreate, setKeyCreate] = useState(Math.random()) 
+
+  // edit rural property modal status
+  const [modalEdit, setModalEdit] = useState(false)
 
   const loadRuralProperties = async () => {
     const res = await api.get('ruralProperties')
     setRuralProperties(res.data)
   }
 
-  const handleSelect = (value) => {
-    const currIndex = selected.indexOf(value)
-    const newSelected = [...selected]
+  useEffect(() => {
+    loadRuralProperties()
+  }, [])
 
-    if (currIndex === -1) {
-      newSelected.push(value)
-    } else {
-      newSelected.splice(currIndex, 1)
-    }
-
-    setSelected(newSelected)
+  const openEditRuralPropertyModal = (id) => {
+    setModalEdit(true)
+    setSelectedId(id)
   }
 
-  const isSelected = (value) => {
-    return selected.indexOf(value) !== -1
-  }
-
-  const handleListItemClick = (id) => {
-    if (selected.length === 0) {
-      setSelectedId(id)
-      toggleModal('editRuralProperty')
-    }
-  }
-
-  const handleRemove = () => {
+  const handleRemove = (id) => {
     openConfirmDialog({
-      title: 'Confirmação de Exclusão',
-      message: 'Realmente tem certeza de realizar essa operação de exclusão?'
+      title: 'Confirmação de Remoção',
+      message: 'Realmente tem certeza de realizar essa operação de remoção?'
     }).then(async res => {
       if (res) {
-        for (let index of selected) {
-          await api.delete(`ruralProperties/${ruralProperties[index].id}`)
-        }
+        await api.delete(`ruralProperties/${id}`)
 
-        addToast({ title: 'Sucesso', description: 'Exclusão realizada com sucesso!' })
-        setActionsBar(false)
-        setSelected([])
+        addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
         loadRuralProperties()
       }
     })
   }
 
   const handleCreated = () => {
+    setKeyCreate(Math.random())
     addToast({ title: 'Sucesso', description: 'Propriedade rural criada com sucesso!' })
-    toggleModal('createRuralProperty')
+    setModalCreate(false)
     loadRuralProperties()
   }
 
   const handleEdited = () => {
     addToast({ title: 'Sucesso', description: 'Propriedade rural editada com sucesso!' })
-    toggleModal('editRuralProperty')
+    setModalEdit(false)
     loadRuralProperties()
   }
 
-  useEffect(() => {
-    loadRuralProperties()
-  }, [])
+  const handleOpenOptionDialog = (e, id) => {
+    e.stopPropagation()
 
-  useEffect(() => {
-    if (selected.length) {
-      setActionsBar(true)
-    } else {
-      setActionsBar(false)
-    }
-  }, [selected])
-
-  useEffect(() => {
-    registerModal(['createRuralProperty', 'editRuralProperty'])
-    // eslint-disable-next-line
-  }, [])
+    openOptionDialog([
+      { label: 'Remover', action: () => handleRemove(id) },
+      { label: 'Gerenciar', action: () => { console.log('Deu certo') } }
+    ])
+  }
 
   return (
     <Container page>
@@ -108,7 +84,7 @@ const RuralProperty = () => {
           Propriedades Rurais
         </Title>
 
-        <Button variant="default" onClick={() => toggleModal('createRuralProperty')}>
+        <Button variant="default" onClick={() => setModalCreate(true)}>
           Criar
         </Button>
       </FlexRow>
@@ -116,63 +92,52 @@ const RuralProperty = () => {
       <br />
 
       <List>
-        {ruralProperties.map((el, index) => (
-          <LongPressListItem
+        {ruralProperties.map((item, index) => (
+          <ListItem
+            hoverable
             key={index}
-            isSelected={isSelected(index)}
-            onLongPress={() => handleSelect(index)}
-            customOnClick={() => handleListItemClick(el.id)}
+            onClick={() => openEditRuralPropertyModal(item.id)}
           >
             <ListItemBox grow={1}>
-              <Subtitle>{el.name}</Subtitle>
-              <p>{el.address}</p>
-              <p>{el.description}</p>
+              <Subtitle>{item.name}</Subtitle>
+              <p>{item.address}</p>
+              <p>{item.description}</p>
             </ListItemBox>
 
             <ListItemBox>
-              {
-                isSelected(index) ?
-                  <FiX size={24} onClick={() => handleSelect(index)} /> :
-                  <FiChevronRight size={24} />
-              }
+              <IconButton onClick={(e) => handleOpenOptionDialog(e, item.id)}>
+                <FiMoreVertical size={24} />
+              </IconButton>
             </ListItemBox>
-          </LongPressListItem>
+          </ListItem>
         ))}
       </List>
 
       <Modal
-        isShowing={isShowing('createRuralProperty')}
-        hide={() => toggleModal('createRuralProperty')}
+        key={keyCreate}
+        show={modalCreate}
+        closeModal={() => setModalCreate(false)}
         title="Nova Propriedade Rural"
         content={(
           <CreateRuralPropertyForm
             onCreated={handleCreated}
-            onCancel={() => toggleModal('createRuralProperty')}
+            onCancel={() => setModalCreate(false)}
           />
         )}
       />
 
       <Modal
-        isShowing={isShowing('editRuralProperty')}
-        hide={() => toggleModal('editRuralProperty')}
+        show={modalEdit}
+        closeModal={() => setModalEdit(false)}
         title="Propriedade Rural"
         content={(
           <EditRuralPropertyForm
             entityId={selectedId}
             onEdited={handleEdited}
-            onCancel={() => toggleModal('editRuralProperty')}
+            onCancel={() => setModalEdit(false)}
           />
         )}
       />
-
-      <ActionsBar show={actionsBar}>
-        <ActionButton color="red" onClick={handleRemove}>
-          Excluir
-        </ActionButton>
-        <ActionButton color="blue">
-          Gerenciar
-        </ActionButton>
-      </ActionsBar>
     </Container>
   )
 }

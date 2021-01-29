@@ -49,9 +49,11 @@ export const ListItem = styled.div`
     margin-top: .5rem;
   }
 
-  /* &:hover {
-    background: ${shade(0.05, '#eee')};
-  } */
+  ${props => props.hoverable && css`
+    &:hover {
+      background: ${shade(0.05, '#eee')};
+    }
+  `}
 
   ${props => props.isSelected && css`
     background: #d1c4e9;

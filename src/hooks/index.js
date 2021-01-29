@@ -4,7 +4,6 @@ import { DrawerProvider } from './drawer'
 import { ToastProvider } from './Toast/toast'
 import { ConfirmDialogProvider } from './confirmDialog'
 import { OptionDialogProvider } from './optionDialog'
-import { ModalProvider } from './modal'
 
 const AppProvider = ({ children }) => {
   return (
@@ -12,9 +11,7 @@ const AppProvider = ({ children }) => {
       <ToastProvider>
         <ConfirmDialogProvider>
           <OptionDialogProvider>
-            <ModalProvider>
-              {children}
-            </ModalProvider>
+            {children}
           </OptionDialogProvider>
         </ConfirmDialogProvider>
       </ToastProvider>

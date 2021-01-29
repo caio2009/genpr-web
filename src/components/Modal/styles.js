@@ -1,6 +1,12 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export const ModalOverlay = styled.div`
+  ${props => props.show ? css`
+    display: block;
+  ` : css`
+    display: none;
+  `}
+
   position: absolute;
   top: 0;
   left: 0;

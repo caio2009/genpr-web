@@ -33,16 +33,18 @@ export const Dialog = styled.div`
   max-width: 75%;
   background: #fff;
   border-radius: 4px;
-
-  & > div {
-    padding: .5rem;
-  }
 `
 
-export const DialogHeader = styled.div``
+export const DialogHeader = styled.div`
+  padding: .75rem;
+`
 
-export const DialogContent = styled.div``
+export const DialogContent = styled.div`
+  padding: .75rem;
+`
 
 export const DialogActions = styled.div`
   display: flex;
+
+  padding: .25rem;
 `
