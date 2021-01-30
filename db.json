@@ -2,7 +2,7 @@
   "ruralProperties": [
     {
       "description": "Plantação de morango e abacaxi.",
-      "area": 12,
+      "area": 10,
       "address": "Incra 6 - Brazlândia",
       "name": "PR-1",
       "id": 1
@@ -23,7 +23,7 @@
     },
     {
       "description": "",
-      "area": 10.5,
+      "area": 2.5,
       "address": "Coxa",
       "name": "Coxa, coxa líder!",
       "id": 4

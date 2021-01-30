@@ -26,6 +26,7 @@ const RuralProperty = () => {
 
   // edit rural property modal status
   const [modalEdit, setModalEdit] = useState(false)
+  const [keyEdit, setKeyEdit] = useState(Math.random())
 
   const loadRuralProperties = async () => {
     const res = await api.get('ruralProperties')
@@ -39,6 +40,11 @@ const RuralProperty = () => {
   const closeCreateRuralPropertyModal = () => {
     setModalCreate(false)
     setKeyCreate(Math.random())
+  }
+
+  const closeEditRuralPropertyModal = () => {
+    setModalEdit(false)
+    setKeyEdit(Math.random())
   }
 
   const openEditRuralPropertyModal = (id) => {
@@ -68,6 +74,7 @@ const RuralProperty = () => {
   }
 
   const handleEdited = () => {
+    setKeyEdit(Math.random())
     addToast({ title: 'Sucesso', description: 'Propriedade rural editada com sucesso!' })
     setModalEdit(false)
     loadRuralProperties()
@@ -121,7 +128,7 @@ const RuralProperty = () => {
       <Modal
         key={keyCreate}
         show={modalCreate}
-        closeModal={() => setModalCreate(false)}
+        closeModal={closeCreateRuralPropertyModal}
         title="Nova Propriedade Rural"
         content={(
           <CreateRuralPropertyForm
@@ -132,14 +139,15 @@ const RuralProperty = () => {
       />
 
       <Modal
+        key={keyEdit}
         show={modalEdit}
-        closeModal={() => setModalEdit(false)}
+        closeModal={closeEditRuralPropertyModal}
         title="Propriedade Rural"
         content={(
           <EditRuralPropertyForm
             entityId={selectedId}
             onEdited={handleEdited}
-            onCancel={() => setModalEdit(false)}
+            onCancel={closeEditRuralPropertyModal}
           />
         )}
       />

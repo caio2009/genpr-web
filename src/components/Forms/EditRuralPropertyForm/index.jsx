@@ -46,7 +46,7 @@ const EditRuralPropertyForm = ({ entityId: id, onEdited, onCancel }) => {
 
   useEffect(() => {
     loadRuralProperty()
-  }, [loadRuralProperty])
+  }, [loadRuralProperty, id])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
