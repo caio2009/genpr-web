@@ -23,12 +23,13 @@ const Input = React.forwardRef(({ name, label, defaultValue, error, onFocus, onB
     }
 
     if (_inputMode === 'numeric') {
-      const match = e.target.value.match(/^\d*\.?\d*$/)
+      const value = e.target.value
+      const match = value[value.length - 1].match(/\d|\./g)
 
       if (match) {
-        onChange(match[0])
+        onChange(value)
       } else {
-        onChange('')
+        onChange(value.substring(0, value.length - 1))
       }
     }
   }
