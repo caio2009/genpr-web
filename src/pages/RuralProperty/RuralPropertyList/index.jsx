@@ -36,6 +36,11 @@ const RuralProperty = () => {
     loadRuralProperties()
   }, [])
 
+  const closeCreateRuralPropertyModal = () => {
+    setModalCreate(false)
+    setKeyCreate(Math.random())
+  }
+
   const openEditRuralPropertyModal = (id) => {
     setModalEdit(true)
     setSelectedId(id)
@@ -121,7 +126,7 @@ const RuralProperty = () => {
         content={(
           <CreateRuralPropertyForm
             onCreated={handleCreated}
-            onCancel={() => setModalCreate(false)}
+            onCancel={closeCreateRuralPropertyModal}
           />
         )}
       />

@@ -58,9 +58,10 @@ const Input = React.forwardRef(({ name, label, defaultValue, error, onFocus, onB
 
       <Line focus={focus} error={error}></Line>
 
+      {error && 
       <ErrorContainer>
-        {error}
-      </ErrorContainer>
+        {error.message}
+      </ErrorContainer>}
     </InputContainer>
   )
 })

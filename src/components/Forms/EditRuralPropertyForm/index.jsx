@@ -1,14 +1,26 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 
 import api from '../../../services/api'
+import errorMessages from '../errorMessages'
 
 import { FlexRow } from '../../../styles/components'
 import Input from '../../Input'
 import Button from '../../Button'
 
+const schema = yup.object().shape({
+  name: yup.string().required(errorMessages.required),
+  address: yup.string().required(errorMessages.required),
+  area: yup.number(),
+  description: yup.string()
+})
+
 const EditRuralPropertyForm = ({ entityId: id, onEdited, onCancel }) => {
-  const { register, setValue, handleSubmit } = useForm()
+  const { register, setValue, handleSubmit, errors } = useForm({
+    resolver: yupResolver(schema)
+  })
 
   const [ruralProperty, setRuralProperty] = useState(null)
 
@@ -44,6 +56,7 @@ const EditRuralPropertyForm = ({ entityId: id, onEdited, onCancel }) => {
         label="Nome *"
         onChange={(value) => setValue('name', value)}
         defaultValue={ruralProperty?.name}
+        error={errors.name}
       />
 
       <Input
@@ -52,6 +65,7 @@ const EditRuralPropertyForm = ({ entityId: id, onEdited, onCancel }) => {
         label="Endereço *"
         onChange={(value) => setValue('address', value)}
         defaultValue={ruralProperty?.address}
+        error={errors.address}
       />
 
       <Input
