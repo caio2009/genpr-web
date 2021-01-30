@@ -20,13 +20,6 @@
       "area": 5,
       "description": "Plantação de morango e flores.",
       "id": 3
-    },
-    {
-      "name": "Teste",
-      "address": "Teste",
-      "area": 0,
-      "description": "",
-      "id": 4
     }
   ],
   "cultivations": [
