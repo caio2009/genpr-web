@@ -26,25 +26,25 @@
     {
       "name": "Maçã",
       "variety": "Golden Delicius",
-      "image": "https://www.markon.com/sites/default/files/styles/large/public/pi_photos/Apples_Golden_Delicious_Hero.jpg",
+      "imageUrl": "https://www.markon.com/sites/default/files/styles/large/public/pi_photos/Apples_Golden_Delicious_Hero.jpg",
       "id": 1
     },
     {
       "name": "Tomate",
       "variety": "Cereja",
-      "image": "https://images.squarespace-cdn.com/content/v1/5b8edfa12714e508f756f481/1538681443982-L8FV5J7802OB8LOU6193/ke17ZwdGBToddI8pDm48kNvrBVc0ymoq3U_sZnUX5bRZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpwG_ofHRvd0O7TTnlpvL4SkSnP_gO3plyatgALEDNqDGdq00d1cJdw1WJh_6jZLMPI/tomate-cereja.jpg?format=500w",
+      "imageUrl": "https://images.squarespace-cdn.com/content/v1/5b8edfa12714e508f756f481/1538681443982-L8FV5J7802OB8LOU6193/ke17ZwdGBToddI8pDm48kNvrBVc0ymoq3U_sZnUX5bRZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpwG_ofHRvd0O7TTnlpvL4SkSnP_gO3plyatgALEDNqDGdq00d1cJdw1WJh_6jZLMPI/tomate-cereja.jpg?format=500w",
       "id": 2
     },
     {
       "name": "Abobrinha",
       "variety": "Itália",
-      "image": "https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_900x506.jpg",
+      "imageUrl": "https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_900x506.jpg",
       "id": 3
     },
     {
       "name": "Doge",
       "variety": "Doge",
-      "image": "https://i.kym-cdn.com/entries/icons/original/000/013/564/doge.jpg",
+      "imageUrl": "https://i.kym-cdn.com/entries/icons/original/000/013/564/doge.jpg",
       "id": 4
     }
   ],

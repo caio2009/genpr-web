@@ -7,7 +7,7 @@ export const Container = styled.section`
     margin-top: 48px;
   `}
 
-  padding: 1.25rem 1rem 70px;
+  padding: 1.25rem 1rem 30px;
 `
 
 export const Title = styled.h1`
@@ -108,4 +108,10 @@ export const ActionButton = styled.button`
   font-size: 1rem;
   color: ${props => colors[props.color] || colors.black};
   background: transparent;
+`
+
+export const AvatarImg = styled.img`
+  width: ${props => props.size ? `${props.size}rem` : '4rem'};
+  height: ${props => props.size ? `${props.size}rem` : '4rem'};
+  border-radius: 50%;
 `

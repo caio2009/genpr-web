@@ -4,50 +4,50 @@ import { useConfirmDialog } from '@hooks/confirmDialog'
 import { useOptionDialog } from '@hooks/optionDialog'
 
 import { FiMoreVertical } from 'react-icons/fi'
-import { Container, Title, Subtitle, List, ListItem, ListItemBox, FlexRow, IconButton } from '@styles/components'
+import { Container, Title, Subtitle, List, ListItem, ListItemBox, FlexRow, IconButton, AvatarImg } from '@styles/components'
 import Button from '@components/Button'
 import Modal from '@components/Modal'
-import CreateRuralPropertyForm from '@components/Forms/CreateRuralPropertyForm'
-import EditRuralPropertyForm from '@components/Forms/EditRuralPropertyForm'
+import CreateCultivationForm from '@components/Forms/CreateCultivationForm'
+import EditCultivationForm from '@components/Forms/EditCultivationForm'
 
 import api from '@services/api'
 
-const RuralPropertyList = () => {
+const CultivationList = () => {
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
 
-  const [ruralProperties, setRuralProperties] = useState([])
+  const [cultivations, setCultivations] = useState([])
   const [selectedId, setSelectedId] = useState(null)
 
   // create rural property modal status
   const [modalCreate, setModalCreate] = useState(false)
-  const [keyCreate, setKeyCreate] = useState(Math.random()) 
+  const [keyCreate, setKeyCreate] = useState(Math.random())
 
   // edit rural property modal status
   const [modalEdit, setModalEdit] = useState(false)
   const [keyEdit, setKeyEdit] = useState(Math.random())
 
-  const loadRuralProperties = async () => {
-    const res = await api.get('ruralProperties')
-    setRuralProperties(res.data)
+  const loadCultivations = async () => {
+    const res = await api.get('cultivations')
+    setCultivations(res.data)
   }
 
   useEffect(() => {
-    loadRuralProperties()
+    loadCultivations()
   }, [])
 
-  const closeCreateRuralPropertyModal = () => {
+  const closeCreateModal = () => {
     setModalCreate(false)
     setKeyCreate(Math.random())
   }
 
-  const closeEditRuralPropertyModal = () => {
+  const closeEditModal = () => {
     setModalEdit(false)
     setKeyEdit(Math.random())
   }
 
-  const openEditRuralPropertyModal = (id) => {
+  const openEditModal = (id) => {
     setModalEdit(true)
     setSelectedId(id)
   }
@@ -58,34 +58,33 @@ const RuralPropertyList = () => {
       message: 'Realmente tem certeza de realizar essa operação de remoção?'
     }).then(async res => {
       if (res) {
-        await api.delete(`ruralProperties/${id}`)
+        await api.delete(`cultivations/${id}`)
 
         addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
-        loadRuralProperties()
+        loadCultivations()
       }
     })
   }
 
   const handleCreated = () => {
     setKeyCreate(Math.random())
-    addToast({ title: 'Sucesso', description: 'Propriedade rural criada com sucesso!' })
+    addToast({ title: 'Sucesso', description: 'Cultura criada com sucesso!' })
     setModalCreate(false)
-    loadRuralProperties()
+    loadCultivations()
   }
 
   const handleEdited = () => {
     setKeyEdit(Math.random())
-    addToast({ title: 'Sucesso', description: 'Propriedade rural editada com sucesso!' })
+    addToast({ title: 'Sucesso', description: 'Cultura editada com sucesso!' })
     setModalEdit(false)
-    loadRuralProperties()
+    loadCultivations()
   }
 
   const handleOpenOptionDialog = (e, id) => {
     e.stopPropagation()
 
     openOptionDialog([
-      { label: 'Remover', action: () => handleRemove(id) },
-      { label: 'Gerenciar', action: () => { console.log('Deu certo') } }
+      { label: 'Remover', action: () => handleRemove(id) }
     ])
   }
 
@@ -93,7 +92,7 @@ const RuralPropertyList = () => {
     <Container page>
       <FlexRow alignItems="center">
         <Title marginBottom={0} flex={1}>
-          Propriedades Rurais
+          Culturas
         </Title>
 
         <Button variant="default" onClick={() => setModalCreate(true)}>
@@ -104,16 +103,19 @@ const RuralPropertyList = () => {
       <br />
 
       <List>
-        {ruralProperties.map((item, index) => (
+        {cultivations.map((item, index) => (
           <ListItem
             hoverable
             key={index}
-            onClick={() => openEditRuralPropertyModal(item.id)}
+            onClick={() => openEditModal(item.id)}
           >
+            <ListItemBox style={{marginRight: 16}}>
+              {item.imageUrl && <AvatarImg src={item.imageUrl} />}
+            </ListItemBox>
+
             <ListItemBox grow={1}>
               <Subtitle>{item.name}</Subtitle>
-              <p>{item.address}</p>
-              <p>{item.description}</p>
+              <p>{item.variety}</p>
             </ListItemBox>
 
             <ListItemBox>
@@ -128,12 +130,12 @@ const RuralPropertyList = () => {
       <Modal
         key={keyCreate}
         show={modalCreate}
-        closeModal={closeCreateRuralPropertyModal}
-        title="Nova Propriedade Rural"
+        closeModal={closeCreateModal}
+        title="Nova Cultura"
         content={(
-          <CreateRuralPropertyForm
+          <CreateCultivationForm
             onCreated={handleCreated}
-            onCancel={closeCreateRuralPropertyModal}
+            onCancel={closeCreateModal}
           />
         )}
       />
@@ -141,13 +143,13 @@ const RuralPropertyList = () => {
       <Modal
         key={keyEdit}
         show={modalEdit}
-        closeModal={closeEditRuralPropertyModal}
-        title="Propriedade Rural"
+        closeModal={closeEditModal}
+        title="Cultura"
         content={(
-          <EditRuralPropertyForm
+          <EditCultivationForm
             entityId={selectedId}
             onEdited={handleEdited}
-            onCancel={closeEditRuralPropertyModal}
+            onCancel={closeEditModal}
           />
         )}
       />
@@ -155,4 +157,4 @@ const RuralPropertyList = () => {
   )
 }
 
-export default RuralPropertyList;
+export default CultivationList;

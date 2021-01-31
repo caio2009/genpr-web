@@ -28,28 +28,4 @@ export default createGlobalStyle`
     cursor: pointer;
     user-select: none;
   }
-
-  .ripple {
-    @keyframes ripple {
-      to {
-        transform: scaleX(1)
-      }
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #0001;
-      transform: scaleX(0);
-      transform-origin: 0% 50%;
-    }
-
-    &:active::after {
-      animation: ripple .3s linear;
-    }
-  }
 `

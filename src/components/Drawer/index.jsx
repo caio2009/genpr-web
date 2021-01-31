@@ -18,7 +18,7 @@ const Drawer = () => {
     { text: 'Início', path: '/' },
     { text: 'Propriedades Rurais', path: '/propriedades-rurais' },
     { text: 'Produção', path: '/' },
-    { text: 'Culturas', path: '/' },
+    { text: 'Culturas', path: '/culturas' },
     { text: 'Classificações', path: '/' },
     { text: 'Unidades de Medida', path: '/' }
   ]
