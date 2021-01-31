@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Container, Title } from '../../styles/components'
+import { Container, Title } from '@styles/components'
 
 const Home = () => {
   return (

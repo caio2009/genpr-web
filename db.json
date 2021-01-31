@@ -20,13 +20,6 @@
       "area": 5,
       "description": "Plantação de morango e flores.",
       "id": 3
-    },
-    {
-      "description": "",
-      "area": 2.5,
-      "address": "Coxa",
-      "name": "Coxa, coxa líder!",
-      "id": 4
     }
   ],
   "cultivations": [

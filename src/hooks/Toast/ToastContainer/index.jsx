@@ -2,7 +2,7 @@ import React from 'react'
 import { createPortal } from 'react-dom'
 
 import { Wrapper } from './styles'
-import Toast from '../../../components/Toast'
+import Toast from '@components/Toast'
 
 const ToastContainer = ({ toasts }) => {
   return createPortal(

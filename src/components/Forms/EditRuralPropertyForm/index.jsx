@@ -3,12 +3,12 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
-import api from '../../../services/api'
+import api from '@services/api'
 import errorMessages from '../errorMessages'
 
-import { FlexRow } from '../../../styles/components'
-import Input from '../../Input'
-import Button from '../../Button'
+import { FlexRow } from '@styles/components'
+import Input from '@components/Input'
+import Button from '@components/Button'
 
 const schema = yup.object().shape({
   name: yup.string().required(errorMessages.required),

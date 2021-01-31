@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { useToast } from '../../../hooks/Toast/toast'
-import { useConfirmDialog } from '../../../hooks/confirmDialog'
-import { useOptionDialog } from '../../../hooks/optionDialog'
+import { useToast } from '@hooks/Toast/toast'
+import { useConfirmDialog } from '@hooks/confirmDialog'
+import { useOptionDialog } from '@hooks/optionDialog'
 
 import { FiMoreVertical } from 'react-icons/fi'
-import { Container, Title, Subtitle, List, ListItem, ListItemBox, FlexRow, IconButton } from '../../../styles/components'
-import Button from '../../../components/Button'
-import Modal from '../../../components/Modal'
-import CreateRuralPropertyForm from '../../../components/Forms/CreateRuralPropertyForm'
-import EditRuralPropertyForm from '../../../components/Forms/EditRuralPropertyForm'
+import { Container, Title, Subtitle, List, ListItem, ListItemBox, FlexRow, IconButton } from '@styles/components'
+import Button from '@components/Button'
+import Modal from '@components/Modal'
+import CreateRuralPropertyForm from '@components/Forms/CreateRuralPropertyForm'
+import EditRuralPropertyForm from '@components/Forms/EditRuralPropertyForm'
 
-import api from '../../../services/api'
+import api from '@services/api'
 
 const RuralProperty = () => {
   const { addToast } = useToast()
