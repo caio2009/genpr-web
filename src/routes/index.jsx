@@ -7,6 +7,8 @@ import RuralPropertyList from '@pages/RuralProperty/RuralPropertyList'
 
 import CultivationList from '@pages/Cultivation/CultivationList'
 
+import ClassificationList from '@pages/Classification/ClassificationList'
+
 const Routes = () => {
   return (
     <Switch>
@@ -15,6 +17,8 @@ const Routes = () => {
       <Route path="/propriedades-rurais" component={RuralPropertyList} exact />
 
       <Route path="/culturas" component={CultivationList} exact />
+
+      <Route path="/classificacoes" component={ClassificationList} exact />
     </Switch>
   )
 }
