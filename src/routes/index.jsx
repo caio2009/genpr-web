@@ -9,6 +9,8 @@ import CultivationList from '@pages/Cultivation/CultivationList'
 
 import ClassificationList from '@pages/Classification/ClassificationList'
 
+import UnitMeasureList from '@pages/UnitMeasure/UnitMeasureList'
+
 const Routes = () => {
   return (
     <Switch>
@@ -19,6 +21,8 @@ const Routes = () => {
       <Route path="/culturas" component={CultivationList} exact />
 
       <Route path="/classificacoes" component={ClassificationList} exact />
+
+      <Route path="/unidades-medida" component={UnitMeasureList} />
     </Switch>
   )
 }

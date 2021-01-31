@@ -20,7 +20,7 @@ const Drawer = () => {
     { text: 'Produção', path: '/' },
     { text: 'Culturas', path: '/culturas' },
     { text: 'Classificações', path: '/classificacoes' },
-    { text: 'Unidades de Medida', path: '/' }
+    { text: 'Unidades de Medida', path: '/unidades-medida' }
   ]
 
   return (
