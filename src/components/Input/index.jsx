@@ -57,6 +57,7 @@ const Input = React.forwardRef(({ name, label, defaultValue, error, onFocus, onB
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChange={handleChange}
+        inputMode={inputMode}
         {...rest}
       />
 

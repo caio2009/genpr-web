@@ -52,7 +52,7 @@ const CreateClassificationForm = ({ ruralProperty, onCreated, onCancel }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Input
-        label="Propriedade Rural *"
+        label="Propriedade rural *"
         defaultValue={ruralProperty.name}
         readOnly
       />
@@ -77,7 +77,7 @@ const CreateClassificationForm = ({ ruralProperty, onCreated, onCancel }) => {
       <Input
         ref={register}
         name="area"
-        label="Área *"
+        label="Área"
         inputMode="numeric"
         onChange={(value) => setValue('area', value)}
         defaultValue="0"
@@ -90,7 +90,7 @@ const CreateClassificationForm = ({ ruralProperty, onCreated, onCancel }) => {
         defaultValue={new Date()}
         render={() => (
           <InputDate 
-            label="Data de abertura"
+            label="Data de abertura *"
             onChange={(value) => setValue('openingDate', new Date(value))}
             defaultValue={format(new Date(), 'yyyy-MM-dd')}
             error={errors.openingDate}

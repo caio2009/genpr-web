@@ -2,7 +2,7 @@
   "ruralProperties": [
     {
       "description": "Plantação de morango e abacaxi.",
-      "area": 10,
+      "area": 5,
       "address": "Incra 6 - Brazlândia",
       "name": "PR-1",
       "id": 1
@@ -163,9 +163,9 @@
     },
     {
       "registerDate": "2021-01-12T03:00:00.000Z",
-      "quantity": 5,
-      "unitMeasureId": 3,
-      "classificationId": 3,
+      "quantity": 10,
+      "unitMeasureId": "3",
+      "classificationId": "3",
       "ruralPropertyId": 1,
       "fieldId": 2,
       "cultivationId": 2,
@@ -200,26 +200,6 @@
       "fieldId": 4,
       "cultivationId": 3,
       "id": 11
-    },
-    {
-      "registerDate": "2021-01-12T03:00:00.000Z",
-      "quantity": 200,
-      "unitMeasureId": 1,
-      "classificationId": 3,
-      "ruralPropertyId": 1,
-      "fieldId": 2,
-      "cultivationId": 2,
-      "id": 15
-    },
-    {
-      "registerDate": "2021-01-12T03:00:00.000Z",
-      "quantity": 100,
-      "unitMeasureId": 4,
-      "classificationId": 3,
-      "ruralPropertyId": 1,
-      "fieldId": 2,
-      "cultivationId": 2,
-      "id": 16
     },
     {
       "registerDate": "2021-01-13T03:00:00.000Z",
@@ -270,6 +250,16 @@
       "fieldId": 3,
       "cultivationId": 2,
       "id": 21
+    },
+    {
+      "registerDate": "2021-02-02T16:31:16.603Z",
+      "quantity": 25,
+      "unitMeasureId": "4",
+      "classificationId": "8",
+      "ruralPropertyId": 1,
+      "fieldId": 2,
+      "cultivationId": 2,
+      "id": 22
     }
   ]
 }

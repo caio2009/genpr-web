@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { useToast } from '@hooks/Toast/toast'
 import { useConfirmDialog } from '@hooks/confirmDialog'
 import { useOptionDialog } from '@hooks/optionDialog'
@@ -12,12 +12,13 @@ import { Container, Title, FlexRow, List, ListEmpty, ListItem, ListItemBox, Icon
 import { RuralPropertyInfo, InfoField } from './styles'
 import Button from '@components/Button'
 import Modal from '@components/Modal'
+import EditRuralPropertyForm from '@components/Forms/EditRuralPropertyForm'
 import CreateFieldForm from '@components/Forms/CreateFieldForm'
 import EditFieldForm from '@components/Forms/EditFieldForm'
-import EditRuralPropertyForm from '@components/Forms/EditRuralPropertyForm'
 
 const ManageRP = () => {
   const { id } = useParams()
+  const history = useHistory()
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
@@ -68,9 +69,8 @@ const ManageRP = () => {
     setKeyEditField(Math.random())
   }
 
-  const openEditFieldModal = (id) => {
-    setModalEditField(true)
-    setSelectedFieldId(id)
+  const goManageField = (id) => {
+    history.push(`/talhoes/gerenciar/${id}`)
   }
 
   const handleRuralPropertyEdited = () => {
@@ -126,7 +126,7 @@ const ManageRP = () => {
         <FlexRow>
           <InfoField style={{ flex: 1 }}>
             <h4>Nome</h4>
-            <p>{ruralProperty.name}</p>
+            <p className="no-break-line">{ruralProperty.name}</p>
           </InfoField>
 
           <InfoField style={{ flex: 1 }}>
@@ -172,7 +172,7 @@ const ManageRP = () => {
             <ListItem
               hoverable
               key={index}
-              onClick={() => openEditFieldModal(item.id)}
+              onClick={() => goManageField(item.id)}
             >
               <ListItemBox grow={1}>
                 <Subtitle>{item.name}</Subtitle>
