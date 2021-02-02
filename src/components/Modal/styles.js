@@ -44,6 +44,11 @@ export const Modal = styled.div`
     width: 100%;
     height: 100%;
   }
+
+  ${props => props.isFullPage && css`
+    width: 100%;
+    height: 100vh;
+  `}
 `
 
 export const ModalHeader = styled.div`

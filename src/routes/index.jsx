@@ -16,6 +16,9 @@ import ManageRP from '@pages/RuralProperty/ManageRP'
 
 import ManageField from '@pages/Field/ManageField'
 
+import BeforeCreateProduction from '@pages/Production/BeforeCreateProduction'
+import CreateProduction from '@pages/Production/CreateProduction'
+
 const Routes = () => {
   return (
     <Switch>
@@ -33,6 +36,9 @@ const Routes = () => {
       <Route path="/propriedades-rurais/gerenciar/:id" component={ManageRP} />
 
       <Route path="/talhoes/gerenciar/:id" component={ManageField} />
+
+      <Route path="/producoes/escolher" component={BeforeCreateProduction} />
+      <Route path="/producoes/criar" component={CreateProduction} />
     </Switch>
   )
 }
