@@ -49,15 +49,16 @@ const Select = React.forwardRef(({ name, label, options, defaultValue, error, on
         </Label>
 
         <Input error={error}>
-          {(!!defaultValue && !innerValue) && options.find(option => option.value === defaultValue).label}
-          {!!innerValue && options.find(option => option.value === innerValue).label}
+          {(!!defaultValue && !innerValue) && options.find(option => option.value === defaultValue)?.label}
+          {!!innerValue && options.find(option => option.value === innerValue)?.label}
         </Input>
 
         <Line focus={focus} error={error}></Line>
 
-        <ErrorContainer>
-          {error}
-        </ErrorContainer>
+        {error &&
+          <ErrorContainer>
+            {error.message}
+          </ErrorContainer>}
       </InputContainer>
 
       <OptionsContainer show={showOptionsContainer}>

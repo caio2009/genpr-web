@@ -28,4 +28,8 @@ export default createGlobalStyle`
     cursor: pointer;
     user-select: none;
   }
+
+  .no-break-line {
+    white-space: nowrap;
+  }
 `

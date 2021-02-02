@@ -11,6 +11,9 @@ import ClassificationList from '@pages/Classification/ClassificationList'
 
 import UnitMeasureList from '@pages/UnitMeasure/UnitMeasureList'
 
+import BeforeManageRP from '@pages/RuralProperty/BeforeManageRP'
+import ManageRP from '@pages/RuralProperty/ManageRP'
+
 const Routes = () => {
   return (
     <Switch>
@@ -23,6 +26,9 @@ const Routes = () => {
       <Route path="/classificacoes" component={ClassificationList} exact />
 
       <Route path="/unidades-medida" component={UnitMeasureList} />
+
+      <Route path="/propriedades-rurais/gerenciar/escolher" component={BeforeManageRP} />
+      <Route path="/propriedades-rurais/gerenciar/:id" component={ManageRP} />
     </Switch>
   )
 }

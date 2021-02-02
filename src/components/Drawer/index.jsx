@@ -9,25 +9,25 @@ const Drawer = () => {
 
   const history = useHistory();
 
-  const goTo = (path) => {
+  const goTo = (to) => {
     toggleDrawer(false);
-    history.push(path);
+    history.push(to);
   }
 
   const items = [
-    { text: 'Início', path: '/' },
-    { text: 'Propriedades Rurais', path: '/propriedades-rurais' },
-    { text: 'Produção', path: '/' },
-    { text: 'Culturas', path: '/culturas' },
-    { text: 'Classificações', path: '/classificacoes' },
-    { text: 'Unidades de Medida', path: '/unidades-medida' }
+    { text: 'Início', to: '/' },
+    { text: 'Propriedades Rurais', to: '/propriedades-rurais' },
+    { text: 'Produção', to: '/' },
+    { text: 'Culturas', to: '/culturas' },
+    { text: 'Classificações', to: '/classificacoes' },
+    { text: 'Unidades de Medida', to: '/unidades-medida' }
   ]
 
   return (
     <Container show={isOpened}>
       <DrawerContainer>
         {items.map((item, index) => (
-          <Item key={index} onClick={() => goTo(item.path)}>{item.text}</Item>
+          <Item key={index} onClick={() => goTo(item.to)}>{item.text}</Item>
         ))}
       </DrawerContainer>
     </Container>

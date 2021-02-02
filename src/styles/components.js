@@ -16,9 +16,13 @@ export const Title = styled.h1`
   font-size: ${props => props.size ? `${props.size}rem` : '1.5rem'};
   font-weight: bold;
   margin-bottom: ${props => props.marginBottom !== undefined ? props.marginBottom : '1.25rem'};
+
+  ${props => props.centered && css`text-align: center;`}
 `
 
 export const Subtitle = styled.h2`
+  display: flex;
+
   font-size: ${props => props.size ? `${props.size}rem` : '1rem'};
   font-weight: bold;
   color: #999;
@@ -28,6 +32,14 @@ export const Subtitle = styled.h2`
 export const List = styled.div`
   display: flex;
   flex-direction: column;
+`
+
+export const ListEmpty = styled.p`
+  margin-top: .5rem;
+  padding: 1rem;
+  text-align: center;
+  background: #eee;
+  border-radius: 4px;
 `
 
 export const ListItem = styled.div`
@@ -69,6 +81,7 @@ export const FlexRow = styled.div`
   display: flex;
   ${props => props.alignItems && css`align-items: ${props.alignItems};`}
   ${props => props.justifyContent && css`justify-content: ${props.justifyContent};`}
+  flex-wrap: wrap;
 
   ${props => props.gap && css`
     & > *:first-child {

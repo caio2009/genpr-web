@@ -24,12 +24,15 @@ const Input = React.forwardRef(({ name, label, defaultValue, error, onFocus, onB
 
     if (_inputMode === 'numeric') {
       const value = e.target.value
-      const match = value[value.length - 1].match(/\d|\./g)
 
-      if (match) {
-        onChange(value)
-      } else {
-        onChange(value.substring(0, value.length - 1))
+      if (value) {
+        const match = value[value.length - 1].match(/\d|\./g)
+
+        if (match) {
+          onChange(value)
+        } else {
+          onChange(value.substring(0, value.length - 1))
+        }
       }
     }
   }
@@ -46,7 +49,7 @@ const Input = React.forwardRef(({ name, label, defaultValue, error, onFocus, onB
     <InputContainer focus={focus} error={error}>
       <label htmlFor={name}>{label}</label>
 
-      <input 
+      <input
         ref={ref}
         id={name}
         name={name}
@@ -59,10 +62,10 @@ const Input = React.forwardRef(({ name, label, defaultValue, error, onFocus, onB
 
       <Line focus={focus} error={error}></Line>
 
-      {error && 
-      <ErrorContainer>
-        {error.message}
-      </ErrorContainer>}
+      {error &&
+        <ErrorContainer>
+          {error.message}
+        </ErrorContainer>}
     </InputContainer>
   )
 })

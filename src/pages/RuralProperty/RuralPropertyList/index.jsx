@@ -37,12 +37,12 @@ const RuralPropertyList = () => {
     loadRuralProperties()
   }, [])
 
-  const closeCreateRuralPropertyModal = () => {
+  const closeCreateModal = () => {
     setModalCreate(false)
     setKeyCreate(Math.random())
   }
 
-  const closeEditRuralPropertyModal = () => {
+  const closeEditModal = () => {
     setModalEdit(false)
     setKeyEdit(Math.random())
   }
@@ -128,12 +128,12 @@ const RuralPropertyList = () => {
       <Modal
         key={keyCreate}
         show={modalCreate}
-        closeModal={closeCreateRuralPropertyModal}
+        closeModal={closeCreateModal}
         title="Nova Propriedade Rural"
         content={(
           <CreateRuralPropertyForm
             onCreated={handleCreated}
-            onCancel={closeCreateRuralPropertyModal}
+            onCancel={closeCreateModal}
           />
         )}
       />
@@ -141,13 +141,13 @@ const RuralPropertyList = () => {
       <Modal
         key={keyEdit}
         show={modalEdit}
-        closeModal={closeEditRuralPropertyModal}
+        closeModal={closeEditModal}
         title="Propriedade Rural"
         content={(
           <EditRuralPropertyForm
             entityId={selectedId}
             onEdited={handleEdited}
-            onCancel={closeEditRuralPropertyModal}
+            onCancel={closeEditModal}
           />
         )}
       />

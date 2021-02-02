@@ -20,6 +20,13 @@
       "area": 5,
       "description": "Plantação de morango e flores.",
       "id": 3
+    },
+    {
+      "description": "",
+      "area": 0,
+      "address": "Chapadinha - Brazlândia",
+      "name": "PR-4",
+      "id": 4
     }
   ],
   "cultivations": [
@@ -115,9 +122,8 @@
     {
       "openingDate": "2021-01-12T03:00:00.000Z",
       "area": 1.5,
+      "cultivationId": 1,
       "name": "T-3",
-      "cultivationId": 3,
-      "ruralPropertyId": 1,
       "id": 4
     },
     {
@@ -127,6 +133,21 @@
       "cultivationId": 4,
       "ruralPropertyId": 2,
       "id": 5
+    },
+    {
+      "openingDate": "2021-02-01T23:36:43.031Z",
+      "area": 0,
+      "cultivationId": 3,
+      "name": "Teste",
+      "id": 6
+    },
+    {
+      "openingDate": "2021-02-01T23:40:59.209Z",
+      "area": 3,
+      "cultivationId": 3,
+      "name": "T-3",
+      "ruralPropertyId": 1,
+      "id": 7
     }
   ],
   "productions": [
