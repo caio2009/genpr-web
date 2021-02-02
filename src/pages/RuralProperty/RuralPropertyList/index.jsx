@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useToast } from '@hooks/Toast/toast'
 import { useConfirmDialog } from '@hooks/confirmDialog'
 import { useOptionDialog } from '@hooks/optionDialog'
@@ -13,6 +14,7 @@ import EditRuralPropertyForm from '@components/Forms/EditRuralPropertyForm'
 import api from '@services/api'
 
 const RuralPropertyList = () => {
+  const history = useHistory()
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
@@ -80,12 +82,16 @@ const RuralPropertyList = () => {
     loadRuralProperties()
   }
 
+  const goManageRuralProperty = (id) => {
+    history.push(`/propriedades-rurais/gerenciar/${id}`)
+  }
+
   const handleOpenOptionDialog = (e, id) => {
     e.stopPropagation()
 
     openOptionDialog([
       { label: 'Remover', action: () => handleRemove(id) },
-      { label: 'Gerenciar', action: () => { console.log('Deu certo') } }
+      { label: 'Gerenciar', action: () => goManageRuralProperty(id) }
     ])
   }
 

@@ -37,7 +37,8 @@ const Routes = () => {
 
       <Route path="/talhoes/gerenciar/:id" component={ManageField} />
 
-      <Route path="/producoes/escolher" component={BeforeCreateProduction} />
+      <Route path="/producoes/propriedades-rurais/escolher" component={BeforeCreateProduction} />
+      <Route path="/producoes/talhoes/escolher" component={BeforeCreateProduction} />
       <Route path="/producoes/criar" component={CreateProduction} />
     </Switch>
   )

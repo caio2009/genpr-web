@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import api from '@services/api'
 
@@ -8,16 +8,16 @@ import { OptionsContainer, Option } from './styles'
 const ChooseField = ({ ruralPropertyId, description, onChange }) => {
   const [fields, setFields] = useState([])
 
-  const loadFields = async () => {
+  const loadFields = useCallback(async () => {
     if (ruralPropertyId) {
       const res = await api.get(`ruralProperties/${ruralPropertyId}/fields`)
       setFields(res.data)
     }
-  }
+  }, [ruralPropertyId])
 
   useEffect(() => {
     loadFields()
-  }, [])
+  }, [loadFields])
 
   const handleClick = (id) => {
     onChange(id)
