@@ -30,14 +30,7 @@ const EditCultivationForm = ({ entityId: id, onEdited, onCancel }) => {
     }
   }, [id])
 
-  const formatData = (data) => ({
-    ...data,
-    area: Number(data.area)
-  })
-
   const onSubmit = async (data) => {
-    data = formatData(data)
-
     await api.put(`cultivations/${id}`, data)
 
     onEdited()

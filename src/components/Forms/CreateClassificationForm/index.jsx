@@ -19,14 +19,7 @@ const CreateClassificationForm = ({ onCreated, onCancel }) => {
     resolver: yupResolver(schema)
   })
 
-  const formatData = (data) => ({
-    ...data,
-    area: Number(data.area)
-  })
-
   const onSubmit = async (data) => {
-    data = formatData(data)
-
     await api.post('classifications', data)
 
     onCreated()
