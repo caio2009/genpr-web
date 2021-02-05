@@ -19,6 +19,8 @@ import ManageField from '@pages/Field/ManageField'
 import BeforeCreateProduction from '@pages/Production/BeforeCreateProduction'
 import CreateProduction from '@pages/Production/CreateProduction'
 
+import Stock from '@pages/Stock'
+
 const Routes = () => {
   return (
     <Switch>
@@ -40,6 +42,8 @@ const Routes = () => {
       <Route path="/producoes/propriedades-rurais/escolher" component={BeforeCreateProduction} />
       <Route path="/producoes/talhoes/escolher" component={BeforeCreateProduction} />
       <Route path="/producoes/criar" component={CreateProduction} />
+
+      <Route path="/estoque" component={Stock} />
     </Switch>
   )
 }

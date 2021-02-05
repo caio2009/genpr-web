@@ -68,6 +68,10 @@ const EditProductionForm = ({ entityId: id, onEdited, onCancel }) => {
   const onSubmit = async (data) => {
     data = formatData(data)
 
+    if (data.registerDate !== production.registerDate) {
+      data.registerDate = new Date(new Date(data.registerDate).getTime() + 1000 * 60 * 60 * 3)
+    }
+
     await api.put(`productions/${id}`, { 
       ...data, 
       ruralPropertyId: production.ruralProperty.id, 

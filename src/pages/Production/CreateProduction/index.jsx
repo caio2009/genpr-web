@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { useToast } from '@hooks/Toast/toast'
 
@@ -17,7 +17,7 @@ const CreateProduction = () => {
 
   const [field, setField] = useState(null)
 
-  const loadField = async () => {
+  const loadField = useCallback(async () => {
     const res = await api.get(`fields/${fieldId}?_expand=ruralProperty&_expand=cultivation`)
     setField({
       ...res.data,
@@ -26,11 +26,11 @@ const CreateProduction = () => {
         name: `${res.data.cultivation.name} ${res.data.cultivation.variety}`
       }
     })
-  }
+  }, [fieldId])
 
   useEffect(() => {
     loadField()
-  }, [])
+  }, [loadField])
 
   const handleCreated = () => {
     addToast({ title: 'Sucesso', description: 'Propriedade rural criada com sucesso!' })

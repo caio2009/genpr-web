@@ -26,6 +26,7 @@ const CreateClassificationForm = ({ ruralProperty, onCreated, onCancel }) => {
   })
 
   const [cultivations, setCultivations] = useState([])
+  const defaultDate = new Date()
 
   const loadCultivations = async () => {
     const res = await api.get('cultivations')
@@ -43,6 +44,10 @@ const CreateClassificationForm = ({ ruralProperty, onCreated, onCancel }) => {
 
   const onSubmit = async (data) => {
     data = formatData(data)
+
+    if (data.openingDate.getTime() !== defaultDate.getTime()) {
+      data.openingDate = new Date(new Date(data.openingDate).getTime() + 1000 * 60 * 60 * 3)
+    }
 
     await api.post('fields', { ...data, ruralPropertyId: ruralProperty.id })
 
@@ -87,12 +92,12 @@ const CreateClassificationForm = ({ ruralProperty, onCreated, onCancel }) => {
       <Controller
         control={control}
         name="openingDate"
-        defaultValue={new Date()}
+        defaultValue={defaultDate}
         render={() => (
           <InputDate 
             label="Data de abertura *"
             onChange={(value) => setValue('openingDate', new Date(value))}
-            defaultValue={format(new Date(), 'yyyy-MM-dd')}
+            defaultValue={format(defaultDate, 'yyyy-MM-dd')}
             error={errors.openingDate}
           />
         )}

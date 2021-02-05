@@ -48,6 +48,10 @@ const EditFieldForm = ({ entityId: id, onEdited, onCancel }) => {
   const onSubmit = async (data) => {
     data = formatData(data)
 
+    if (data.openingDate.getTime() !== field.openingDate.getTime()) {
+      data.openingDate = new Date(new Date(data.openingDate).getTime() + 1000 * 60 * 60 * 3)
+    }
+
     await api.put(`fields/${id}`, { ...data, ruralPropertyId: field.ruralProperty.id })
 
     onEdited()

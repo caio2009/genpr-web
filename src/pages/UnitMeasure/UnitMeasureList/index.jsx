@@ -4,7 +4,7 @@ import { useConfirmDialog } from '@hooks/confirmDialog'
 import { useOptionDialog } from '@hooks/optionDialog'
 
 import { FiMoreVertical } from 'react-icons/fi'
-import { Container, Title, Subtitle, List, ListItem, ListItemBox, FlexRow, IconButton, AvatarImg } from '@styles/components'
+import { Container, Title, Subtitle, List, ListItem, ListItemBox, FlexRow, IconButton } from '@styles/components'
 import Button from '@components/Button'
 import Modal from '@components/Modal'
 import CreateUnitMeasureForm from '@components/Forms/CreateUnitMeasureForm'

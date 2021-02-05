@@ -27,6 +27,7 @@ const CreateProductionForm = ({ ruralProperty, field, cultivation, onCreated, on
 
   const [classifications, setClassifications] = useState([])
   const [unitMeasures, setUnitMeasures] = useState([])
+  const defaultDate = new Date()
 
   const loadCultivations = async () => {
     const res = await api.get('classifications')
@@ -52,6 +53,10 @@ const CreateProductionForm = ({ ruralProperty, field, cultivation, onCreated, on
 
   const onSubmit = async (data) => {
     data = formatData(data)
+
+    if (data.registerDate.getTime() !== defaultDate.getTime()) {
+      data.registerDate = new Date(new Date(data.registerDate).getTime() + 1000 * 60 * 60 * 3)
+    }
 
     await api.post('productions', { 
       ...data, 
@@ -114,12 +119,12 @@ const CreateProductionForm = ({ ruralProperty, field, cultivation, onCreated, on
       <Controller
         control={control}
         name="registerDate"
-        defaultValue={new Date()}
+        defaultValue={defaultDate}
         render={() => (
           <InputDate
             label="Data de registro *"
             onChange={(value) => setValue('registerDate', new Date(value))}
-            defaultValue={format(new Date(), 'yyyy-MM-dd')}
+            defaultValue={format(defaultDate, 'yyyy-MM-dd')}
             error={errors.registerDate}
           />
         )}

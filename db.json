@@ -13,13 +13,6 @@
       "area": 5,
       "description": "Plantação de chuchu.",
       "id": 2
-    },
-    {
-      "name": "PR-3",
-      "address": "Incra 7 - Brazlândia",
-      "area": 5,
-      "description": "Plantação de morango e flores.",
-      "id": 3
     }
   ],
   "cultivations": [
@@ -46,6 +39,18 @@
       "variety": "Doge",
       "imageUrl": "https://i.kym-cdn.com/entries/icons/original/000/013/564/doge.jpg",
       "id": 4
+    },
+    {
+      "name": "Morango",
+      "variety": "San Andreas",
+      "imageUrl": "https://i.ytimg.com/vi/GanXSMiHbzY/maxresdefault.jpg",
+      "id": 5
+    },
+    {
+      "name": "Abacaxi",
+      "variety": "BRS Imperial",
+      "imageUrl": "http://www.clona-gen.com.br/wp-content/uploads/2017/03/brs_imperial-150x150.png",
+      "id": 6
     }
   ],
   "classifications": [
@@ -96,173 +101,80 @@
   ],
   "fields": [
     {
-      "openingDate": "2021-01-03T03:00:00.000Z",
-      "area": 0.5,
-      "name": "T-2",
-      "cultivationId": 2,
+      "openingDate": "2021-02-04T19:34:36.659Z",
+      "area": 2.5,
+      "cultivationId": 5,
+      "name": "T-Novo",
+      "ruralPropertyId": 1,
+      "id": 1
+    },
+    {
+      "openingDate": "2021-02-04T19:35:17.550Z",
+      "area": 2.5,
+      "cultivationId": 5,
+      "name": "T-Velho",
       "ruralPropertyId": 1,
       "id": 2
     },
     {
-      "id": 3,
-      "name": "Talhão 3",
-      "area": 2,
-      "openingDate": "2021-01-04",
-      "closureDate": null,
-      "ruralPropertyId": 3,
-      "cultivationId": 2
-    },
-    {
-      "openingDate": "2021-01-12T03:00:00.000Z",
+      "openingDate": "2021-02-04T23:36:22.642Z",
       "area": 1.5,
-      "cultivationId": 1,
-      "name": "T-3",
-      "id": 4
-    },
-    {
-      "openingDate": "2021-01-13T03:00:00.000Z",
-      "area": 5,
-      "name": "T-1",
-      "cultivationId": 4,
+      "cultivationId": 5,
+      "name": "T-Novo",
       "ruralPropertyId": 2,
-      "id": 5
-    },
-    {
-      "openingDate": "2021-02-01T23:36:43.031Z",
-      "area": 0,
-      "cultivationId": 3,
-      "name": "Teste",
-      "id": 6
-    },
-    {
-      "openingDate": "2021-02-01T23:40:59.209Z",
-      "area": 3,
-      "cultivationId": 3,
-      "name": "T-3",
-      "ruralPropertyId": 1,
-      "id": 7
+      "id": 3
     }
   ],
   "productions": [
     {
-      "registerDate": "2021-01-12T03:00:00.000Z",
-      "quantity": 10,
+      "registerDate": "2021-01-26T06:00:00.000Z",
+      "quantity": 15,
       "unitMeasureId": 3,
-      "classificationId": 3,
+      "classificationId": 6,
       "ruralPropertyId": 1,
       "fieldId": 2,
-      "cultivationId": 2,
-      "id": 7
+      "cultivationId": 5,
+      "id": 3
     },
     {
-      "registerDate": "2021-01-12T03:00:00.000Z",
-      "quantity": 10,
-      "unitMeasureId": "3",
-      "classificationId": "3",
-      "ruralPropertyId": 1,
-      "fieldId": 2,
-      "cultivationId": 2,
-      "id": 8
-    },
-    {
-      "registerDate": "2021-01-12T03:00:00.000Z",
-      "quantity": 10,
+      "registerDate": "2021-01-26T03:00:00.000Z",
+      "quantity": 20,
       "unitMeasureId": 3,
       "classificationId": 2,
       "ruralPropertyId": 1,
-      "fieldId": 4,
-      "cultivationId": 3,
-      "id": 9
+      "fieldId": 2,
+      "cultivationId": 5,
+      "id": 4
     },
     {
-      "registerDate": "2021-01-12T03:00:00.000Z",
-      "quantity": 40,
-      "unitMeasureId": 3,
-      "classificationId": 3,
-      "ruralPropertyId": 1,
-      "fieldId": 4,
-      "cultivationId": 3,
-      "id": 10
-    },
-    {
-      "registerDate": "2021-01-12T03:00:00.000Z",
-      "quantity": 5,
-      "unitMeasureId": 3,
-      "classificationId": 7,
-      "ruralPropertyId": 1,
-      "fieldId": 4,
-      "cultivationId": 3,
-      "id": 11
-    },
-    {
-      "registerDate": "2021-01-13T03:00:00.000Z",
-      "quantity": 50,
-      "unitMeasureId": 4,
-      "classificationId": 8,
-      "ruralPropertyId": 2,
-      "fieldId": 5,
-      "cultivationId": 4,
-      "id": 17
-    },
-    {
-      "registerDate": "2021-01-13T03:00:00.000Z",
+      "registerDate": "2021-01-26T03:00:00.000Z",
       "quantity": 30,
       "unitMeasureId": 3,
-      "classificationId": 2,
+      "classificationId": 3,
       "ruralPropertyId": 1,
-      "fieldId": 4,
-      "cultivationId": 3,
-      "id": 18
+      "fieldId": 2,
+      "cultivationId": 5,
+      "id": 5
     },
     {
-      "registerDate": "2021-01-13T03:00:00.000Z",
-      "quantity": 75,
-      "unitMeasureId": 4,
-      "classificationId": 8,
-      "ruralPropertyId": 2,
-      "fieldId": 5,
-      "cultivationId": 4,
-      "id": 19
+      "registerDate": "2021-02-04T23:27:45.755Z",
+      "quantity": 50,
+      "unitMeasureId": 3,
+      "classificationId": 3,
+      "ruralPropertyId": 1,
+      "fieldId": 1,
+      "cultivationId": 5,
+      "id": 6
     },
     {
-      "registerDate": "2021-01-13T03:00:00.000Z",
-      "quantity": 5,
-      "unitMeasureId": 1,
-      "classificationId": 2,
-      "ruralPropertyId": 3,
-      "fieldId": 3,
-      "cultivationId": 2,
-      "id": 20
-    },
-    {
-      "registerDate": "2021-01-18T03:00:00.000Z",
+      "registerDate": "2021-02-04T23:36:52.357Z",
       "quantity": 20,
       "unitMeasureId": 3,
       "classificationId": 3,
-      "ruralPropertyId": 3,
+      "ruralPropertyId": 2,
       "fieldId": 3,
-      "cultivationId": 2,
-      "id": 21
-    },
-    {
-      "registerDate": "2021-02-02T16:31:16.603Z",
-      "quantity": 25,
-      "unitMeasureId": "4",
-      "classificationId": "8",
-      "ruralPropertyId": 1,
-      "fieldId": 2,
-      "cultivationId": 2,
-      "id": 22
-    },
-    {
-      "registerDate": "2021-02-02T18:33:36.543Z",
-      "quantity": 60,
-      "unitMeasureId": 4,
-      "classificationId": 8,
-      "ruralPropertyId": 1,
-      "fieldId": 7,
-      "cultivationId": 3,
-      "id": 23
+      "cultivationId": 5,
+      "id": 7
     }
   ]
 }

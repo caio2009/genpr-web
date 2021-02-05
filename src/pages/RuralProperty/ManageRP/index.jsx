@@ -14,7 +14,6 @@ import Button from '@components/Button'
 import Modal from '@components/Modal'
 import EditRuralPropertyForm from '@components/Forms/EditRuralPropertyForm'
 import CreateFieldForm from '@components/Forms/CreateFieldForm'
-import EditFieldForm from '@components/Forms/EditFieldForm'
 
 const ManageRP = () => {
   const { id } = useParams()
@@ -25,7 +24,6 @@ const ManageRP = () => {
 
   const [ruralProperty, setRuralProperty] = useState({})
   const [fields, setFields] = useState([])
-  const [selectedFieldId, setSelectedFieldId] = useState(null)
 
   // edit rural property modal status
   const [modalEditRuralProperty, setModalEditRuralProperty] = useState(false)
@@ -34,10 +32,6 @@ const ManageRP = () => {
   // create field modal status
   const [modalCreateField, setModalCreateField] = useState(false)
   const [keyCreateField, setKeyCreateField] = useState(Math.random())
-
-  // edit field modal status
-  const [modalEditField, setModalEditField] = useState(false)
-  const [keyEditField, setKeyEditField] = useState(Math.random())
 
   const loadRuralProperty = useCallback(async () => {
     const res = await api.get(`ruralProperties/${id}`)
@@ -62,11 +56,6 @@ const ManageRP = () => {
   const closeCreateFieldModal = () => {
     setModalCreateField(false)
     setKeyCreateField(Math.random())
-  }
-
-  const closeEditFieldModal = () => {
-    setModalEditField(false)
-    setKeyEditField(Math.random())
   }
 
   const goManageField = (id) => {
@@ -98,13 +87,6 @@ const ManageRP = () => {
     setKeyCreateField(Math.random())
     addToast({ title: 'Sucesso', description: 'Talhão criado com sucesso!' })
     setModalCreateField(false)
-    loadFields()
-  }
-
-  const handleFieldEdited = () => {
-    setKeyEditField(Math.random())
-    addToast({ title: 'Sucesso', description: 'Talhão editado com sucesso!' })
-    setModalEditField(false)
     loadFields()
   }
 
@@ -218,20 +200,6 @@ const ManageRP = () => {
             ruralProperty={{ id: ruralProperty.id, name: ruralProperty.name || '' }}
             onCreated={handleFieldCreated}
             onCancel={closeCreateFieldModal}
-          />
-        )}
-      />
-
-      <Modal
-        key={keyEditField}
-        show={modalEditField}
-        closeModal={closeEditFieldModal}
-        title="Talhão"
-        content={(
-          <EditFieldForm
-            entityId={selectedFieldId}
-            onEdited={handleFieldEdited}
-            onCancel={closeEditFieldModal}
           />
         )}
       />
