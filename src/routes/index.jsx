@@ -21,6 +21,8 @@ import CreateProduction from '@pages/Production/CreateProduction'
 
 import Stock from '@pages/Stock'
 
+import BuildOrder from '@pages/Order/BuildOrder'
+
 const Routes = () => {
   return (
     <Switch>
@@ -44,6 +46,8 @@ const Routes = () => {
       <Route path="/producoes/criar" component={CreateProduction} />
 
       <Route path="/estoque" component={Stock} />
+
+      <Route path="/vendas/criar" component={BuildOrder} />
     </Switch>
   )
 }

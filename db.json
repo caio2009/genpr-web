@@ -8,10 +8,10 @@
       "id": 1
     },
     {
-      "name": "PR-2",
-      "address": "Incra 9 - Brazlândia",
+      "description": "Plantação de morango e abacaxi.",
       "area": 5,
-      "description": "Plantação de chuchu.",
+      "address": "Incra 9 - Brazlândia",
+      "name": "PR-2",
       "id": 2
     }
   ],
@@ -84,11 +84,6 @@
       "id": 1
     },
     {
-      "id": 2,
-      "name": "Gramas",
-      "abbreviation": "G"
-    },
-    {
       "name": "Caixa de 22 KG",
       "abbreviation": "CX. 22 KG",
       "id": 3
@@ -123,6 +118,14 @@
       "name": "T-Novo",
       "ruralPropertyId": 2,
       "id": 3
+    },
+    {
+      "openingDate": "2021-02-05T15:07:54.414Z",
+      "area": 2,
+      "cultivationId": 6,
+      "name": "T-Abacaxi",
+      "ruralPropertyId": 2,
+      "id": 4
     }
   ],
   "productions": [
@@ -175,6 +178,16 @@
       "fieldId": 3,
       "cultivationId": 5,
       "id": 7
+    },
+    {
+      "registerDate": "2021-02-05T15:08:51.154Z",
+      "quantity": 10,
+      "unitMeasureId": 3,
+      "classificationId": 2,
+      "ruralPropertyId": 2,
+      "fieldId": 4,
+      "cultivationId": 6,
+      "id": 8
     }
   ]
 }
