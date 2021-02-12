@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react'
 
 import { InputContainer, ErrorContainer, Line } from './styles'
 
+import onlyNumber from './onlyNumber'
+import decimalMask from './decimalMask'
+import phoneMask from './phoneMask'
+
 const Input = React.forwardRef(({ 
   name, 
   label, 
@@ -11,8 +15,8 @@ const Input = React.forwardRef(({
   onBlur, 
   onChange, 
   inputMode = 'text', 
-  decimal = false, 
-  formatValue, 
+  decimalMask: isDecimalMask = false, 
+  phoneMask: isPhoneMask = false,
   ...rest 
 }, ref) => {
   const [focus, setFocus] = useState(false)
@@ -29,61 +33,31 @@ const Input = React.forwardRef(({
   }
 
   const handleChange = (e) => {
-    if (_inputMode === 'text') {
-      onChange(e.target.value)
-      return
-    }
+    let value = e.target.value
 
     if (_inputMode === 'numeric') {
-      let value = e.target.value
-
-      if (value && e.nativeEvent.data) {
-        const match = value[value.length - 1].match(/[0-9]/)
-
-        if (match) {
-          if (decimal) {
-            let characters = value.split('')
-  
-            if (characters.length >= 5) {
-              const temp = characters[characters.length - 4]
-              characters[characters.length - 4] = characters[characters.length - 3]
-              characters[characters.length - 3] = temp
-  
-              if (characters[0] === '0') characters.splice(0, 1)
-            } else {
-              characters = ['0', '.', '0', ...characters]
-            }
-  
-            value = characters.join('')
-            e.target.value = value
-          }
-
-          onChange(value)
-        } else {
-          e.target.value = value.substring(0, value.length - 1)
-          onChange(value.substring(0, value.length - 1))
-        }
-      } else {
-        if (decimal) {
-          let characters = value.split('')
-  
-          const temp = characters[characters.length - 3]
-          characters[characters.length - 3] = characters[characters.length - 2]
-          characters[characters.length - 2] = temp
-  
-          if (characters[0] === '.') characters = ['0', ...characters]
-  
-          value = characters.join('')
-          e.target.value = value
-        }
-
-        onChange(value)
-      }
+      value = onlyNumber(e.target.value)
     }
+
+    if (isDecimalMask && e.nativeEvent.data) {
+      value = decimalMask(value)
+      console.log('ok decimal')
+    }
+
+    if (isPhoneMask && e.nativeEvent.data) {
+      value = phoneMask(value)
+      console.log('ok')
+    }
+
+    if (e.target.value !== value) {
+      e.target.value = value
+    }
+
+    onChange(value)
   }
 
   const handleClick = (e) => {
-    if (_inputMode) {
+    if (_inputMode === 'numeric') {
       e.target.select()
     }
   }

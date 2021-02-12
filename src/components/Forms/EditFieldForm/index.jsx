@@ -90,7 +90,7 @@ const EditFieldForm = ({ entityId: id, onEdited, onCancel }) => {
           <Input
             label="Área"
             inputMode="numeric"
-            decimal
+            decimalMask
             defaultValue={field?.area.toFixed(2)}
             onChange={(value) => setValue('area', Number(value))}
           />

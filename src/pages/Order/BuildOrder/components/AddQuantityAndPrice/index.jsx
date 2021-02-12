@@ -118,7 +118,7 @@ const AddQuantityAndPrice = ({ product, onAdd }) => {
         name="unitPrice"
         label="Preço Unitário"
         inputMode="numeric"
-        decimal
+        decimalMask
         defaultValue="0.00"
         onChange={(value) => setUnitPrice(Number(value))}
       />

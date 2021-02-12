@@ -94,7 +94,7 @@ const EditQuantityAndPrice = ({ product, onEdit }) => {
         name="unitPriceEdit"
         label="Preço Unitário"
         inputMode="numeric"
-        decimal
+        decimalMask
         defaultValue={unitPrice}
         onChange={(value) => setUnitPrice(Number(value))}
       />

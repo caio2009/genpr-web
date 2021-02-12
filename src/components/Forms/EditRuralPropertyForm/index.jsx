@@ -69,7 +69,7 @@ const EditRuralPropertyForm = ({ entityId: id, onEdited, onCancel }) => {
           <Input
             label="Área"
             inputMode="numeric"
-            decimal
+            decimalMask
             defaultValue={ruralProperty?.area.toFixed(2)}
             onChange={(value) => setValue('area', Number(value))}
           />

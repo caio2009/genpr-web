@@ -80,7 +80,7 @@ const CreateClassificationForm = ({ ruralProperty, onCreated, onCancel }) => {
           <Input
             label="Área"
             inputMode="numeric"
-            decimal
+            decimalMask
             defaultValue="0.00"
             onChange={(value) => setValue('area', Number(value))}
           />

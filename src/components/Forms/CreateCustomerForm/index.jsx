@@ -11,7 +11,9 @@ import Input from '@components/Input'
 import Button from '@components/Button'
 
 const schema = yup.object().shape({
-  name: yup.string().required(errorMessages.required)
+  name: yup.string().required(errorMessages.required),
+  phone1: yup.string(),
+  phone2: yup.string()
 })
 
 const CreateCustomerForm = ({ onCreated, onCancel }) => {
@@ -38,17 +40,19 @@ const CreateCustomerForm = ({ onCreated, onCancel }) => {
       <Input
         ref={register}
         name="phone1"
-        label="Nome *"
+        label="Telefone 1"
+        phoneMask
         onChange={(value) => setValue('phone1', value)}
-        error={errors.name}
+        error={errors.phone1}
       />
 
       <Input
         ref={register}
         name="phone2"
-        label="Nome *"
+        label="Telefone 2"
+        phoneMask
         onChange={(value) => setValue('phone2', value)}
-        error={errors.name}
+        error={errors.phone2}
       />
 
       <br />
