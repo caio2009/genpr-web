@@ -21,7 +21,9 @@ const Drawer = () => {
     { text: 'Culturas', to: '/culturas' },
     { text: 'Classificações', to: '/classificacoes' },
     { text: 'Unidades de Medida', to: '/unidades-medida' },
-    { text: 'Estoque', to: '/estoque' }
+    { text: 'Estoque', to: '/estoque' },
+    { text: 'Vendas', to: '/vendas' },
+    { text: 'Cliente', to: '/clientes' }
   ]
 
   return (

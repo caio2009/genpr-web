@@ -2,7 +2,19 @@ import React, { useState, useEffect } from 'react'
 
 import { InputContainer, ErrorContainer, Line } from './styles'
 
-const Input = React.forwardRef(({ name, label, defaultValue, error, onFocus, onBlur, onChange, inputMode = 'text', decimal = false, formatValue, ...rest }, ref) => {
+const Input = React.forwardRef(({ 
+  name, 
+  label, 
+  defaultValue, 
+  error, 
+  onFocus, 
+  onBlur, 
+  onChange, 
+  inputMode = 'text', 
+  decimal = false, 
+  formatValue, 
+  ...rest 
+}, ref) => {
   const [focus, setFocus] = useState(false)
   const [_inputMode, setInputMode] = useState(inputMode)
 

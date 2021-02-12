@@ -24,6 +24,8 @@ import Stock from '@pages/Stock'
 import BuildOrder from '@pages/Order/BuildOrder'
 import FinishOrder from '@pages/Order/FinishOrder'
 
+import CustomerList from '@pages/Customer/CustomerList'
+
 const Routes = () => {
   return (
     <Switch>
@@ -35,7 +37,7 @@ const Routes = () => {
 
       <Route path="/classificacoes" component={ClassificationList} exact />
 
-      <Route path="/unidades-medida" component={UnitMeasureList} />
+      <Route path="/unidades-medida" component={UnitMeasureList} exact />
 
       <Route path="/propriedades-rurais/gerenciar/escolher" component={BeforeManageRP} />
       <Route path="/propriedades-rurais/gerenciar/:id" component={ManageRP} />
@@ -50,6 +52,8 @@ const Routes = () => {
 
       <Route path="/vendas/criar" component={BuildOrder} />
       <Route path="/vendas/finalizar" component={FinishOrder} />
+
+      <Route path="/clientes" component={CustomerList} exact />
     </Switch>
   )
 }
