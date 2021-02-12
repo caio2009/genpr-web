@@ -25,7 +25,7 @@ const EditFieldForm = ({ entityId: id, onEdited, onCancel }) => {
     resolver: yupResolver(schema)
   })
 
-  const [field, setField] = useState({})
+  const [field, setField] = useState(null)
   const [cultivations, setCultivations] = useState([])
 
   const loadField = useCallback(async () => {
@@ -40,15 +40,8 @@ const EditFieldForm = ({ entityId: id, onEdited, onCancel }) => {
     setCultivations(res.data)
   }
 
-  const formatData = (data) => ({
-    ...data,
-    area: Number(data.area)
-  })
-
   const onSubmit = async (data) => {
-    data = formatData(data)
-
-    if (data.openingDate.getTime() !== field.openingDate.getTime()) {
+    if (data.openingDate.getTime() !== field?.openingDate.getTime()) {
       data.openingDate = new Date(new Date(data.openingDate).getTime() + 1000 * 60 * 60 * 3)
     }
 
@@ -66,7 +59,7 @@ const EditFieldForm = ({ entityId: id, onEdited, onCancel }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Input
         label="Propriedade Rural *"
-        defaultValue={field.ruralProperty?.name}
+        defaultValue={field?.ruralProperty?.name}
         readOnly
       />
 
@@ -75,7 +68,7 @@ const EditFieldForm = ({ entityId: id, onEdited, onCancel }) => {
         name="name"
         label="Nome *"
         onChange={(value) => setValue('name', value)}
-        defaultValue={field.name}
+        defaultValue={field?.name}
         error={errors.name}
       />
 
@@ -85,29 +78,34 @@ const EditFieldForm = ({ entityId: id, onEdited, onCancel }) => {
         name="cultivationId"
         label="Cultura *"
         onChange={(value) => setValue('cultivationId', value)}
-        defaultValue={field.cultivationId}
+        defaultValue={field?.cultivationId}
         error={errors.cultivationId}
       />
 
-      <Input
-        ref={register}
+      <Controller
+        control={control}
         name="area"
-        label="Área *"
-        inputMode="numeric"
-        onChange={(value) => setValue('area', value)}
-        defaultValue={field.area}
-        error={errors.area}
+        defaultValue={field?.area || 0}
+        render={() => (
+          <Input
+            label="Área"
+            inputMode="numeric"
+            decimal
+            defaultValue={field?.area.toFixed(2)}
+            onChange={(value) => setValue('area', Number(value))}
+          />
+        )}
       />
 
-      {field.openingDate && <Controller
+      {field?.openingDate && <Controller
         control={control}
         name="openingDate"
-        defaultValue={new Date(field.openingDate)}
+        defaultValue={new Date(field?.openingDate)}
         render={() => (
-          <InputDate 
+          <InputDate
             label="Data de abertura"
             onChange={(value) => setValue('openingDate', new Date(value))}
-            defaultValue={format(new Date(field.openingDate), 'yyyy-MM-dd')}
+            defaultValue={format(new Date(field?.openingDate), 'yyyy-MM-dd')}
             error={errors.openingDate}
           />
         )}

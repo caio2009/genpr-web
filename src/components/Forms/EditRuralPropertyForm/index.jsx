@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
@@ -18,7 +18,7 @@ const schema = yup.object().shape({
 })
 
 const EditRuralPropertyForm = ({ entityId: id, onEdited, onCancel }) => {
-  const { register, setValue, handleSubmit, errors } = useForm({
+  const { register, control, setValue, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema)
   })
 
@@ -31,14 +31,7 @@ const EditRuralPropertyForm = ({ entityId: id, onEdited, onCancel }) => {
     }
   }, [id])
 
-  const formatData = (data) => ({
-    ...data,
-    area: Number(data.area)
-  })
-
   const onSubmit = async (data) => {
-    data = formatData(data)
-
     await api.put(`ruralProperties/${id}`, data)
 
     onEdited()
@@ -68,13 +61,19 @@ const EditRuralPropertyForm = ({ entityId: id, onEdited, onCancel }) => {
         error={errors.address}
       />
 
-      <Input
-        ref={register}
+      <Controller
+        control={control}
         name="area"
-        label="Área"
-        inputMode="numeric"
-        onChange={(value) => setValue('area', value)}
-        defaultValue={ruralProperty?.area}
+        defaultValue={ruralProperty?.area || 0}
+        render={() => (
+          <Input
+            label="Área"
+            inputMode="numeric"
+            decimal
+            defaultValue={ruralProperty?.area.toFixed(2)}
+            onChange={(value) => setValue('area', Number(value))}
+          />
+        )}
       />
 
       <Input

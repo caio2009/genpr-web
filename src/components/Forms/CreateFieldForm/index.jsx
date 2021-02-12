@@ -37,14 +37,7 @@ const CreateClassificationForm = ({ ruralProperty, onCreated, onCancel }) => {
     loadCultivations()
   }, [])
 
-  const formatData = (data) => ({
-    ...data,
-    area: Number(data.area)
-  })
-
   const onSubmit = async (data) => {
-    data = formatData(data)
-
     if (data.openingDate.getTime() !== defaultDate.getTime()) {
       data.openingDate = new Date(new Date(data.openingDate).getTime() + 1000 * 60 * 60 * 3)
     }
@@ -79,14 +72,19 @@ const CreateClassificationForm = ({ ruralProperty, onCreated, onCancel }) => {
         error={errors.cultivationId}
       />
 
-      <Input
-        ref={register}
+      <Controller
+        control={control}
         name="area"
-        label="Área"
-        inputMode="numeric"
-        onChange={(value) => setValue('area', value)}
-        defaultValue="0"
-        error={errors.area}
+        defaultValue="0.00"
+        render={() => (
+          <Input
+            label="Área"
+            inputMode="numeric"
+            decimal
+            defaultValue="0.00"
+            onChange={(value) => setValue('area', Number(value))}
+          />
+        )}
       />
 
       <Controller
@@ -94,7 +92,7 @@ const CreateClassificationForm = ({ ruralProperty, onCreated, onCancel }) => {
         name="openingDate"
         defaultValue={defaultDate}
         render={() => (
-          <InputDate 
+          <InputDate
             label="Data de abertura *"
             onChange={(value) => setValue('openingDate', new Date(value))}
             defaultValue={format(defaultDate, 'yyyy-MM-dd')}

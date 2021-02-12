@@ -1,5 +1,5 @@
 import React from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
@@ -18,18 +18,11 @@ const schema = yup.object().shape({
 })
 
 const CreateRuralPropertyForm = ({ onCreated, onCancel }) => {
-  const { register, setValue, handleSubmit, errors } = useForm({
+  const { register, control, setValue, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema)
   })
 
-  const formatData = (data) => ({
-    ...data,
-    area: Number(data.area)
-  })
-
   const onSubmit = async (data) => {
-    data = formatData(data)
-
     await api.post('ruralProperties', data)
 
     onCreated()
@@ -53,13 +46,19 @@ const CreateRuralPropertyForm = ({ onCreated, onCancel }) => {
         error={errors.address}
       />
 
-      <Input
-        ref={register}
+      <Controller 
+        control={control}
         name="area"
-        label="Área"
-        defaultValue="0"
-        inputMode="numeric"
-        onChange={(value) => setValue('area', value)}
+        defaultValue="0.00"
+        render={() => (
+          <Input
+            label="Área"
+            inputMode="numeric"
+            decimal
+            defaultValue="0.00"
+            onChange={(value) => setValue('area', Number(value))}
+          />
+        )}
       />
 
       <Input

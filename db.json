@@ -13,6 +13,13 @@
       "address": "Incra 9 - Brazlândia",
       "name": "PR-2",
       "id": 2
+    },
+    {
+      "description": "Propriedade de Teste",
+      "area": 10,
+      "address": "Teste",
+      "name": "Teste",
+      "id": 3
     }
   ],
   "cultivations": [
@@ -79,13 +86,12 @@
   "unitMeasures": [
     {
       "name": "Quilograma",
-      "abbreviation": "KG",
-      "area": null,
+      "abbreviation": "Kg",
       "id": 1
     },
     {
       "name": "Caixa de 22 KG",
-      "abbreviation": "CX. 22 KG",
+      "abbreviation": "Cx. 22 Kg",
       "id": 3
     },
     {
@@ -95,14 +101,6 @@
     }
   ],
   "fields": [
-    {
-      "openingDate": "2021-02-04T19:34:36.659Z",
-      "area": 2.5,
-      "cultivationId": 5,
-      "name": "T-Novo",
-      "ruralPropertyId": 1,
-      "id": 1
-    },
     {
       "openingDate": "2021-02-04T19:35:17.550Z",
       "area": 2.5,
@@ -126,12 +124,21 @@
       "name": "T-Abacaxi",
       "ruralPropertyId": 2,
       "id": 4
+    },
+    {
+      "openingDate": "2021-02-08T03:41:42.425Z",
+      "area": 1.5,
+      "cultivationId": 2,
+      "name": "T-Novo",
+      "ruralPropertyId": 1,
+      "id": 5
     }
   ],
   "productions": [
     {
       "registerDate": "2021-01-26T06:00:00.000Z",
       "quantity": 15,
+      "availableQuantity": 15,
       "unitMeasureId": 3,
       "classificationId": 6,
       "ruralPropertyId": 1,
@@ -142,6 +149,7 @@
     {
       "registerDate": "2021-01-26T03:00:00.000Z",
       "quantity": 20,
+      "availableQuantity": 20,
       "unitMeasureId": 3,
       "classificationId": 2,
       "ruralPropertyId": 1,
@@ -152,6 +160,7 @@
     {
       "registerDate": "2021-01-26T03:00:00.000Z",
       "quantity": 30,
+      "availableQuantity": 120,
       "unitMeasureId": 3,
       "classificationId": 3,
       "ruralPropertyId": 1,
@@ -160,34 +169,104 @@
       "id": 5
     },
     {
-      "registerDate": "2021-02-04T23:27:45.755Z",
-      "quantity": 50,
-      "unitMeasureId": 3,
-      "classificationId": 3,
-      "ruralPropertyId": 1,
-      "fieldId": 1,
-      "cultivationId": 5,
-      "id": 6
-    },
-    {
-      "registerDate": "2021-02-04T23:36:52.357Z",
-      "quantity": 20,
-      "unitMeasureId": 3,
-      "classificationId": 3,
-      "ruralPropertyId": 2,
-      "fieldId": 3,
-      "cultivationId": 5,
-      "id": 7
-    },
-    {
       "registerDate": "2021-02-05T15:08:51.154Z",
       "quantity": 10,
+      "availableQuantity": 0,
       "unitMeasureId": 3,
       "classificationId": 2,
       "ruralPropertyId": 2,
       "fieldId": 4,
       "cultivationId": 6,
       "id": 8
+    },
+    {
+      "registerDate": "2021-02-08T03:42:33.591Z",
+      "quantity": 250,
+      "availableQuantity": 100,
+      "unitMeasureId": 3,
+      "classificationId": 3,
+      "ruralPropertyId": 1,
+      "fieldId": 5,
+      "cultivationId": 2,
+      "id": 9
+    },
+    {
+      "registerDate": "2021-02-09T20:57:56.790Z",
+      "quantity": 100,
+      "availableQuantity": 100,
+      "unitMeasureId": 3,
+      "classificationId": 3,
+      "ruralPropertyId": 2,
+      "fieldId": 3,
+      "cultivationId": 5,
+      "id": 10
+    }
+  ],
+  "orderItems": [
+    {
+      "orderId": 1,
+      "productionId": 9,
+      "orderedQuantity": 100,
+      "unitPrice": 35,
+      "id": 1
+    },
+    {
+      "orderId": 2,
+      "productionId": 8,
+      "orderedQuantity": 8,
+      "unitPrice": 50,
+      "id": 2
+    },
+    {
+      "orderId": 8,
+      "productionId": 5,
+      "orderedQuantity": 30,
+      "unitPrice": 30,
+      "id": 3
+    },
+    {
+      "orderId": 5,
+      "productionId": 5,
+      "orderedQuantity": 10,
+      "unitPrice": 30,
+      "id": 4
+    },
+    {
+      "orderId": 5,
+      "productionId": 9,
+      "orderedQuantity": 50,
+      "unitPrice": 45,
+      "id": 5
+    },
+    {
+      "orderId": 3,
+      "productionId": 8,
+      "orderedQuantity": 2,
+      "unitPrice": 56,
+      "id": 6
+    }
+  ],
+  "orders": [
+    {
+      "customer": "Foo",
+      "deliveryPlace": "Bar",
+      "date": "2021-02-12T13:14:08.191Z",
+      "totalPrice": 3500,
+      "id": 1
+    },
+    {
+      "customer": "Seu Madruga",
+      "deliveryPlace": "Vila do Chaves",
+      "date": "2021-02-12T13:15:30.238Z",
+      "totalPrice": 3850,
+      "id": 2
+    },
+    {
+      "customer": "Zé do Abacaxi",
+      "deliveryPlace": "Ceasa",
+      "date": "2021-02-12T13:21:29.889Z",
+      "totalPrice": 112,
+      "id": 3
     }
   ]
 }

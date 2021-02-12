@@ -5,20 +5,22 @@ export const StockItemsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
 
+  margin: -.25rem;
+
   @media screen and (max-width: 375px) {
     flex-direction: column;
   }
-` 
+`
 
 export const StockItem = styled.div`
   display: flex;
   align-items: center;
   
-  width: calc(33% - .25rem);
+  width: calc(33% - .275rem);
   padding: .5rem;
   background: #eee;
   border-radius: 4px;
-  margin: .125rem;
+  margin: .25rem;
   cursor: pointer;
   transition: background-color .2s;
 
@@ -27,11 +29,11 @@ export const StockItem = styled.div`
   }
 
   @media screen and (max-width: 768px) {
-    width: calc(50% - .25rem);
+    width: calc(50% - .5rem);
   }
 
   @media screen and (max-width: 375px) {
-    width: 100%;
+    width: calc(100% - .5rem);
   }
 `
 

@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react'
+import { useGlobal } from '@hooks/global'
 
 import api from '@services/api'
 
@@ -8,11 +9,11 @@ import Input from '@components/Input'
 import Button from '@components/Button'
 
 const AddQuantityAndPrice = ({ product, onAdd }) => {
+  const { cart } = useGlobal()
+
   const [ruralProperties, setRuralProperties] = useState([])
   const [quantityValues, setQuantityValues] = useState({})
   const [unitPrice, setUnitPrice] = useState(null)
-  const unitMeasureAbbreviation = product?.unitMeasure.abbreviation
-
 
   const loadRuralProperties = useCallback(async () => {
     if (product?.fields) {
@@ -26,7 +27,7 @@ const AddQuantityAndPrice = ({ product, onAdd }) => {
   }, [product, loadRuralProperties])
 
   const setQuantityValue = (key, value) => {
-    const newObj = {...quantityValues}
+    const newObj = { ...quantityValues }
     newObj[key] = value
     setQuantityValues(newObj)
   }
@@ -45,11 +46,11 @@ const AddQuantityAndPrice = ({ product, onAdd }) => {
           field,
           ruralProperty,
           orderedQuantity: Number(quantityValues[key]),
-          unitPrice
+          unitPrice: Number(unitPrice)
         }
 
+        // delete obj.availableQuantity
         delete obj.fields
-        delete obj.quantity
 
         productsToAdd.push(obj)
       }
@@ -66,8 +67,13 @@ const AddQuantityAndPrice = ({ product, onAdd }) => {
       />
 
       <Input
+        label="Classificação"
+        defaultValue={product?.classification.name}
+      />
+
+      <Input
         label="Unidade de Medida"
-        defaultValue={unitMeasureAbbreviation}
+        defaultValue={product?.unitMeasure.abbreviation}
       />
 
       <br />
@@ -89,16 +95,18 @@ const AddQuantityAndPrice = ({ product, onAdd }) => {
                   </h4>
 
                   <p>
-                    Qtd. Disponível: {item.quantity}
+                    Qtd. Disponível: {item.availableQuantity - (cart.filter(product => product.productionId === item.productionId).map(product => product.orderedQuantity).reduce((prev, curr) => prev + curr, 0)) - (quantityValues[item.id] || 0)}
                   </p>
                 </div>
 
-                <input 
-                  type="text" 
-                  inputMode="numeric" 
-                  size={3} 
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  size={3}
                   defaultValue={quantityValues[item.id] || '0'}
-                  onChange={(e) => setQuantityValue(item.id, e.target.value)}
+                  onChange={(e) => setQuantityValue(item.id, Number(e.target.value))}
+                  onClick={(e) => e.target.select()}
+                  onBlur={(e) => !e.target.value && (e.target.value = '0')}
                 />
               </FlexRow>
             </ProductField>
@@ -110,7 +118,9 @@ const AddQuantityAndPrice = ({ product, onAdd }) => {
         name="unitPrice"
         label="Preço Unitário"
         inputMode="numeric"
-        onChange={(value) => setUnitPrice(value)}
+        decimal
+        defaultValue="0.00"
+        onChange={(value) => setUnitPrice(Number(value))}
       />
 
       <br />

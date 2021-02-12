@@ -32,4 +32,8 @@ export default createGlobalStyle`
   .no-break-line {
     white-space: nowrap;
   }
+
+  .uppercase {
+    text-transform: uppercase;
+  }
 `

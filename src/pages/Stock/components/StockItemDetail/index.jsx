@@ -34,7 +34,7 @@ const StockItemDetail = ({ item }) => {
             </h4>
 
             <p>
-              Total: {item?.fields && item.fields.filter(item => item.ruralPropertyId === rp.id).map(item => item.quantity).reduce((prev, curr) => prev + curr, 0)} {unitMeasureAbbreviation}
+              Total: {item?.fields && item.fields.filter(item => item.ruralPropertyId === rp.id).map(item => item.availableQuantity).reduce((prev, curr) => prev + curr, 0)} {unitMeasureAbbreviation}
             </p>
           </FlexRow>
 
@@ -45,7 +45,7 @@ const StockItemDetail = ({ item }) => {
               </h4>
 
               <p>
-                {item.quantity} {unitMeasureAbbreviation}
+                {item.availableQuantity} {unitMeasureAbbreviation}
               </p>
             </ItemDetail>
           ))}

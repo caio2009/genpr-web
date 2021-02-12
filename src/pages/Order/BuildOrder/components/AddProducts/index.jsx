@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
+import { useGlobal } from '@hooks/global'
 
 import api from '@services/api'
 
@@ -8,16 +9,19 @@ import Modal from '@components/Modal'
 import AddQuantityAndPrice from '../AddQuantityAndPrice'
 
 const AddProducts = ({ toggleModal, onAdd }) => {
+  const { cart } = useGlobal()
+
   const [productions, setProductions] = useState([])
   const [selectedItem, setSelectedItem] = useState(null)
 
-  // modal add quantity and price status
+  // modal add availableQuantity and price status
   const [modalAddQuantityAndPrice, setModalAddQuantityAndPrice] = useState(false)
   const [keyAddQuantityAndPrice, setKeyAddQuantityAndPrice] = useState(Math.random())
 
   const loadProductions = async () => {
     const res = await api.get('productions?_expand=cultivation&_expand=classification&_expand=unitMeasure&_expand=field')
-    setProductions(res.data)
+    const productions = res.data
+    setProductions(productions.filter(item => item.availableQuantity > 0))
   }
 
   useEffect(() => {
@@ -27,6 +31,7 @@ const AddProducts = ({ toggleModal, onAdd }) => {
   const openModalAddQuantityAndPrice = (index) => {
     toggleModal()
     setSelectedItem(index)
+    setKeyAddQuantityAndPrice(Math.random())
     setModalAddQuantityAndPrice(true)
   }
 
@@ -59,16 +64,17 @@ const AddProducts = ({ toggleModal, onAdd }) => {
 
       if (isDuplicate) {
         const index = stockItems.findIndex(item => item.cultivation.id === production.cultivation.id && item.classification.id === production.classification.id && item.unitMeasure.id === production.unitMeasure.id)
-        stockItems[index].quantity += production.quantity
+        stockItems[index].availableQuantity += production.availableQuantity
         stockItems[index].fields.push({
           ...production.field,
-          quantity: production.quantity,
+          availableQuantity: production.availableQuantity,
           productionId: production.id
         })
         continue
       }
 
       stockItems.push({
+        productionId: production.id,
         cultivation: {
           id: production.cultivation.id,
           name: production.cultivation.name.concat(` ${production.cultivation.variety}`),
@@ -82,10 +88,10 @@ const AddProducts = ({ toggleModal, onAdd }) => {
           id: production.unitMeasure.id,
           abbreviation: production.unitMeasure.abbreviation
         },
-        quantity: production.quantity,
+        availableQuantity: production.availableQuantity,
         fields: [{
           ...production.field,
-          quantity: production.quantity,
+          availableQuantity: production.availableQuantity,
           productionId: production.id
         }]
       })
@@ -93,10 +99,19 @@ const AddProducts = ({ toggleModal, onAdd }) => {
 
     stockItems.sort((a, b) => a.cultivation.name.localeCompare(b.cultivation.name))
 
+    cart.forEach(product => {
+      const index = stockItems.findIndex(item => item.productionId === product.productionId)
+
+      if (index !== -1) {
+        stockItems[index].availableQuantity -= product.orderedQuantity
+      }
+    })
+
     return stockItems
-  }, [productions])
+  }, [productions, cart])
 
   const handleProductAdd = (productsToAdd) => {
+    toggleModal()
     setModalAddQuantityAndPrice(false)
     setKeyAddQuantityAndPrice(Math.random())
     onAdd(productsToAdd)
@@ -125,7 +140,7 @@ const AddProducts = ({ toggleModal, onAdd }) => {
               </ClassificationName>
 
               <Quantity>
-                {item.quantity}
+                {item.availableQuantity}
               </Quantity>
 
               <UnitMeasureAbbreviation>

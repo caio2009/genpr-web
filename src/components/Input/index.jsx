@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { InputContainer, ErrorContainer, Line } from './styles'
 
-const Input = React.forwardRef(({ name, label, defaultValue, error, onFocus, onBlur, onChange, inputMode = 'text', ...rest }, ref) => {
+const Input = React.forwardRef(({ name, label, defaultValue, error, onFocus, onBlur, onChange, inputMode = 'text', decimal = false, formatValue, ...rest }, ref) => {
   const [focus, setFocus] = useState(false)
   const [_inputMode, setInputMode] = useState(inputMode)
 
@@ -23,17 +23,56 @@ const Input = React.forwardRef(({ name, label, defaultValue, error, onFocus, onB
     }
 
     if (_inputMode === 'numeric') {
-      const value = e.target.value
+      let value = e.target.value
 
-      if (value) {
-        const match = value[value.length - 1].match(/\d|\./g)
+      if (value && e.nativeEvent.data) {
+        const match = value[value.length - 1].match(/[0-9]/)
 
         if (match) {
+          if (decimal) {
+            let characters = value.split('')
+  
+            if (characters.length >= 5) {
+              const temp = characters[characters.length - 4]
+              characters[characters.length - 4] = characters[characters.length - 3]
+              characters[characters.length - 3] = temp
+  
+              if (characters[0] === '0') characters.splice(0, 1)
+            } else {
+              characters = ['0', '.', '0', ...characters]
+            }
+  
+            value = characters.join('')
+            e.target.value = value
+          }
+
           onChange(value)
         } else {
+          e.target.value = value.substring(0, value.length - 1)
           onChange(value.substring(0, value.length - 1))
         }
+      } else {
+        if (decimal) {
+          let characters = value.split('')
+  
+          const temp = characters[characters.length - 3]
+          characters[characters.length - 3] = characters[characters.length - 2]
+          characters[characters.length - 2] = temp
+  
+          if (characters[0] === '.') characters = ['0', ...characters]
+  
+          value = characters.join('')
+          e.target.value = value
+        }
+
+        onChange(value)
       }
+    }
+  }
+
+  const handleClick = (e) => {
+    if (_inputMode) {
+      e.target.select()
     }
   }
 
@@ -57,6 +96,7 @@ const Input = React.forwardRef(({ name, label, defaultValue, error, onFocus, onB
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChange={handleChange}
+        onClick={handleClick}
         inputMode={inputMode}
         {...rest}
       />

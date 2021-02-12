@@ -17,7 +17,8 @@ const Stock = () => {
 
   const loadProductions = async () => {
     const res = await api.get('productions?_expand=cultivation&_expand=classification&_expand=unitMeasure&_expand=field')
-    setProductions(res.data)
+    const productions = res.data
+    setProductions(productions.filter(item => item.availableQuantity > 0))
   }
 
   useEffect(() => {
@@ -47,10 +48,10 @@ const Stock = () => {
 
       if (isDuplicate) {
         const index = stockItems.findIndex(item => item.cultivation.id === production.cultivation.id && item.classification.id === production.classification.id && item.unitMeasure.id === production.unitMeasure.id)
-        stockItems[index].quantity += production.quantity
+        stockItems[index].availableQuantity += production.availableQuantity
         stockItems[index].fields.push({ 
           ...production.field,
-          quantity: production.quantity 
+          availableQuantity: production.availableQuantity 
         })
         continue
       }
@@ -69,10 +70,10 @@ const Stock = () => {
           id: production.unitMeasure.id,
           abbreviation: production.unitMeasure.abbreviation
         },
-        quantity: production.quantity,
+        availableQuantity: production.availableQuantity,
         fields: [{
           ...production.field,
-          quantity: production.quantity
+          availableQuantity: production.availableQuantity
         }]
       })
     }
@@ -113,7 +114,7 @@ const Stock = () => {
               </ClassificationName>
               
               <Quantity>
-                {item.quantity}
+                {item.availableQuantity}
               </Quantity>
               
               <UnitMeasureAbbreviation>

@@ -20,7 +20,8 @@ const Drawer = () => {
     { text: 'Produção', to: '/' },
     { text: 'Culturas', to: '/culturas' },
     { text: 'Classificações', to: '/classificacoes' },
-    { text: 'Unidades de Medida', to: '/unidades-medida' }
+    { text: 'Unidades de Medida', to: '/unidades-medida' },
+    { text: 'Estoque', to: '/estoque' }
   ]
 
   return (
