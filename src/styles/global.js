@@ -11,7 +11,7 @@ export default createGlobalStyle`
     margin: 0;
     box-sizing: border-box;
     outline: none;
-    font-family: 'Nunito', serif;
+    font-family: 'Roboto', serif;
   }
 
   *:focus {

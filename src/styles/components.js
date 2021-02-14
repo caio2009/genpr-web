@@ -25,7 +25,6 @@ export const Subtitle = styled.h2`
 
   font-size: ${props => props.size ? `${props.size}rem` : '1rem'};
   font-weight: bold;
-  color: #999;
   margin-bottom: .5rem;
 `
 
@@ -65,11 +64,6 @@ export const ListItem = styled.div`
     &:hover {
       background: ${shade(0.05, '#eee')};
     }
-  `}
-
-  ${props => props.isSelected && css`
-    background: #d1c4e9;
-    border: 2px solid #4527a0;
   `}
 `
 
