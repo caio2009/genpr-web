@@ -74,7 +74,8 @@ const EditQuantityAndPrice = ({ product, onEdit }) => {
               </h4>
 
               <p>
-                Qtd. Disponível: {production?.quantity - cart.filter(item => item.productionId === product?.productionId).map(item => item.orderedQuantity).reduce((prev, curr) => prev + curr, 0)}
+                {/* Qtd. Disponível: {production?.quantity - cart.filter(item => item.productionId === product?.productionId).map(item => item.orderedQuantity).reduce((prev, curr) => prev + curr, 0)} */}
+                Qtd. Disponível: {production?.quantity - quantity}
               </p>
             </div>
 

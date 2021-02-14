@@ -111,7 +111,7 @@ const AddProducts = ({ toggleModal, onAdd }) => {
   }, [productions, cart])
 
   const handleProductAdd = (productsToAdd) => {
-    toggleModal()
+    // toggleModal()
     setModalAddQuantityAndPrice(false)
     setKeyAddQuantityAndPrice(Math.random())
     onAdd(productsToAdd)

@@ -133,7 +133,7 @@ const BuildOrder = () => {
 
         {!cart.length && (
           <Empty>
-            <i>Nenhum produto foi adicionado</i>
+            <i>Nenhum produto foi adicionado.</i>
           </Empty>
         )}
       </Cart>
@@ -151,7 +151,7 @@ const BuildOrder = () => {
       <br />
 
       <Button variant="primary" onClick={goFinishOrder}>
-        Próximo
+        Continuar
       </Button>
 
       <Modal
