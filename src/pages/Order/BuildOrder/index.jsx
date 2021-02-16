@@ -88,7 +88,7 @@ const BuildOrder = () => {
         Realizar Venda
       </Title>
 
-      <Button onClick={() => setModalAddProduct(true)}>
+      <Button full={window.screen.width <= 375} onClick={() => setModalAddProduct(true)}>
         Adicionar Produtos
       </Button>
 
@@ -150,7 +150,7 @@ const BuildOrder = () => {
 
       <br />
 
-      <Button variant="primary" onClick={goFinishOrder}>
+      <Button variant="primary" full={window.screen.width <= 375} onClick={goFinishOrder}>
         Continuar
       </Button>
 

@@ -6,6 +6,13 @@
       "description": "Proprieade principal.",
       "area": 10,
       "id": 3
+    },
+    {
+      "name": "Vale das Corujas",
+      "address": "Chapadinha - Brazlândia",
+      "description": "Propriedade secundária.",
+      "area": 5,
+      "id": 4
     }
   ],
   "cultivations": [

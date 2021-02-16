@@ -35,7 +35,7 @@ export const ItemQuantity = styled.div`
 
 export const ItemControl = styled.div``
 
-export const Empty = styled.div`
+export const Empty = styled.p`
   padding: 1rem;
   text-align: center;
   background: #eee;

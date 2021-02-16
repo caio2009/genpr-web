@@ -39,7 +39,7 @@ const Input = React.forwardRef(({
       value = onlyNumber(e.target.value)
     }
 
-    if (isDecimalMask) {
+    if (isDecimalMask  && e.nativeEvent.data !== '.') {
       if (e.nativeEvent.data) {
         value = decimalMask(value, { isBackspace: false })
       } else {
