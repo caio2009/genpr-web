@@ -105,8 +105,28 @@
       "id": 2
     }
   ],
-  "customers": [],
-  "numberPlates": [],
+  "customers": [
+    {
+      "name": "Russell C. Nolen",
+      "phone1": "(61) 91111-1111",
+      "phone2": "(61) 92222-3333",
+      "id": 1
+    }
+  ],
+  "numberPlates": [
+    {
+      "code": "L-172N",
+      "description": "Kombi",
+      "customerId": 1,
+      "id": 1
+    },
+    {
+      "code": "L-884N",
+      "description": "Caminhão",
+      "customerId": 1,
+      "id": 2
+    }
+  ],
   "orderItems": [],
   "orders": []
 }

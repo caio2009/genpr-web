@@ -29,7 +29,11 @@ const CreateCustomerForm = ({ onCreated, onCancel }) => {
   const [numberPlates, setNumberPlates] = useState([])
 
   const onSubmit = async (data) => {
-    await api.post('customers', data)
+    const res = await api.post('customers', data)
+
+    for (let numberPlate of numberPlates) {
+      await api.post('numberPlates', { ...numberPlate, customerId: res.data.id })
+    }
 
     onCreated()
   }
@@ -71,7 +75,9 @@ const CreateCustomerForm = ({ onCreated, onCancel }) => {
         ref={register}
         name="phone1"
         label="Telefone 1"
+        inputMode="numeric"
         phoneMask
+        maxLength={15}
         onChange={(value) => setValue('phone1', value)}
         error={errors.phone1}
       />
@@ -80,7 +86,9 @@ const CreateCustomerForm = ({ onCreated, onCancel }) => {
         ref={register}
         name="phone2"
         label="Telefone 2"
+        inputMode="numeric"
         phoneMask
+        maxLength={15}
         onChange={(value) => setValue('phone2', value)}
         error={errors.phone2}
       />

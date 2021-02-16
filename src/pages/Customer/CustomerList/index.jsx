@@ -68,14 +68,14 @@ const CustomerList = () => {
 
   const handleCreated = () => {
     setKeyCreate(Math.random())
-    addToast({ title: 'Sucesso', description: 'Cliente criada com sucesso!' })
+    addToast({ title: 'Sucesso', description: 'Cliente criado com sucesso!' })
     setModalCreate(false)
     loadUnitMeasures()
   }
 
   const handleEdited = () => {
     setKeyEdit(Math.random())
-    addToast({ title: 'Sucesso', description: 'Cliente editada com sucesso!' })
+    addToast({ title: 'Sucesso', description: 'Cliente editado com sucesso!' })
     setModalEdit(false)
     loadUnitMeasures()
   }
@@ -111,6 +111,8 @@ const CustomerList = () => {
           >
             <ListItemBox grow={1}>
               <Subtitle>{item.name}</Subtitle>
+              <p>Tel. 1: {item.phone1 ? item.phone1 : 'Não informado'}</p>
+              <p>Tel. 2: {item.phone2 ? item.phone2 : 'Não informado'}</p>
             </ListItemBox>
 
             <ListItemBox>
