@@ -61,20 +61,21 @@ const EditRuralPropertyForm = ({ entityId: id, onEdited, onCancel }) => {
         error={errors.address}
       />
 
-      <Controller
+      {ruralProperty?.area !== undefined && <Controller
         control={control}
         name="area"
-        defaultValue={ruralProperty?.area || 0}
+        defaultValue={ruralProperty.area}
         render={() => (
           <Input
             label="Área"
             inputMode="numeric"
             decimalMask
-            defaultValue={ruralProperty?.area.toFixed(2)}
+            defaultValue={ruralProperty.area.toFixed(2)}
             onChange={(value) => setValue('area', Number(value))}
+            error={errors.area}
           />
         )}
-      />
+      />}
 
       <Input
         ref={register}

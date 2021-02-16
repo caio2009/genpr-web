@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useGlobal } from '@hooks/global';
 
 import api from '@services/api'
 
@@ -9,8 +8,6 @@ import Input from '@components/Input'
 import Button from '@components/Button'
 
 const EditQuantityAndPrice = ({ product, onEdit }) => {
-  const { cart } = useGlobal()
-
   const [production, setProduction] = useState(null)
   const [quantity, setQuantity] = useState(undefined)
   const [unitPrice, setUnitPrice] = useState(undefined)
@@ -74,7 +71,6 @@ const EditQuantityAndPrice = ({ product, onEdit }) => {
               </h4>
 
               <p>
-                {/* Qtd. Disponível: {production?.quantity - cart.filter(item => item.productionId === product?.productionId).map(item => item.orderedQuantity).reduce((prev, curr) => prev + curr, 0)} */}
                 Qtd. Disponível: {production?.quantity - quantity}
               </p>
             </div>

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import colors from '../../styles/colors'
 
 const types = {
-  success: { bg: colors.lightPurple, fc: colors.white },
+  success: { bg: colors.violet, fc: colors.white },
   error: { bg: colors.red, fc: colors.white },
   warning: { bg: colors.yellow, fc: colors.black },
   info: { bg: colors.blue, fc: colors.white }

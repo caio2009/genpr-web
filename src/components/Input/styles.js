@@ -6,7 +6,6 @@ export const InputContainer = styled.div`
 
   position: relative;
 
-  border-radius: 4px;
   transition: border-color .2s;
 
   label {
@@ -28,7 +27,6 @@ export const InputContainer = styled.div`
     width: 100%;
     background: ${props => props.error ? '#ffa4a2' : '#ddd'};
     border: none;
-    border-radius: 4px;
     padding: .75rem;
     font-size: 1rem;
   }

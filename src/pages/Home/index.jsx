@@ -32,9 +32,9 @@ const Home = () => {
           <OptionCard key={index} onClick={() => handleClick(option.to)}>
             <img src={option.img} alt={option.title} />
 
-            <Title marginBottom={0} centered>
+            <p>
               {option.title}
-            </Title>
+            </p>
           </OptionCard>
         ))}
       </OptionsContainer>

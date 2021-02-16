@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useDrawer } from '../../hooks/drawer'
 
@@ -9,10 +9,20 @@ const Drawer = () => {
 
   const history = useHistory();
 
+  const drawerRef = useRef(null)
+
   const goTo = (to) => {
     toggleDrawer(false);
     history.push(to);
   }
+
+  useEffect(() => {
+    if (isOpened) {
+      drawerRef.current.style.maxHeight = `${drawerRef.current.scrollHeight}px`
+    } else {
+      drawerRef.current.style.maxHeight = null
+    }
+  }, [isOpened])
 
   const items = [
     { text: 'Início', to: '/' },
@@ -28,7 +38,7 @@ const Drawer = () => {
 
   return (
     <Container show={isOpened}>
-      <DrawerContainer>
+      <DrawerContainer ref={drawerRef}>
         {items.map((item, index) => (
           <Item key={index} onClick={() => goTo(item.to)}>{item.text}</Item>
         ))}

@@ -1,5 +1,6 @@
 import { shade } from 'polished'
 import styled from 'styled-components'
+import colors from '@styles/colors'
 
 export const Container = styled.header`
   display: flex;
@@ -13,7 +14,7 @@ export const Container = styled.header`
   width: 100%;
   padding: .25rem 1rem;
   color: #fff;
-  background: #311b92;
+  background: ${colors.indigo};
 `
 
 export const ToggleMenu = styled.button`
@@ -23,13 +24,12 @@ export const ToggleMenu = styled.button`
 
   padding: 8px;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
   background: transparent;
   color: inherit;
 
   &:hover {
-    background: ${shade(0.2, '#1a237e')};
+    background: ${shade(0.2, colors.indigo)};
   }
 
   & + div {

@@ -16,7 +16,6 @@ export const ProductField = styled.div`
 
   padding: .5rem;
   background: #eee;
-  border-radius: 4px;
 
   & + div {
     margin-top: .5rem;

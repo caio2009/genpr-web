@@ -1,51 +1,19 @@
 {
   "ruralProperties": [
     {
-      "description": "Plantação de morango e abacaxi.",
-      "area": 5,
-      "address": "Incra 6 - Brazlândia",
-      "name": "PR-1",
-      "id": 1
-    },
-    {
-      "description": "Plantação de morango e abacaxi.",
-      "area": 5,
-      "address": "Incra 9 - Brazlândia",
-      "name": "PR-2",
-      "id": 2
-    },
-    {
-      "description": "Propriedade de Teste",
+      "name": "Bela Vista",
+      "address": "Chapadinha - Brazlândia",
+      "description": "Proprieade principal.",
       "area": 10,
-      "address": "Teste",
-      "name": "Teste",
       "id": 3
     }
   ],
   "cultivations": [
     {
-      "name": "Maçã",
-      "variety": "Golden Delicius",
-      "imageUrl": "https://www.markon.com/sites/default/files/styles/large/public/pi_photos/Apples_Golden_Delicious_Hero.jpg",
-      "id": 1
-    },
-    {
       "name": "Tomate",
       "variety": "Cereja",
       "imageUrl": "https://images.squarespace-cdn.com/content/v1/5b8edfa12714e508f756f481/1538681443982-L8FV5J7802OB8LOU6193/ke17ZwdGBToddI8pDm48kNvrBVc0ymoq3U_sZnUX5bRZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpwG_ofHRvd0O7TTnlpvL4SkSnP_gO3plyatgALEDNqDGdq00d1cJdw1WJh_6jZLMPI/tomate-cereja.jpg?format=500w",
       "id": 2
-    },
-    {
-      "name": "Abobrinha",
-      "variety": "Itália",
-      "imageUrl": "https://conteudo.imguol.com.br/c/entretenimento/5c/2019/04/25/abobrinha-1556223714538_v2_900x506.jpg",
-      "id": 3
-    },
-    {
-      "name": "Doge",
-      "variety": "Doge",
-      "imageUrl": "https://i.kym-cdn.com/entries/icons/original/000/013/564/doge.jpg",
-      "id": 4
     },
     {
       "name": "Morango",
@@ -54,16 +22,15 @@
       "id": 5
     },
     {
-      "name": "Abacaxi",
-      "variety": "BRS Imperial",
-      "imageUrl": "http://www.clona-gen.com.br/wp-content/uploads/2017/03/brs_imperial-150x150.png",
-      "id": 6
+      "name": "Goiaba",
+      "variety": "Paluma",
+      "imageUrl": "https://s2.glbimg.com/KVpVWKsYD2B7zOjKGe9HRWbAKCU=/0x0:640x427/924x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2019/c/J/kiCB7hRU20BLckHhdxTw/foto-7-carlopolis-capital-nacional-da-goiaba-credito-portal-voz-do-povo-arapoti.jpg",
+      "id": 7
     }
   ],
   "classifications": [
     {
       "name": "Médio",
-      "area": null,
       "id": 2
     },
     {
@@ -77,10 +44,6 @@
     {
       "name": "GG",
       "id": 7
-    },
-    {
-      "name": "Teste",
-      "id": 8
     }
   ],
   "unitMeasures": [
@@ -90,184 +53,60 @@
       "id": 1
     },
     {
-      "name": "Caixa de 22 KG",
+      "name": "Caixa de 22 Kg",
       "abbreviation": "Cx. 22 Kg",
       "id": 3
     },
     {
-      "name": "Teste",
-      "abbreviation": "Teste",
+      "name": "Bandeja 250 g",
+      "abbreviation": "Bd. 250 g",
       "id": 4
     }
   ],
   "fields": [
     {
-      "openingDate": "2021-02-04T19:35:17.550Z",
+      "openingDate": "2021-02-15T03:00:00.000Z",
       "area": 2.5,
-      "cultivationId": 5,
-      "name": "T-Velho",
-      "ruralPropertyId": 1,
-      "id": 2
-    },
-    {
-      "openingDate": "2021-02-04T23:36:22.642Z",
-      "area": 1.5,
-      "cultivationId": 5,
-      "name": "T-Novo",
-      "ruralPropertyId": 2,
-      "id": 3
-    },
-    {
-      "openingDate": "2021-02-05T15:07:54.414Z",
-      "area": 2,
-      "cultivationId": 6,
-      "name": "T-Abacaxi",
-      "ruralPropertyId": 2,
-      "id": 4
-    },
-    {
-      "openingDate": "2021-02-08T03:41:42.425Z",
-      "area": 1.5,
       "cultivationId": 2,
-      "name": "T-Novo",
-      "ruralPropertyId": 1,
-      "id": 5
+      "name": "Tomate Cereja 1",
+      "ruralPropertyId": 3,
+      "id": 1
+    },
+    {
+      "openingDate": "2021-02-16T20:53:25.457Z",
+      "area": 2.5,
+      "cultivationId": 2,
+      "name": "Tomate Cereja 2",
+      "ruralPropertyId": 3,
+      "id": 2
     }
   ],
   "productions": [
     {
-      "registerDate": "2021-01-26T06:00:00.000Z",
-      "quantity": 15,
-      "availableQuantity": 15,
-      "unitMeasureId": 3,
-      "classificationId": 6,
-      "ruralPropertyId": 1,
-      "fieldId": 2,
-      "cultivationId": 5,
-      "id": 3
-    },
-    {
-      "registerDate": "2021-01-26T03:00:00.000Z",
-      "quantity": 20,
-      "availableQuantity": 20,
-      "unitMeasureId": 3,
-      "classificationId": 2,
-      "ruralPropertyId": 1,
-      "fieldId": 2,
-      "cultivationId": 5,
-      "id": 4
-    },
-    {
-      "registerDate": "2021-01-26T03:00:00.000Z",
-      "quantity": 30,
-      "availableQuantity": 120,
-      "unitMeasureId": 3,
+      "registerDate": "2021-02-16T17:51:42.349Z",
+      "quantity": 3000,
+      "availableQuantity": 3000,
+      "unitMeasureId": 4,
       "classificationId": 3,
-      "ruralPropertyId": 1,
-      "fieldId": 2,
-      "cultivationId": 5,
-      "id": 5
-    },
-    {
-      "registerDate": "2021-02-05T15:08:51.154Z",
-      "quantity": 10,
-      "availableQuantity": 0,
-      "unitMeasureId": 3,
-      "classificationId": 2,
-      "ruralPropertyId": 2,
-      "fieldId": 4,
-      "cultivationId": 6,
-      "id": 8
-    },
-    {
-      "registerDate": "2021-02-08T03:42:33.591Z",
-      "quantity": 250,
-      "availableQuantity": 100,
-      "unitMeasureId": 3,
-      "classificationId": 3,
-      "ruralPropertyId": 1,
-      "fieldId": 5,
+      "ruralPropertyId": 3,
+      "fieldId": 1,
       "cultivationId": 2,
-      "id": 9
+      "id": 1
     },
     {
-      "registerDate": "2021-02-09T20:57:56.790Z",
-      "quantity": 100,
-      "availableQuantity": 100,
-      "unitMeasureId": 3,
+      "registerDate": "2021-02-16T21:55:01.161Z",
+      "quantity": 2000,
+      "unitMeasureId": 4,
       "classificationId": 3,
-      "ruralPropertyId": 2,
-      "fieldId": 3,
-      "cultivationId": 5,
-      "id": 10
+      "ruralPropertyId": 3,
+      "fieldId": 2,
+      "cultivationId": 2,
+      "availableQuantity": 2000,
+      "id": 2
     }
   ],
   "customers": [],
-  "orderItems": [
-    {
-      "orderId": 1,
-      "productionId": 9,
-      "orderedQuantity": 100,
-      "unitPrice": 35,
-      "id": 1
-    },
-    {
-      "orderId": 2,
-      "productionId": 8,
-      "orderedQuantity": 8,
-      "unitPrice": 50,
-      "id": 2
-    },
-    {
-      "orderId": 8,
-      "productionId": 5,
-      "orderedQuantity": 30,
-      "unitPrice": 30,
-      "id": 3
-    },
-    {
-      "orderId": 5,
-      "productionId": 5,
-      "orderedQuantity": 10,
-      "unitPrice": 30,
-      "id": 4
-    },
-    {
-      "orderId": 5,
-      "productionId": 9,
-      "orderedQuantity": 50,
-      "unitPrice": 45,
-      "id": 5
-    },
-    {
-      "orderId": 3,
-      "productionId": 8,
-      "orderedQuantity": 2,
-      "unitPrice": 56,
-      "id": 6
-    }
-  ],
-  "orders": [
-    {
-      "customer": "Foo",
-      "deliveryPlace": "Bar",
-      "date": "2021-02-12T13:14:08.191Z",
-      "totalPrice": 3500,
-      "id": 1
-    },
-    {
-      "customer": "Seu Madruga",
-      "deliveryPlace": "Vila do Chaves",
-      "date": "2021-02-12T13:15:30.238Z",
-      "totalPrice": 3850,
-      "id": 2
-    },
-    {
-      "customer": "Zé do Abacaxi",
-      "deliveryPlace": "Ceasa",
-      "date": "2021-02-12T13:21:29.889Z",
-      "totalPrice": 112,
-      "id": 3
-    }
-  ]
+  "numberPlates": [],
+  "orderItems": [],
+  "orders": []
 }

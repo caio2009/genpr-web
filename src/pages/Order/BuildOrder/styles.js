@@ -12,7 +12,6 @@ export const CartItem = styled.div`
 
   padding: .5rem;
   background: #eee;
-  border-radius: 4px;
   cursor: pointer;
 
   & + div {

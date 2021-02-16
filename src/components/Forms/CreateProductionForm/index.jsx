@@ -62,7 +62,8 @@ const CreateProductionForm = ({ ruralProperty, field, cultivation, onCreated, on
       ...data, 
       ruralPropertyId: ruralProperty.id, 
       fieldId: field.id, 
-      cultivationId: cultivation.id 
+      cultivationId: cultivation.id,
+      availableQuantity: data.quantity
     })
 
     onCreated()

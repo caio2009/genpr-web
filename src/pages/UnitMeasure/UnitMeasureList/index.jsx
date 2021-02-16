@@ -110,7 +110,7 @@ const CultivationList = () => {
             onClick={() => openEditModal(item.id)}
           >
             <ListItemBox grow={1}>
-              <Subtitle>{item.name} ({item.abbreviation})</Subtitle>
+              <p>{item.name} ({item.abbreviation})</p>
             </ListItemBox>
 
             <ListItemBox>

@@ -19,7 +19,6 @@ export const StockItem = styled.div`
   width: calc(33% - .275rem);
   padding: .5rem;
   background: #eee;
-  border-radius: 4px;
   margin: .25rem;
   cursor: pointer;
   transition: background-color .2s;

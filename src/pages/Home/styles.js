@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { shade } from 'polished'
+import colors from '@styles/colors'
 
 export const OptionsContainer = styled.div`
   display: flex;
@@ -14,20 +15,24 @@ export const OptionCard = styled.div`
   align-items: center;
   flex: 1;
   
-  background: #eee;
-  border-radius: 4px;
+  border: 2px solid ${colors.purple};
   padding: 1rem;
   margin: .25rem;
   cursor: pointer;
   transition: background-color .2s;
 
   &:hover {
-    background: ${shade(0.1, '#eee')};
+    background: ${shade(0.1, '#fff')};
   }
 
   img {
     width: 100px;
     height: 100px;
     margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.25rem;
+    text-align: center;
   }
 `

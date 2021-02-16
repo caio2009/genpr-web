@@ -23,6 +23,10 @@ export default createGlobalStyle`
       user-select: none;
     }
   }
+  
+  p, h4 {
+    font-size: 0.75rem;
+  }
 
   button {
     cursor: pointer;

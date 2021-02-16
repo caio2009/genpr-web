@@ -41,7 +41,7 @@ const EditFieldForm = ({ entityId: id, onEdited, onCancel }) => {
   }
 
   const onSubmit = async (data) => {
-    if (data.openingDate.getTime() !== field?.openingDate.getTime()) {
+    if (data.openingDate.getTime() !== new Date(field?.openingDate).getTime()) {
       data.openingDate = new Date(new Date(data.openingDate).getTime() + 1000 * 60 * 60 * 3)
     }
 
@@ -82,30 +82,31 @@ const EditFieldForm = ({ entityId: id, onEdited, onCancel }) => {
         error={errors.cultivationId}
       />
 
-      <Controller
+      {field?.area !== undefined && <Controller
         control={control}
         name="area"
-        defaultValue={field?.area || 0}
+        defaultValue={field.area}
         render={() => (
           <Input
             label="Área"
             inputMode="numeric"
             decimalMask
-            defaultValue={field?.area.toFixed(2)}
+            defaultValue={field.area.toFixed(2)}
             onChange={(value) => setValue('area', Number(value))}
+            error={errors.area}
           />
         )}
-      />
+      />}
 
       {field?.openingDate && <Controller
         control={control}
         name="openingDate"
-        defaultValue={new Date(field?.openingDate)}
+        defaultValue={new Date(field.openingDate)}
         render={() => (
           <InputDate
             label="Data de abertura"
             onChange={(value) => setValue('openingDate', new Date(value))}
-            defaultValue={format(new Date(field?.openingDate), 'yyyy-MM-dd')}
+            defaultValue={format(new Date(field.openingDate), 'yyyy-MM-dd')}
             error={errors.openingDate}
           />
         )}

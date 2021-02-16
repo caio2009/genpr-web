@@ -22,8 +22,11 @@ export const DrawerContainer = styled.div`
   top: 0px;
 
   width: 100%;
+  max-height: 0;
+  overflow: hidden;
   padding: .25rem;
-  background: #eee;
+  background: #fff;
+  transition: max-height .2s ease-out;
 
   &:after {
     content: '';
@@ -36,10 +39,9 @@ export const DrawerContainer = styled.div`
 export const Item = styled.div`
   padding: .5rem;
   cursor: pointer;
-  border-radius: 4px;
 
   &:hover {
-    background: #0002;
+    background: #0001;
   }
 
   & + div {

@@ -10,7 +10,7 @@ export const DialogOverlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 15;
+  z-index: 30;
 
   width: 100%;
   height: 100vh;
@@ -36,7 +36,21 @@ export const Dialog = styled.div`
 `
 
 export const DialogHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   padding: .75rem;
+`
+
+export const CloseButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 50%;
+  background: transparent;
 `
 
 export const DialogContent = styled.div`

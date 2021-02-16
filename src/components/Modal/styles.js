@@ -7,7 +7,7 @@ export const ModalOverlay = styled.div`
     display: none;
   `}
 
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 15;
@@ -32,8 +32,8 @@ export const Modal = styled.div`
 
   width: 75%;
   background: #fff;
-  border-radius: 4px;
-  max-height: 100vh;
+  /* border-radius: 4px; */
+  max-height: 100%;
   overflow-y: auto;
 
   & > div {

@@ -13,7 +13,6 @@ export const Option = styled.button`
 
   padding: 1rem;
   border: none;
-  border-radius: 4px;
   background: #eee;
   font-weight: bold;
   font-size: 1rem;

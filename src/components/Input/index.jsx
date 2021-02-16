@@ -6,18 +6,18 @@ import onlyNumber from './onlyNumber'
 import decimalMask from './decimalMask'
 import phoneMask from './phoneMask'
 
-const Input = React.forwardRef(({ 
-  name, 
-  label, 
-  defaultValue, 
-  error, 
-  onFocus, 
-  onBlur, 
-  onChange, 
-  inputMode = 'text', 
-  decimalMask: isDecimalMask = false, 
+const Input = React.forwardRef(({
+  name,
+  label,
+  defaultValue,
+  error,
+  onFocus,
+  onBlur,
+  onChange,
+  inputMode = 'text',
+  decimalMask: isDecimalMask = false,
   phoneMask: isPhoneMask = false,
-  ...rest 
+  ...rest
 }, ref) => {
   const [focus, setFocus] = useState(false)
   const [_inputMode, setInputMode] = useState(inputMode)
@@ -39,14 +39,16 @@ const Input = React.forwardRef(({
       value = onlyNumber(e.target.value)
     }
 
-    if (isDecimalMask && e.nativeEvent.data) {
-      value = decimalMask(value)
-      console.log('ok decimal')
+    if (isDecimalMask) {
+      if (e.nativeEvent.data) {
+        value = decimalMask(value, { isBackspace: false })
+      } else {
+        value = decimalMask(value, { isBackspace: true })
+      }
     }
 
     if (isPhoneMask && e.nativeEvent.data) {
       value = phoneMask(value)
-      console.log('ok')
     }
 
     if (e.target.value !== value) {
@@ -71,7 +73,10 @@ const Input = React.forwardRef(({
   }, [inputMode])
 
   return (
-    <InputContainer focus={focus} error={error}>
+    <InputContainer
+      focus={focus}
+      error={error}
+    >
       <label htmlFor={name}>{label}</label>
 
       <input

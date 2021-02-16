@@ -22,7 +22,7 @@ const ConfirmDialog = ({ show, title, message, onConfirm, onCancel }) => {
 
           <DialogActions>
             <FlexRow gap={1}>
-              <ActionButton color="purple" onClick={onConfirm}>
+              <ActionButton color="indigo" onClick={onConfirm}>
                 Confirmar
               </ActionButton>
               <ActionButton color="red" transparent onClick={onCancel}>

@@ -13,9 +13,10 @@ export const Container = styled.section`
 export const Title = styled.h1`
   ${props => props.flex && css`flex: ${props.flex};`}
 
-  font-size: ${props => props.size ? `${props.size}rem` : '1.5rem'};
+  font-size: ${props => props.size ? `${props.size}rem` : '1.25rem'};
   font-weight: bold;
-  margin-bottom: ${props => props.marginBottom !== undefined ? props.marginBottom : '1.25rem'};
+  margin-bottom: ${props => props.marginBottom !== undefined ? props.marginBottom : '1rem'};
+  text-transform: uppercase;
 
   ${props => props.centered && css`text-align: center;`}
 `
@@ -38,7 +39,6 @@ export const ListEmpty = styled.p`
   padding: 1rem;
   text-align: center;
   background: #eee;
-  border-radius: 4px;
 `
 
 export const ListItem = styled.div`
@@ -51,7 +51,6 @@ export const ListItem = styled.div`
   padding: .75rem;
   background: #eee;
   border: 2px solid transparent;
-  border-radius: 4px;
   cursor: pointer;
   transition: background-color .2s;
   -webkit-tap-highlight-color: transparent;
@@ -92,6 +91,10 @@ export const FlexRow = styled.div`
       margin-left: ${props => `calc(.25rem * ${props.gap})`};
       margin-right: 0;
     } 
+  `}
+
+  ${props => props.bottom && css`
+    margin-bottom: ${props.bottom}rem;
   `}
 `
 

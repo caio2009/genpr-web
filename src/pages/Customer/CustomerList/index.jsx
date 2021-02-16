@@ -126,7 +126,7 @@ const CustomerList = () => {
         key={keyCreate}
         show={modalCreate}
         closeModal={closeCreateModal}
-        title="Nova Cliente"
+        title="Novo Cliente"
         content={(
           <CreateCustomerForm
             onCreated={handleCreated}

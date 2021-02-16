@@ -33,7 +33,7 @@ export const Dialog = styled.div`
   padding: .5rem 0;
   width: 75%;
   background: #fff;
-  border-radius: 4px;
+  /* border-radius: 4px; */
 `
 
 export const DialogContent = styled.div`
