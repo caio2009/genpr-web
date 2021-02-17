@@ -5,6 +5,7 @@ import { InputContainer, ErrorContainer, Line } from './styles'
 import onlyNumber from './onlyNumber'
 import decimalMask from './decimalMask'
 import phoneMask from './phoneMask'
+import uppercase from './uppercase'
 
 const Input = React.forwardRef(({
   name,
@@ -17,6 +18,7 @@ const Input = React.forwardRef(({
   inputMode = 'text',
   decimalMask: isDecimalMask = false,
   phoneMask: isPhoneMask = false,
+  uppercase: isUppercase = false,
   ...rest
 }, ref) => {
   const [focus, setFocus] = useState(false)
@@ -36,10 +38,14 @@ const Input = React.forwardRef(({
     let value = e.target.value
 
     if (_inputMode === 'numeric') {
-      value = onlyNumber(e.target.value)
+      value = onlyNumber(value)
     }
 
-    if (isDecimalMask  && e.nativeEvent.data !== '.') {
+    if (isUppercase) {
+      value = uppercase(value)
+    }
+
+    if (isDecimalMask && e.nativeEvent.data !== '.') {
       if (e.nativeEvent.data) {
         value = decimalMask(value, { isBackspace: false })
       } else {
@@ -71,6 +77,10 @@ const Input = React.forwardRef(({
   useEffect(() => {
     setInputMode(inputMode)
   }, [inputMode])
+
+  useEffect(() => {
+    !!ref?.current?.value && setFocus(true)
+  }, [ref, ref?.current?.value])
 
   return (
     <InputContainer

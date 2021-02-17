@@ -118,6 +118,12 @@
       "phone1": "(61) 91111-1111",
       "phone2": "(61) 92222-3333",
       "id": 1
+    },
+    {
+      "name": "Teste",
+      "phone1": "",
+      "phone2": "",
+      "id": 2
     }
   ],
   "numberPlates": [
@@ -132,6 +138,12 @@
       "description": "Caminhão",
       "customerId": 1,
       "id": 2
+    },
+    {
+      "code": "ABC-1234",
+      "description": "Carro",
+      "customerId": 2,
+      "id": 3
     }
   ],
   "orderItems": [],

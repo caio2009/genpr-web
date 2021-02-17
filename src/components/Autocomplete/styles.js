@@ -1,10 +1,9 @@
 import styled, { css } from 'styled-components'
 import { shade } from 'polished'
 
-export const SelectContainer = styled.div`
+export const AutocompleteContainer = styled.div`
   display: flex;
   flex-direction: column;
-
   & + div {
     margin-top: .25rem;
   }
@@ -12,7 +11,6 @@ export const SelectContainer = styled.div`
 
 export const InputContainer = styled.div`
   display: block;
-
   & + div {
     margin-top: .25rem;
   }
@@ -23,7 +21,6 @@ export const Label = styled.div`
   margin-bottom: .5rem;
   transition: transform .2s;
   color: ${props => props.error ? '#b71c1c' : '#555'};
-
   ${props => props.focus ? css`
     font-size: 1rem;
     transform: translate(0, 0);
@@ -33,7 +30,7 @@ export const Label = styled.div`
   `}
 `
 
-export const Input = styled.div`
+export const Input = styled.input`
   width: 100%;
   height: 2.75rem;
   background: ${props => props.error ? '#ffa4a2' : '#ddd'};
@@ -44,13 +41,11 @@ export const Input = styled.div`
 
 export const Line = styled.div`
   align-self: center;
-
   width: calc(100% - 2px);
   height: 2px;
   margin-top: -2px;
   background: ${props => props.error ? '#b71c1c' : '#361190'};
   transition: transform .2s;
-
   transform: ${props => props.focus ? 'scale(1)' : 'scale(0)'};
 `
 
@@ -69,7 +64,6 @@ export const OptionsContainer = styled.div`
   ` : css`
     display: none;
   `}
-
   max-height: calc(5 * 2.4rem);
   overflow-y: auto;
   background: #ddd;
@@ -78,7 +72,6 @@ export const OptionsContainer = styled.div`
 export const Option = styled.div`
   padding: .5rem;
   font-size: 1rem;
-
   &:hover {
     background: ${shade(0.1, '#ddd')};
   }
