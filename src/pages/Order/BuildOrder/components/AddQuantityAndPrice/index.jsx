@@ -64,16 +64,19 @@ const AddQuantityAndPrice = ({ product, onAdd }) => {
       <Input
         label="Produto"
         defaultValue={product?.cultivation.name}
+        readOnly
       />
 
       <Input
         label="Classificação"
         defaultValue={product?.classification.name}
+        readOnly
       />
 
       <Input
         label="Unidade de Medida"
         defaultValue={product?.unitMeasure.abbreviation}
+        readOnly
       />
 
       <br />

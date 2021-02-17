@@ -33,7 +33,8 @@ const Drawer = () => {
     { text: 'Unidades de Medida', to: '/unidades-medida' },
     { text: 'Estoque', to: '/estoque' },
     { text: 'Vendas', to: '/vendas' },
-    { text: 'Cliente', to: '/clientes' }
+    { text: 'Clientes', to: '/clientes' },
+    { text: 'Locais de entrega', to: '/locais-entrega' }
   ]
 
   return (

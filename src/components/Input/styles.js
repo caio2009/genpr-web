@@ -32,7 +32,7 @@ export const InputContainer = styled.div`
   }
 
   & + div {
-    margin-top: .25rem;
+    margin-top: 1rem;
   }
 `
 

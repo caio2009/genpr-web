@@ -7,7 +7,7 @@ export const ModalOverlay = styled.div`
     display: none;
   `}
 
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 15;

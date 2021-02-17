@@ -35,45 +35,42 @@ const FinishOrder = () => {
   const { addToast } = useToast()
 
   const [filteredNumberPlates, setFilteredNumberPlates] = useState([])
+  const [filteredDeliveryPlaces, setFilteredDeliveryPlaces] = useState([])
+  const [customerId, setCustomerId] = useState(-1)
 
   const defaultDate = new Date()
   const totalPrice = cart.map(product => product.orderedQuantity * product.unitPrice).reduce((prev, curr) => prev + curr, 0)
 
   const onSubmit = async (data) => {
-    console.log(data)
+    let res = await api.post('orders', { ...data, customerId, totalPrice })
 
-    // let res = await api.post('orders', { ...data, totalPrice })
+    for (const orderItem of cart) {
+      await api.post('orderItems', {
+        orderId: res.data.id,
+        productionId: orderItem.productionId,
+        orderedQuantity: orderItem.orderedQuantity,
+        unitPrice: orderItem.unitPrice
+      })
 
-    // for (const orderItem of cart) {
-    //   await api.post('orderItems', {
-    //     orderId: res.data.id,
-    //     productionId: orderItem.productionId,
-    //     orderedQuantity: orderItem.orderedQuantity,
-    //     unitPrice: orderItem.unitPrice
-    //   })
+      res = await api.get(`/productions/${orderItem.productionId}`)
+      const production = res.data
 
-    //   res = await api.get(`/productions/${orderItem.productionId}`)
-    //   const production = res.data
+      await api.put(`productions/${orderItem.productionId}`, {
+        ...production,
+        availableQuantity: production.availableQuantity - orderItem.orderedQuantity
+      })
+    }
 
-    //   await api.put(`productions/${orderItem.productionId}`, { 
-    //     ...production,
-    //     availableQuantity: orderItem.availableQuantity - orderItem.orderedQuantity 
-    //   })
-    // }
+    addToast({
+      title: 'Sucesso',
+      description: 'Venda realizada com sucesso!'
+    })
 
-    // addToast({
-    //   title: 'Sucesso',
-    //   description: 'Venda realizada com sucesso!'
-    // })
-
-    // setCartData([])
-    // history.push('/vendas/criar')
+    setCartData([])
+    history.push('/vendas/criar')
   }
 
   const filterNumberPlates = async (value, { isSelected }) => {
-    const res = await api.get('numberPlates')
-    const numberPlates = res.data
-
     if (isSelected) {
       setFilteredNumberPlates([])
       setValue('numberPlate', value)
@@ -83,6 +80,9 @@ const FinishOrder = () => {
     }
 
     if (value) {
+      const res = await api.get('numberPlates')
+      const numberPlates = res.data
+
       setFilteredNumberPlates(numberPlates.filter(x => x.code.toLowerCase().includes(value.toLowerCase())).map(x => ({ label: x.code })))
       setValue('numberPlate', value)
     } else {
@@ -100,7 +100,27 @@ const FinishOrder = () => {
       if (data) {
         customerInputRef.current.value = data.customer.name
         setValue('customer', data.customer.name)
+        setCustomerId(data.customer.id)
+        console.log(getValues('customerId'))
       }
+    }
+  }
+
+  const filterDeliveryPlaces = async (value, { isSelected }) => {
+    if (isSelected) {
+      setFilteredDeliveryPlaces([])
+      setValue('deliveryPlace', value)
+      return
+    }
+
+    if (value) {
+      const res = await api.get('deliveryPlaces')
+      const deliveryPlaces = res.data
+
+      setFilteredDeliveryPlaces(deliveryPlaces.filter(x => x.description.toLowerCase().includes(value.toLowerCase())).map(x => ({ label: x.description })))
+      setValue('deliveryPlace', value)
+    } else {
+      setFilteredDeliveryPlaces([])
     }
   }
 
@@ -111,7 +131,7 @@ const FinishOrder = () => {
       </Title>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Autocomplete 
+        <Autocomplete
           ref={register}
           name="numberPlate"
           label="Placa do veículo *"
@@ -121,7 +141,7 @@ const FinishOrder = () => {
           error={errors.numberPlate}
         />
 
-        <Controller 
+        <Controller
           control={control}
           name="customer"
           defaultValue={''}
@@ -135,11 +155,13 @@ const FinishOrder = () => {
           )}
         />
 
-        <Input
+        <Autocomplete
           ref={register}
           name="deliveryPlace"
           label="Local de entrega *"
-          onChange={(value) => setValue('deliveryPlace', value)}
+          options={filteredDeliveryPlaces}
+          onChange={filterDeliveryPlaces}
+          error={errors.deliveryPlace}
         />
 
         <Controller

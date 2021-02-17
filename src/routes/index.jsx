@@ -26,6 +26,8 @@ import FinishOrder from '@pages/Order/FinishOrder'
 
 import CustomerList from '@pages/Customer/CustomerList'
 
+import DeliveryPlaceList from '@pages/DeliveryPlace/DeliveryPlaceList'
+
 const Routes = () => {
   return (
     <Switch>
@@ -54,6 +56,8 @@ const Routes = () => {
       <Route path="/vendas/finalizar" component={FinishOrder} />
 
       <Route path="/clientes" component={CustomerList} exact />
+
+      <Route path="/locais-entrega" component={DeliveryPlaceList} exact />
     </Switch>
   )
 }

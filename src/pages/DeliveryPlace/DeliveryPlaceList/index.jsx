@@ -7,8 +7,8 @@ import { FiMoreVertical } from 'react-icons/fi'
 import { Container, Title, List, ListItem, ListItemBox, FlexRow, IconButton } from '@styles/components'
 import Button from '@components/Button'
 import Modal from '@components/Modal'
-import CreateClassificationForm from '@components/Forms/CreateClassificationForm'
-import EditClassificationForm from '@components/Forms/EditClassificationForm'
+import CreateDeliveryPlaceForm from '@components/Forms/CreateDeliveryPlaceForm'
+import EditDeliveryPlaceForm from '@components/Forms/EditDeliveryPlaceForm'
 
 import api from '@services/api'
 
@@ -17,24 +17,24 @@ const CultivationList = () => {
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
 
-  const [classifications, setClassifications] = useState([])
+  const [deliveryPlaces, setClassifications] = useState([])
   const [selectedId, setSelectedId] = useState(null)
 
-  // create rural property modal status
+  // create delivery place modal status
   const [modalCreate, setModalCreate] = useState(false)
   const [keyCreate, setKeyCreate] = useState(Math.random())
 
-  // edit rural property modal status
+  // edit delivery place modal status
   const [modalEdit, setModalEdit] = useState(false)
   const [keyEdit, setKeyEdit] = useState(Math.random())
 
-  const loadClassifications = async () => {
-    const res = await api.get('classifications')
+  const loadDeliveryPlaces = async () => {
+    const res = await api.get('deliveryPlaces')
     setClassifications(res.data)
   }
 
   useEffect(() => {
-    loadClassifications()
+    loadDeliveryPlaces()
   }, [])
 
   const closeCreateModal = () => {
@@ -58,26 +58,26 @@ const CultivationList = () => {
       message: 'Realmente tem certeza de realizar essa operação de remoção?'
     }).then(async res => {
       if (res) {
-        await api.delete(`classifications/${id}`)
+        await api.delete(`deliveryPlaces/${id}`)
 
         addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
-        loadClassifications()
+        loadDeliveryPlaces()
       }
     })
   }
 
   const handleCreated = () => {
     setKeyCreate(Math.random())
-    addToast({ title: 'Sucesso', description: 'Classificação criada com sucesso!' })
+    addToast({ title: 'Sucesso', description: 'Local de entrega criado com sucesso!' })
     setModalCreate(false)
-    loadClassifications()
+    loadDeliveryPlaces()
   }
 
   const handleEdited = () => {
     setKeyEdit(Math.random())
-    addToast({ title: 'Sucesso', description: 'Classificação editada com sucesso!' })
+    addToast({ title: 'Sucesso', description: 'Local de entrega editado com sucesso!' })
     setModalEdit(false)
-    loadClassifications()
+    loadDeliveryPlaces()
   }
 
   const handleOpenOptionDialog = (e, id) => {
@@ -92,7 +92,7 @@ const CultivationList = () => {
     <Container page>
       <FlexRow alignItems="center">
         <Title marginBottom={0} flex={1}>
-          Classificações
+          Locais de Entrega
         </Title>
 
         <Button variant="default" onClick={() => setModalCreate(true)}>
@@ -103,14 +103,14 @@ const CultivationList = () => {
       <br />
 
       <List>
-        {classifications.map((item, index) => (
+        {deliveryPlaces.map((item, index) => (
           <ListItem
             hoverable
             key={index}
             onClick={() => openEditModal(item.id)}
           >
             <ListItemBox grow={1}>
-              <p>{item.name}</p>
+              <p>{item.description}</p>
             </ListItemBox>
 
             <ListItemBox>
@@ -126,9 +126,9 @@ const CultivationList = () => {
         key={keyCreate}
         show={modalCreate}
         closeModal={closeCreateModal}
-        title="Nova Classificação"
+        title="Novo Local de Entrega"
         content={(
-          <CreateClassificationForm
+          <CreateDeliveryPlaceForm
             onCreated={handleCreated}
             onCancel={closeCreateModal}
           />
@@ -139,9 +139,9 @@ const CultivationList = () => {
         key={keyEdit}
         show={modalEdit}
         closeModal={closeEditModal}
-        title="Classificação"
+        title="Local de Entrega"
         content={(
-          <EditClassificationForm
+          <EditDeliveryPlaceForm
             entityId={selectedId}
             onEdited={handleEdited}
             onCancel={closeEditModal}

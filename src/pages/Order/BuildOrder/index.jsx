@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useGlobal } from '@hooks/global'
 import { useConfirmDialog } from '@hooks/confirmDialog'
+import { useToast } from '@hooks/Toast/toast'
 import colors from '@styles/colors'
 
 import { FiTrash } from 'react-icons/fi'
@@ -16,6 +17,7 @@ const BuildOrder = () => {
   const history = useHistory()
   const { cart, setCartData } = useGlobal()
   const { openConfirmDialog } = useConfirmDialog()
+  const { addToast } = useToast()
 
   const [selectedProduct, setSelectedProduct] = useState(null)
 
@@ -26,11 +28,6 @@ const BuildOrder = () => {
   // modal edit product status
   const [modalEditQuantityAndPrice, setModalEditQuantityAndPrice] = useState(false)
   const [keyEditQuantityAndPrice, setKeyEditQuantityAndPrice] = useState(Math.random())
-
-  // useEffect(() => {
-  //   setCartData([])
-  //   // eslint-disable-next-line
-  // }, [])
 
   const openModalEditQuantityAndPrice = (index) => {
     setSelectedProduct(index)
@@ -79,7 +76,15 @@ const BuildOrder = () => {
   }
 
   const goFinishOrder = () => {
-    history.push('/vendas/finalizar')
+    if (cart.length > 0) {
+      history.push('/vendas/finalizar')
+    } else {
+      addToast({
+        type: 'error',
+        title: 'Carrinho vazio',
+        description: 'Não é possível realizar uma venda sem produtos adicionados no carrinho!'
+      })
+    }
   }
 
   return (
@@ -89,7 +94,7 @@ const BuildOrder = () => {
       </Title>
 
       <Button full={window.screen.width <= 375} onClick={() => setModalAddProduct(true)}>
-        Adicionar Produtos
+        Adicionar Produto
       </Button>
 
       <br />

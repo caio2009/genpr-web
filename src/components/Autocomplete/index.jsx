@@ -60,7 +60,7 @@ const Autocomplete = React.forwardRef(({
 
   return (
     <AutocompleteContainer tabIndex={1} onBlur={handleBlur}>
-      <input ref={ref} name={name} type="hidden" defaultValue={defaultValue} {...rest} />
+      <input ref={ref} name={name} type="hidden" value={innerValue || defaultValue} {...rest} />
 
       <InputContainer focus={focus} onClick={handleClick}>
         <Label focus={focus} error={error}>

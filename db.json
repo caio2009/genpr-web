@@ -86,13 +86,21 @@
       "name": "Tomate Cereja 2",
       "ruralPropertyId": 3,
       "id": 2
+    },
+    {
+      "openingDate": "2021-02-17T18:01:17.828Z",
+      "area": 1.5,
+      "cultivationId": 7,
+      "name": "Goiaba 1",
+      "ruralPropertyId": 4,
+      "id": 3
     }
   ],
   "productions": [
     {
       "registerDate": "2021-02-16T17:51:42.349Z",
       "quantity": 3000,
-      "availableQuantity": 3000,
+      "availableQuantity": 2000,
       "unitMeasureId": 4,
       "classificationId": 3,
       "ruralPropertyId": 3,
@@ -110,6 +118,17 @@
       "cultivationId": 2,
       "availableQuantity": 2000,
       "id": 2
+    },
+    {
+      "registerDate": "2021-02-17T18:04:09.478Z",
+      "quantity": 50,
+      "unitMeasureId": 3,
+      "classificationId": 3,
+      "ruralPropertyId": 4,
+      "fieldId": 3,
+      "cultivationId": 7,
+      "availableQuantity": 15,
+      "id": 3
     }
   ],
   "customers": [
@@ -146,6 +165,104 @@
       "id": 3
     }
   ],
-  "orderItems": [],
-  "orders": []
+  "deliveryPlaces": [
+    {
+      "description": "Box 1",
+      "id": 1
+    },
+    {
+      "description": "Box 2",
+      "id": 2
+    },
+    {
+      "description": "Box 3",
+      "id": 3
+    },
+    {
+      "description": "Box 4",
+      "id": 4
+    },
+    {
+      "description": "Box 5",
+      "id": 5
+    },
+    {
+      "description": "Box 6",
+      "id": 6
+    },
+    {
+      "description": "Box 7",
+      "id": 7
+    },
+    {
+      "description": "Box 8",
+      "id": 8
+    }
+  ],
+  "orderItems": [
+    {
+      "orderId": 1,
+      "productionId": 3,
+      "orderedQuantity": 25,
+      "unitPrice": 30,
+      "id": 1
+    },
+    {
+      "orderId": 3,
+      "productionId": 1,
+      "orderedQuantity": 200,
+      "unitPrice": 3,
+      "id": 2
+    },
+    {
+      "orderId": 2,
+      "productionId": 3,
+      "orderedQuantity": 10,
+      "unitPrice": 30,
+      "id": 3
+    },
+    {
+      "orderId": 3,
+      "productionId": 1,
+      "orderedQuantity": 500,
+      "unitPrice": 3,
+      "id": 4
+    },
+    {
+      "orderId": 3,
+      "productionId": 1,
+      "orderedQuantity": 300,
+      "unitPrice": 3,
+      "id": 5
+    }
+  ],
+  "orders": [
+    {
+      "numberPlate": "ABC-1234",
+      "deliveryPlace": "Box 1",
+      "customer": "Teste",
+      "date": "2021-02-17T19:51:26.724Z",
+      "customerId": 2,
+      "totalPrice": 1350,
+      "id": 1
+    },
+    {
+      "numberPlate": "L-172N",
+      "deliveryPlace": "Box 5",
+      "customer": "Russell C. Nolen",
+      "date": "2021-02-17T19:52:24.126Z",
+      "customerId": 1,
+      "totalPrice": 1800,
+      "id": 2
+    },
+    {
+      "numberPlate": "L-884N",
+      "deliveryPlace": "Box 8",
+      "customer": "Russell C. Nolen",
+      "date": "2021-02-17T19:56:19.063Z",
+      "customerId": 1,
+      "totalPrice": 900,
+      "id": 3
+    }
+  ]
 }

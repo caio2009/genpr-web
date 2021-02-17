@@ -6,7 +6,7 @@ export const SelectContainer = styled.div`
   flex-direction: column;
 
   & + div {
-    margin-top: .25rem;
+    margin-top: 1rem;
   }
 `
 
