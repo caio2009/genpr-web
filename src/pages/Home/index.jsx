@@ -16,7 +16,7 @@ const Home = () => {
     { title: 'Realizar Venda', img: incomeSvg, to: '/vendas/criar' },
     { title: 'Ver Estoque', img: stockSvg, to: '/estoque' },
     { title: 'Gerenciar PR', img: fieldSvg, to: '/propriedades-rurais/gerenciar/escolher' },
-    { title: 'Cadastrar Produção', img: boxSvg, to: '/producoes/propriedades-rurais/escolher' }
+    { title: 'Cadastrar Colheita', img: boxSvg, to: '/colheitas/propriedades-rurais/escolher' }
   ]
 
   const handleClick = (to) => {

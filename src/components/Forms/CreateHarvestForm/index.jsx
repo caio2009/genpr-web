@@ -20,7 +20,7 @@ const schema = yup.object().shape({
   registerDate: yup.date()
 })
 
-const CreateProductionForm = ({ ruralProperty, field, cultivation, onCreated, onCancel }) => {
+const CreateHarvestForm = ({ ruralProperty, field, cultivation, onCreated, onCancel }) => {
   const { register, control, setValue, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema)
   })
@@ -58,7 +58,7 @@ const CreateProductionForm = ({ ruralProperty, field, cultivation, onCreated, on
       data.registerDate = new Date(new Date(data.registerDate).getTime() + 1000 * 60 * 60 * 3)
     }
 
-    await api.post('productions', { 
+    await api.post('harvests', { 
       ...data, 
       ruralPropertyId: ruralProperty.id, 
       fieldId: field.id, 
@@ -146,4 +146,4 @@ const CreateProductionForm = ({ ruralProperty, field, cultivation, onCreated, on
   )
 }
 
-export default CreateProductionForm
+export default CreateHarvestForm

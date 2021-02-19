@@ -16,8 +16,8 @@ import ManageRP from '@pages/RuralProperty/ManageRP'
 
 import ManageField from '@pages/Field/ManageField'
 
-import BeforeCreateProduction from '@pages/Production/BeforeCreateProduction'
-import CreateProduction from '@pages/Production/CreateProduction'
+import BeforeCreateHarvest from '@pages/Harvest/BeforeCreateHarvest'
+import CreateHarvest from '@pages/Harvest/CreateHarvest'
 
 import Stock from '@pages/Stock'
 
@@ -46,9 +46,9 @@ const Routes = () => {
 
       <Route path="/talhoes/gerenciar/:id" component={ManageField} />
 
-      <Route path="/producoes/propriedades-rurais/escolher" component={BeforeCreateProduction} />
-      <Route path="/producoes/talhoes/escolher" component={BeforeCreateProduction} />
-      <Route path="/producoes/criar" component={CreateProduction} />
+      <Route path="/colheitas/propriedades-rurais/escolher" component={BeforeCreateHarvest} />
+      <Route path="/colheitas/talhoes/escolher" component={BeforeCreateHarvest} />
+      <Route path="/colheitas/criar" component={CreateHarvest} />
 
       <Route path="/estoque" component={Stock} />
 

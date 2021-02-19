@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import ChooseRP from '@components/Containers/ChooseRP'
 import ChooseField from '@components/Containers/ChooseField'
 
-const BeforeCreateProduction = () => {
+const BeforeCreateHarvest = () => {
   const history = useHistory()
   const location = useLocation()
 
@@ -12,11 +12,11 @@ const BeforeCreateProduction = () => {
   const ruralPropertyId = new URLSearchParams(search).get('rp')
 
   const handleChooseRPChange = (id) => {
-    history.push(`/producoes/talhoes/escolher?rp=${id}`)
+    history.push(`/colheitas/talhoes/escolher?rp=${id}`)
   }
 
   const handleChooseFieldChange = (id) => {
-    history.push(`/producoes/criar?talhao=${id}`)
+    history.push(`/colheitas/criar?talhao=${id}`)
   }
 
   return (
@@ -27,4 +27,4 @@ const BeforeCreateProduction = () => {
   )
 }
 
-export default BeforeCreateProduction
+export default BeforeCreateHarvest

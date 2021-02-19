@@ -10,12 +10,12 @@ import StockItemDetail from './components/StockItemDetail'
 const Stock = () => {
   const { openModal } = useModal()
 
-  const [productions, setProductions] = useState([])
+  const [harvests, setHarvests] = useState([])
 
   const loadProductions = async () => {
-    const res = await api.get('productions?_expand=cultivation&_expand=classification&_expand=unitMeasure&_expand=field')
-    const productions = res.data
-    setProductions(productions.filter(item => item.availableQuantity > 0))
+    const res = await api.get('harvests?_expand=cultivation&_expand=classification&_expand=unitMeasure&_expand=field')
+    const harvests = res.data
+    setHarvests(harvests.filter(item => item.availableQuantity > 0))
   }
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const Stock = () => {
   const stockItems = useMemo(() => {
     let stockItems = []
 
-    for (let production of productions) {
+    for (let production of harvests) {
       let isDuplicate = false
 
       for (let item of stockItems) {
@@ -78,7 +78,7 @@ const Stock = () => {
     stockItems.sort((a, b) => a.cultivation.name.localeCompare(b.cultivation.name))
 
     return stockItems
-  }, [productions])
+  }, [harvests])
 
   const openModalDetails = (index) => {
     openModal({

@@ -20,19 +20,19 @@ const schema = yup.object().shape({
   registerDate: yup.date()
 })
 
-const EditProductionForm = ({ entityId: id, onEdited, onCancel }) => {
+const EditHarvestForm = ({ entityId: id, onEdited, onCancel }) => {
   const { register, control, setValue, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema)
   })
 
-  const [production, setProduction] = useState(null)
+  const [harvest, setHarvest] = useState(null)
   const [classifications, setClassifications] = useState([])
   const [unitMeasures, setUnitMeasures] = useState([])
 
   const loadProduction = useCallback(async () => {
     if (id) {
-      const res = await api.get(`productions/${id}?_expand=ruralProperty&_expand=field&_expand=cultivation`)
-      setProduction({
+      const res = await api.get(`harvests/${id}?_expand=ruralProperty&_expand=field&_expand=cultivation`)
+      setHarvest({
         ...res.data,
         cultivation: {
           id: res.data.cultivation.id,
@@ -68,15 +68,15 @@ const EditProductionForm = ({ entityId: id, onEdited, onCancel }) => {
   const onSubmit = async (data) => {
     data = formatData(data)
 
-    if (data.registerDate !== production.registerDate) {
+    if (data.registerDate !== harvest.registerDate) {
       data.registerDate = new Date(new Date(data.registerDate).getTime() + 1000 * 60 * 60 * 3)
     }
 
-    await api.put(`productions/${id}`, { 
+    await api.put(`harvests/${id}`, { 
       ...data, 
-      ruralPropertyId: production.ruralProperty.id, 
-      fieldId: production.field.id, 
-      cultivationId: production.cultivation.id 
+      ruralPropertyId: harvest.ruralProperty.id, 
+      fieldId: harvest.field.id, 
+      cultivationId: harvest.cultivation.id 
     })
 
     onEdited()
@@ -86,19 +86,19 @@ const EditProductionForm = ({ entityId: id, onEdited, onCancel }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Input
         label="Propriedade rural *"
-        defaultValue={production?.ruralProperty.name}
+        defaultValue={harvest?.ruralProperty.name}
         readOnly
       />
 
       <Input
         label="Talhão *"
-        defaultValue={production?.field.name}
+        defaultValue={harvest?.field.name}
         readOnly
       />
 
       <Input
         label="Cultura *"
-        defaultValue={production?.cultivation.name}
+        defaultValue={harvest?.cultivation.name}
         readOnly
       />
 
@@ -108,7 +108,7 @@ const EditProductionForm = ({ entityId: id, onEdited, onCancel }) => {
         name="classificationId"
         label="Classificação *"
         onChange={(value) => setValue('classificationId', value)}
-        defaultValue={production?.classificationId}
+        defaultValue={harvest?.classificationId}
         error={errors.classificationId}
       />
 
@@ -118,7 +118,7 @@ const EditProductionForm = ({ entityId: id, onEdited, onCancel }) => {
         name="unitMeasureId"
         label="Unidade de medida *"
         onChange={(value) => setValue('unitMeasureId', value)}
-        defaultValue={production?.unitMeasureId}
+        defaultValue={harvest?.unitMeasureId}
         error={errors.unitMeasureId}
       />
 
@@ -128,19 +128,19 @@ const EditProductionForm = ({ entityId: id, onEdited, onCancel }) => {
         label="Quantidade *"
         inputMode="numeric"
         onChange={(value) => setValue('area', value)}
-        defaultValue={production?.quantity}
+        defaultValue={harvest?.quantity}
         error={errors.quantity}
       />
 
-      {production?.registerDate && <Controller
+      {harvest?.registerDate && <Controller
         control={control}
         name="registerDate"
-        defaultValue={new Date(production?.registerDate)}
+        defaultValue={new Date(harvest?.registerDate)}
         render={() => (
           <InputDate
             label="Data de registro *"
             onChange={(value) => setValue('registerDate', new Date(value))}
-            defaultValue={format(new Date(production?.registerDate), 'yyyy-MM-dd')}
+            defaultValue={format(new Date(harvest?.registerDate), 'yyyy-MM-dd')}
             error={errors.registerDate}
           />
         )}
@@ -161,4 +161,4 @@ const EditProductionForm = ({ entityId: id, onEdited, onCancel }) => {
   )
 }
 
-export default EditProductionForm
+export default EditHarvestForm

@@ -6,9 +6,9 @@ import api from '@services/api'
 
 import { Container } from '@styles/components'
 import Modal from '@components/Modal'
-import CreateProductionForm from '@components/Forms/CreateProductionForm'
+import CreateHarvestForm from '@components/Forms/CreateHarvestForm'
 
-const CreateProduction = () => {
+const CreateHarvest = () => {
   const history = useHistory()
   const { addToast } = useToast()
 
@@ -43,9 +43,9 @@ const CreateProduction = () => {
         fullPage
         show={true}
         closeModal={() => history.goBack()}
-        title="Nova Produção"
+        title="Nova Colheita"
         content={(
-          <CreateProductionForm 
+          <CreateHarvestForm 
             ruralProperty={{ id: field?.ruralProperty.id, name: field?.ruralProperty.name || '' }}
             field={{ id: field?.id, name: field?.name || '' }}
             cultivation={{ id: field?.cultivation.id, name: field?.cultivation.name }}
@@ -58,4 +58,4 @@ const CreateProduction = () => {
   )
 }
 
-export default CreateProduction
+export default CreateHarvest

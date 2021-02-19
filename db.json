@@ -55,11 +55,6 @@
   ],
   "unitMeasures": [
     {
-      "name": "Quilograma",
-      "abbreviation": "Kg",
-      "id": 1
-    },
-    {
       "name": "Caixa de 22 Kg",
       "abbreviation": "Cx. 22 Kg",
       "id": 3
@@ -96,7 +91,7 @@
       "id": 3
     }
   ],
-  "productions": [
+  "harvests": [
     {
       "registerDate": "2021-02-16T17:51:42.349Z",
       "quantity": 3000,
@@ -129,6 +124,17 @@
       "cultivationId": 7,
       "availableQuantity": 15,
       "id": 3
+    },
+    {
+      "registerDate": "2021-02-19T15:49:18.696Z",
+      "quantity": 75,
+      "unitMeasureId": 3,
+      "classificationId": 2,
+      "ruralPropertyId": 4,
+      "fieldId": 3,
+      "cultivationId": 7,
+      "availableQuantity": 75,
+      "id": 4
     }
   ],
   "customers": [

@@ -27,7 +27,7 @@ const Drawer = () => {
   const items = [
     { text: 'Início', to: '/' },
     { text: 'Propriedades Rurais', to: '/propriedades-rurais' },
-    { text: 'Produção', to: '/' },
+    { text: 'Colheitas', to: '/' },
     { text: 'Culturas', to: '/culturas' },
     { text: 'Classificações', to: '/classificacoes' },
     { text: 'Unidades de Medida', to: '/unidades-medida' },

@@ -13,8 +13,8 @@ import { Container, Title, FlexRow, List, ListEmpty, ListItem, ListItemBox, Icon
 import { FieldInfo, InfoField } from './styles'
 import Button from '@components/Button'
 import EditFieldForm from '@components/Forms/EditFieldForm'
-import CreateProductionForm from '@components/Forms/CreateProductionForm'
-import EditProductionForm from '@components/Forms/EditProductionForm'
+import CreateHarvestForm from '@components/Forms/CreateHarvestForm'
+import EditHarvestForm from '@components/Forms/EditHarvestForm'
 
 const ManageRP = () => {
   const { id } = useParams()
@@ -24,7 +24,7 @@ const ManageRP = () => {
   const { openModal, closeModal } = useModal()
 
   const [field, setField] = useState(null)
-  const [productions, setProductions] = useState([])
+  const [harvests, setHarvests] = useState([])
 
   const loadField = useCallback(async () => {
     const res = await api.get(`fields/${id}?_expand=ruralProperty&_expand=cultivation`)
@@ -37,15 +37,15 @@ const ManageRP = () => {
     })
   }, [id])
 
-  const loadProductions = useCallback(async () => {
-    const res = await api.get(`fields/${id}/productions?_expand=classification&_expand=unitMeasure`)
-    setProductions(res.data)
+  const loadHarvests = useCallback(async () => {
+    const res = await api.get(`fields/${id}/harvests?_expand=classification&_expand=unitMeasure`)
+    setHarvests(res.data)
   }, [id])
 
   useEffect(() => {
     loadField()
-    loadProductions()
-  }, [loadField, loadProductions])
+    loadHarvests()
+  }, [loadField, loadHarvests])
 
   const openModalEditField = () => {
     openModal({
@@ -60,28 +60,28 @@ const ManageRP = () => {
     })
   }
 
-  const openModalCreateProduction = () => {
+  const openModalCreateHarvest = () => {
     openModal({
-      title: 'Nova Produção',
+      title: 'Nova Colheita',
       content: (
-        <CreateProductionForm
+        <CreateHarvestForm
           ruralProperty={{ id: field?.ruralProperty.id, name: field?.ruralProperty.name || '' }}
           field={{ id: field?.id, name: field?.name || '' }}
           cultivation={{ id: field?.cultivation.id, name: field?.cultivation.name }}
-          onCreated={handleProductionCreated}
+          onCreated={handleHarvestCreated}
           onCancel={closeModal}
         />
       )
     })
   }
 
-  const openModalEditProduction = (id) => {
+  const openModalEditHarvest = (id) => {
     openModal({
-      title: 'Editar Produção',
+      title: 'Editar Colheita',
       content: (
-        <EditProductionForm
+        <EditHarvestForm
           entityId={id}
-          onEdited={handleProductionEdited}
+          onEdited={handleHarvestEdited}
           onCancel={closeModal}
         />
       )
@@ -100,24 +100,24 @@ const ManageRP = () => {
       message: 'Realmente tem certeza de realizar essa operação de remoção?'
     }).then(async res => {
       if (res) {
-        await api.delete(`productions/${id}`)
+        await api.delete(`harvests/${id}`)
 
         addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
-        loadProductions()
+        loadHarvests()
       }
     })
   }
 
-  const handleProductionCreated = () => {
+  const handleHarvestCreated = () => {
     closeModal()
-    addToast({ title: 'Sucesso', description: 'Produção criada com sucesso!' })
-    loadProductions()
+    addToast({ title: 'Sucesso', description: 'Colheita criada com sucesso!' })
+    loadHarvests()
   }
 
-  const handleProductionEdited = () => {
+  const handleHarvestEdited = () => {
     closeModal()
-    addToast({ title: 'Sucesso', description: 'Produção editada com sucesso!' })
-    loadProductions()
+    addToast({ title: 'Sucesso', description: 'Colheita editada com sucesso!' })
+    loadHarvests()
   }
 
   const handleOpenOptionDialog = (e, id) => {
@@ -173,10 +173,10 @@ const ManageRP = () => {
 
       <FlexRow>
         <Title marginBottom={0} style={{ flex: 1 }}>
-          Produções
+          Colheitas
         </Title>
 
-        <Button onClick={openModalCreateProduction}>
+        <Button onClick={openModalCreateHarvest}>
           Criar
         </Button>
       </FlexRow>
@@ -185,11 +185,11 @@ const ManageRP = () => {
 
       <List>
         {
-          productions.length ? productions.map((item, index) => (
+          harvests.length ? harvests.map((item, index) => (
             <ListItem
               hoverable
               key={index}
-              onClick={() => openModalEditProduction(item.id)}
+              onClick={() => openModalEditHarvest(item.id)}
             >
               <ListItemBox grow={1}>
                 <Subtitle>{item.classification.name}</Subtitle>
@@ -205,7 +205,7 @@ const ManageRP = () => {
             </ListItem>
           )) : (
               <ListEmpty>
-                <i>Nenhuma produção cadastrada.</i>
+                <i>Nenhuma Colheita cadastrada.</i>
               </ListEmpty>
             )
         }
