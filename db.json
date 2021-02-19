@@ -208,35 +208,35 @@
   "orderItems": [
     {
       "orderId": 1,
-      "productionId": 3,
+      "harvestId": 3,
       "orderedQuantity": 25,
       "unitPrice": 30,
       "id": 1
     },
     {
       "orderId": 3,
-      "productionId": 1,
+      "harvestId": 1,
       "orderedQuantity": 200,
       "unitPrice": 3,
       "id": 2
     },
     {
       "orderId": 2,
-      "productionId": 3,
+      "harvestId": 3,
       "orderedQuantity": 10,
       "unitPrice": 30,
       "id": 3
     },
     {
       "orderId": 3,
-      "productionId": 1,
+      "harvestId": 1,
       "orderedQuantity": 500,
       "unitPrice": 3,
       "id": 4
     },
     {
       "orderId": 3,
-      "productionId": 1,
+      "harvestId": 1,
       "orderedQuantity": 300,
       "unitPrice": 3,
       "id": 5

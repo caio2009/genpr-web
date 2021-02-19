@@ -25,6 +25,7 @@ const ManageRP = () => {
 
   const [field, setField] = useState(null)
   const [harvests, setHarvests] = useState([])
+  const [infoDisplay, setInfoDisplay] = useState(false)
 
   const loadField = useCallback(async () => {
     const res = await api.get(`fields/${id}?_expand=ruralProperty&_expand=cultivation`)
@@ -135,39 +136,45 @@ const ManageRP = () => {
       </Title>
 
       <FieldInfo>
-        <FlexRow>
-          <InfoField style={{ flex: 1 }}>
-            <h4>Nome</h4>
-            <p className="no-break-line">{field?.name}</p>
+        <div style={{ display: infoDisplay ? 'block' : 'none', marginBottom: '.25rem' }}>
+          <FlexRow>
+            <InfoField style={{ flex: 1 }}>
+              <h4>Nome</h4>
+              <p className="no-break-line">{field?.name}</p>
+            </InfoField>
+
+            <InfoField style={{ flex: 1 }}>
+              <h4>Área</h4>
+              {field?.area ?
+                <p>{field.area} ha</p> :
+                <p><i>Não informado</i></p>}
+            </InfoField>
+          </FlexRow>
+
+          <FlexRow>
+            <InfoField style={{ flex: 1 }}>
+              <h4>Cultura</h4>
+              <p>{field?.cultivation.name} {field?.cultivation.variety}</p>
+            </InfoField>
+
+            <InfoField style={{ flex: 1 }}>
+              <h4>Data de abertura</h4>
+              <p>{field?.openingDate && format(new Date(field.openingDate), 'dd/MM/yyyy')}</p>
+            </InfoField>
+          </FlexRow>
+
+          <InfoField>
+            <h4>Propriedade Rural</h4>
+            <p>{field?.ruralProperty.name}</p>
           </InfoField>
 
-          <InfoField style={{ flex: 1 }}>
-            <h4>Área</h4>
-            {field?.area ?
-              <p>{field.area} ha</p> :
-              <p><i>Não informado</i></p>}
-          </InfoField>
-        </FlexRow>
+          <Button variant="warning" full onClick={openModalEditField}>
+            Editar Informações
+          </Button>
+        </div>
 
-        <FlexRow>
-          <InfoField style={{ flex: 1 }}>
-            <h4>Cultura</h4>
-            <p>{field?.cultivation.name} {field?.cultivation.variety}</p>
-          </InfoField>
-
-          <InfoField style={{ flex: 1 }}>
-            <h4>Data de abertura</h4>
-            <p>{field?.openingDate && format(new Date(field.openingDate), 'dd/MM/yyyy')}</p>
-          </InfoField>
-        </FlexRow>
-
-        <InfoField>
-          <h4>Propriedade Rural</h4>
-          <p>{field?.ruralProperty.name}</p>
-        </InfoField>
-
-        <Button variant="warning" full={window.screen.width <= 375} onClick={openModalEditField}>
-          Editar Informações
+        <Button full onClick={() => setInfoDisplay(!infoDisplay)}>
+          {infoDisplay ? 'Esconder' : 'Informações do Talhão'}
         </Button>
       </FieldInfo>
 

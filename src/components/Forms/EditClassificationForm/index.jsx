@@ -14,14 +14,14 @@ const schema = yup.object().shape({
   name: yup.string().required(errorMessages.required)
 })
 
-const EditCultivationForm = ({ entityId: id, onEdited, onCancel }) => {
+const Edit = ({ entityId: id, onEdited, onCancel }) => {
   const { register, setValue, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema)
   })
 
   const [classification, setClassification] = useState(null)
 
-  const loadRuralProperty = useCallback(async () => {
+  const loadClassification = useCallback(async () => {
     if (id) {
       const res = await api.get(`classifications/${id}`)
       setClassification(res.data)
@@ -35,8 +35,8 @@ const EditCultivationForm = ({ entityId: id, onEdited, onCancel }) => {
   }
 
   useEffect(() => {
-    loadRuralProperty()
-  }, [loadRuralProperty, id])
+    loadClassification()
+  }, [loadClassification, id])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -64,4 +64,4 @@ const EditCultivationForm = ({ entityId: id, onEdited, onCancel }) => {
   )
 }
 
-export default EditCultivationForm
+export default Edit

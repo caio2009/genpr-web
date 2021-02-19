@@ -25,6 +25,7 @@ const ManageRP = () => {
 
   const [ruralProperty, setRuralProperty] = useState({})
   const [fields, setFields] = useState([])
+  const [infoDisplay, setInfoDisplay] = useState(false)
 
   const loadRuralProperty = useCallback(async () => {
     const res = await api.get(`ruralProperties/${id}`)
@@ -112,34 +113,40 @@ const ManageRP = () => {
       </Title>
 
       <RuralPropertyInfo>
-        <FlexRow>
-          <InfoField style={{ flex: 1 }}>
-            <h4>Nome</h4>
-            <p className="no-break-line">{ruralProperty.name}</p>
+        <div style={{ display: infoDisplay ? 'block' : 'none', marginBottom: '.25rem' }}>
+          <FlexRow>
+            <InfoField style={{ flex: 1 }}>
+              <h4>Nome</h4>
+              <p className="no-break-line">{ruralProperty.name}</p>
+            </InfoField>
+
+            <InfoField style={{ flex: 1 }}>
+              <h4>Endereço</h4>
+              <p className="no-break-line">{ruralProperty.address}</p>
+            </InfoField>
+
+            <InfoField style={{ flex: 1 }}>
+              <h4>Área</h4>
+              {ruralProperty.area ?
+                <p>{ruralProperty.area} ha</p> :
+                <p><i>Não informado</i></p>}
+            </InfoField>
+          </FlexRow>
+
+          <InfoField>
+            <h4>Descrição</h4>
+            {ruralProperty.description ?
+              <p>{ruralProperty.description}</p> :
+              <p><i>Sem descrição</i></p>}
           </InfoField>
 
-          <InfoField style={{ flex: 1 }}>
-            <h4>Endereço</h4>
-            <p className="no-break-line">{ruralProperty.address}</p>
-          </InfoField>
+          <Button variant="warning" full onClick={openModalEditRuralProperty}>
+            Editar Informações
+          </Button>
+        </div>
 
-          <InfoField style={{ flex: 1 }}>
-            <h4>Área</h4>
-            {ruralProperty.area ?
-              <p>{ruralProperty.area} ha</p> :
-              <p><i>Não informado</i></p>}
-          </InfoField>
-        </FlexRow>
-
-        <InfoField>
-          <h4>Descrição</h4>
-          {ruralProperty.description ?
-            <p>{ruralProperty.description}</p> :
-            <p><i>Sem descrição</i></p>}
-        </InfoField>
-
-        <Button variant="warning" full={window.screen.width <= 375} onClick={openModalEditRuralProperty}>
-          Editar Informações
+        <Button full onClick={() => setInfoDisplay(!infoDisplay)}>
+          {infoDisplay ? 'Esconder' : 'Informações da Propriedade Rural'}
         </Button>
       </RuralPropertyInfo>
 

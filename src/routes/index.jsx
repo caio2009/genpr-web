@@ -21,6 +21,7 @@ import CreateHarvest from '@pages/Harvest/CreateHarvest'
 
 import Stock from '@pages/Stock'
 
+import OrderList from '@pages/Order/OrderList'
 import BuildOrder from '@pages/Order/BuildOrder'
 import FinishOrder from '@pages/Order/FinishOrder'
 
@@ -52,6 +53,7 @@ const Routes = () => {
 
       <Route path="/estoque" component={Stock} />
 
+      <Route path="/vendas" component={OrderList} exact />
       <Route path="/vendas/criar" component={BuildOrder} />
       <Route path="/vendas/finalizar" component={FinishOrder} />
 

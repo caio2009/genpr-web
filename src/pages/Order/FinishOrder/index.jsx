@@ -52,10 +52,10 @@ const FinishOrder = () => {
         unitPrice: orderItem.unitPrice
       })
 
-      res = await api.get(`/productions/${orderItem.productionId}`)
+      res = await api.get(`/harvests/${orderItem.productionId}`)
       const production = res.data
 
-      await api.put(`productions/${orderItem.productionId}`, {
+      await api.put(`harvests/${orderItem.productionId}`, {
         ...production,
         availableQuantity: production.availableQuantity - orderItem.orderedQuantity
       })
