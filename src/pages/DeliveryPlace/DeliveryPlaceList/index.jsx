@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { useToast } from '@hooks/Toast/toast'
 import { useConfirmDialog } from '@hooks/confirmDialog'
 import { useOptionDialog } from '@hooks/optionDialog'
+import { useModal } from '@hooks/modal'
 
 import { FiMoreVertical } from 'react-icons/fi'
 import { Container, Title, List, ListItem, ListItemBox, FlexRow, IconButton } from '@styles/components'
 import Button from '@components/Button'
-import Modal from '@components/Modal'
 import CreateDeliveryPlaceForm from '@components/Forms/CreateDeliveryPlaceForm'
 import EditDeliveryPlaceForm from '@components/Forms/EditDeliveryPlaceForm'
 
@@ -16,17 +16,9 @@ const CultivationList = () => {
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
+  const { openModal, closeModal } = useModal()
 
   const [deliveryPlaces, setClassifications] = useState([])
-  const [selectedId, setSelectedId] = useState(null)
-
-  // create delivery place modal status
-  const [modalCreate, setModalCreate] = useState(false)
-  const [keyCreate, setKeyCreate] = useState(Math.random())
-
-  // edit delivery place modal status
-  const [modalEdit, setModalEdit] = useState(false)
-  const [keyEdit, setKeyEdit] = useState(Math.random())
 
   const loadDeliveryPlaces = async () => {
     const res = await api.get('deliveryPlaces')
@@ -37,19 +29,29 @@ const CultivationList = () => {
     loadDeliveryPlaces()
   }, [])
 
-  const closeCreateModal = () => {
-    setModalCreate(false)
-    setKeyCreate(Math.random())
+  const openModalCreate = () => {
+    openModal({
+      title: 'Novo Local de Entrega',
+      content: (
+        <CreateDeliveryPlaceForm
+          onCreated={handleCreated}
+          onCancel={closeModal}
+        />
+      )
+    })
   }
 
-  const closeEditModal = () => {
-    setModalEdit(false)
-    setKeyEdit(Math.random())
-  }
-
-  const openEditModal = (id) => {
-    setModalEdit(true)
-    setSelectedId(id)
+  const openModalEdit = (id) => {
+    openModal({
+      title: 'Editar Local de Entrega',
+      content: (
+        <EditDeliveryPlaceForm
+          entityId={id}
+          onEdited={handleEdited}
+          onCancel={closeModal}
+        />
+      )
+    })
   }
 
   const handleRemove = (id) => {
@@ -67,16 +69,14 @@ const CultivationList = () => {
   }
 
   const handleCreated = () => {
-    setKeyCreate(Math.random())
+    closeModal()
     addToast({ title: 'Sucesso', description: 'Local de entrega criado com sucesso!' })
-    setModalCreate(false)
     loadDeliveryPlaces()
   }
 
   const handleEdited = () => {
-    setKeyEdit(Math.random())
+    closeModal()
     addToast({ title: 'Sucesso', description: 'Local de entrega editado com sucesso!' })
-    setModalEdit(false)
     loadDeliveryPlaces()
   }
 
@@ -95,7 +95,7 @@ const CultivationList = () => {
           Locais de Entrega
         </Title>
 
-        <Button variant="default" onClick={() => setModalCreate(true)}>
+        <Button variant="default" onClick={openModalCreate}>
           Criar
         </Button>
       </FlexRow>
@@ -107,7 +107,7 @@ const CultivationList = () => {
           <ListItem
             hoverable
             key={index}
-            onClick={() => openEditModal(item.id)}
+            onClick={() => openModalEdit(item.id)}
           >
             <ListItemBox grow={1}>
               <p>{item.description}</p>
@@ -121,33 +121,6 @@ const CultivationList = () => {
           </ListItem>
         ))}
       </List>
-
-      <Modal
-        key={keyCreate}
-        show={modalCreate}
-        closeModal={closeCreateModal}
-        title="Novo Local de Entrega"
-        content={(
-          <CreateDeliveryPlaceForm
-            onCreated={handleCreated}
-            onCancel={closeCreateModal}
-          />
-        )}
-      />
-
-      <Modal
-        key={keyEdit}
-        show={modalEdit}
-        closeModal={closeEditModal}
-        title="Local de Entrega"
-        content={(
-          <EditDeliveryPlaceForm
-            entityId={selectedId}
-            onEdited={handleEdited}
-            onCancel={closeEditModal}
-          />
-        )}
-      />
     </Container>
   )
 }

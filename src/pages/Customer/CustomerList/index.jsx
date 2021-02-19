@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { useToast } from '@hooks/Toast/toast'
 import { useConfirmDialog } from '@hooks/confirmDialog'
 import { useOptionDialog } from '@hooks/optionDialog'
+import { useModal } from '@hooks/modal'
 
 import { FiMoreVertical } from 'react-icons/fi'
 import { Container, Title, Subtitle, List, ListItem, ListItemBox, FlexRow, IconButton } from '@styles/components'
 import Button from '@components/Button'
-import Modal from '@components/Modal'
 import CreateCustomerForm from '@components/Forms/CreateCustomerForm'
 import EditCustomerForm from '@components/Forms/EditCustomerForm'
 
@@ -16,17 +16,9 @@ const CustomerList = () => {
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
+  const { openModal, closeModal } = useModal()
 
   const [customers, setUnitMeasures] = useState([])
-  const [selectedId, setSelectedId] = useState(null)
-
-  // create rural property modal status
-  const [modalCreate, setModalCreate] = useState(false)
-  const [keyCreate, setKeyCreate] = useState(Math.random())
-
-  // edit rural property modal status
-  const [modalEdit, setModalEdit] = useState(false)
-  const [keyEdit, setKeyEdit] = useState(Math.random())
 
   const loadUnitMeasures = async () => {
     const res = await api.get('customers')
@@ -37,19 +29,29 @@ const CustomerList = () => {
     loadUnitMeasures()
   }, [])
 
-  const closeCreateModal = () => {
-    setModalCreate(false)
-    setKeyCreate(Math.random())
+  const openModalCreate = () => {
+    openModal({
+      title: 'Novo Cliente',
+      content: (
+        <CreateCustomerForm
+          onCreated={handleCreated}
+          onCancel={closeModal}
+        />
+      )
+    })
   }
 
-  const closeEditModal = () => {
-    setModalEdit(false)
-    setKeyEdit(Math.random())
-  }
-
-  const openEditModal = (id) => {
-    setModalEdit(true)
-    setSelectedId(id)
+  const openModalEdit = (id) => {
+    openModal({
+      title: 'Editar Cliente',
+      content: (
+        <EditCustomerForm
+          entityId={id}
+          onEdited={handleEdited}
+          onCancel={closeModal}
+        />
+      )
+    })
   }
 
   const handleRemove = (id) => {
@@ -67,16 +69,14 @@ const CustomerList = () => {
   }
 
   const handleCreated = () => {
-    setKeyCreate(Math.random())
+    closeModal()
     addToast({ title: 'Sucesso', description: 'Cliente criado com sucesso!' })
-    setModalCreate(false)
     loadUnitMeasures()
   }
 
   const handleEdited = () => {
-    setKeyEdit(Math.random())
+    closeModal()
     addToast({ title: 'Sucesso', description: 'Cliente editado com sucesso!' })
-    setModalEdit(false)
     loadUnitMeasures()
   }
 
@@ -95,7 +95,7 @@ const CustomerList = () => {
           Clientes
         </Title>
 
-        <Button variant="default" onClick={() => setModalCreate(true)}>
+        <Button variant="default" onClick={openModalCreate}>
           Criar
         </Button>
       </FlexRow>
@@ -107,7 +107,7 @@ const CustomerList = () => {
           <ListItem
             hoverable
             key={index}
-            onClick={() => openEditModal(item.id)}
+            onClick={() => openModalEdit(item.id)}
           >
             <ListItemBox grow={1}>
               <Subtitle>{item.name}</Subtitle>
@@ -123,33 +123,6 @@ const CustomerList = () => {
           </ListItem>
         ))}
       </List>
-
-      <Modal
-        key={keyCreate}
-        show={modalCreate}
-        closeModal={closeCreateModal}
-        title="Novo Cliente"
-        content={(
-          <CreateCustomerForm
-            onCreated={handleCreated}
-            onCancel={closeCreateModal}
-          />
-        )}
-      />
-
-      <Modal
-        key={keyEdit}
-        show={modalEdit}
-        closeModal={closeEditModal}
-        title="Cliente"
-        content={(
-          <EditCustomerForm
-            entityId={selectedId}
-            onEdited={handleEdited}
-            onCancel={closeEditModal}
-          />
-        )}
-      />
     </Container>
   )
 }

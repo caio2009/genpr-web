@@ -3,6 +3,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import { useToast } from '@hooks/Toast/toast'
 import { useConfirmDialog } from '@hooks/confirmDialog'
 import { useOptionDialog } from '@hooks/optionDialog'
+import { useModal } from '@hooks/modal'
 
 import api from '@services/api'
 import { format } from 'date-fns'
@@ -11,7 +12,6 @@ import { FiMoreVertical } from 'react-icons/fi'
 import { Container, Title, FlexRow, List, ListEmpty, ListItem, ListItemBox, IconButton, Subtitle } from '@styles/components'
 import { RuralPropertyInfo, InfoField } from './styles'
 import Button from '@components/Button'
-import Modal from '@components/Modal'
 import EditRuralPropertyForm from '@components/Forms/EditRuralPropertyForm'
 import CreateFieldForm from '@components/Forms/CreateFieldForm'
 
@@ -21,17 +21,10 @@ const ManageRP = () => {
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
+  const { openModal, closeModal } = useModal()
 
   const [ruralProperty, setRuralProperty] = useState({})
   const [fields, setFields] = useState([])
-
-  // edit rural property modal status
-  const [modalEditRuralProperty, setModalEditRuralProperty] = useState(false)
-  const [keyEditRuralProperty, setKeyEditRuralProperty] = useState(Math.random())
-
-  // create field modal status
-  const [modalCreateField, setModalCreateField] = useState(false)
-  const [keyCreateField, setKeyCreateField] = useState(Math.random())
 
   const loadRuralProperty = useCallback(async () => {
     const res = await api.get(`ruralProperties/${id}`)
@@ -48,24 +41,39 @@ const ManageRP = () => {
     loadFields()
   }, [loadRuralProperty, loadFields])
 
-  const closeEditRuralPropertyModal = () => {
-    setModalEditRuralProperty(false)
-    setKeyEditRuralProperty(Math.random())
-  }
-
-  const closeCreateFieldModal = () => {
-    setModalCreateField(false)
-    setKeyCreateField(Math.random())
-  }
-
   const goManageField = (id) => {
     history.push(`/talhoes/gerenciar/${id}`)
   }
 
+  const openModalEditRuralProperty = () => {
+    openModal({
+      title: 'Editar Propriedade Rural',
+      content: (
+        <EditRuralPropertyForm
+          entityId={id}
+          onEdited={handleRuralPropertyEdited}
+          onCancel={closeModal}
+        />
+      )
+    })
+  }
+
+  const openModalCreateField = () => {
+    openModal({
+      title: 'Novo Talhão',
+      content: (
+        <CreateFieldForm
+          ruralProperty={{ id: ruralProperty.id, name: ruralProperty.name || '' }}
+          onCreated={handleFieldCreated}
+          onCancel={closeModal}
+        />
+      )
+    })
+  }
+
   const handleRuralPropertyEdited = () => {
-    setKeyEditRuralProperty(Math.random())
+    closeModal()
     addToast({ title: 'Sucesso', description: 'Propriedade rural editada com sucesso!' })
-    setModalEditRuralProperty(false)
     loadRuralProperty()
   }
 
@@ -84,9 +92,8 @@ const ManageRP = () => {
   }
 
   const handleFieldCreated = () => {
-    setKeyCreateField(Math.random())
+    closeModal()
     addToast({ title: 'Sucesso', description: 'Talhão criado com sucesso!' })
-    setModalCreateField(false)
     loadFields()
   }
 
@@ -131,7 +138,7 @@ const ManageRP = () => {
             <p><i>Sem descrição</i></p>}
         </InfoField>
 
-        <Button variant="warning" full={window.screen.width <= 375} onClick={() => setModalEditRuralProperty(true)}>
+        <Button variant="warning" full={window.screen.width <= 375} onClick={openModalEditRuralProperty}>
           Editar Informações
         </Button>
       </RuralPropertyInfo>
@@ -141,7 +148,7 @@ const ManageRP = () => {
           Talhões
         </Title>
 
-        <Button onClick={() => setModalCreateField(true)}>
+        <Button onClick={openModalCreateField}>
           Criar
         </Button>
       </FlexRow>
@@ -169,40 +176,12 @@ const ManageRP = () => {
               </ListItemBox>
             </ListItem>
           )) : (
-            <ListEmpty>
-              <i>Nenhum talhão cadastrado.</i>
-            </ListEmpty>
-          )
+              <ListEmpty>
+                <i>Nenhum talhão cadastrado.</i>
+              </ListEmpty>
+            )
         }
       </List>
-
-      <Modal
-        key={keyEditRuralProperty}
-        show={modalEditRuralProperty}
-        closeModal={closeEditRuralPropertyModal}
-        title="Propriedade Rural"
-        content={(
-          <EditRuralPropertyForm
-            entityId={id}
-            onEdited={handleRuralPropertyEdited}
-            onCancel={closeEditRuralPropertyModal}
-          />
-        )}
-      />
-
-      <Modal
-        key={keyCreateField}
-        show={modalCreateField}
-        closeModal={closeCreateFieldModal}
-        title="Novo Talhão"
-        content={(
-          <CreateFieldForm
-            ruralProperty={{ id: ruralProperty.id, name: ruralProperty.name || '' }}
-            onCreated={handleFieldCreated}
-            onCancel={closeCreateFieldModal}
-          />
-        )}
-      />
     </Container>
   )
 }

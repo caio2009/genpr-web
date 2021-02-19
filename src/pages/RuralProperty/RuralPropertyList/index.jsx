@@ -3,11 +3,11 @@ import { useHistory } from 'react-router-dom'
 import { useToast } from '@hooks/Toast/toast'
 import { useConfirmDialog } from '@hooks/confirmDialog'
 import { useOptionDialog } from '@hooks/optionDialog'
+import { useModal } from '@hooks/modal'
 
 import { FiMoreVertical } from 'react-icons/fi'
 import { Container, Title, Subtitle, List, ListItem, ListItemBox, FlexRow, IconButton } from '@styles/components'
 import Button from '@components/Button'
-import Modal from '@components/Modal'
 import CreateRuralPropertyForm from '@components/Forms/CreateRuralPropertyForm'
 import EditRuralPropertyForm from '@components/Forms/EditRuralPropertyForm'
 
@@ -18,17 +18,9 @@ const RuralPropertyList = () => {
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
+  const { openModal, closeModal } = useModal()
 
   const [ruralProperties, setRuralProperties] = useState([])
-  const [selectedId, setSelectedId] = useState(null)
-
-  // create rural property modal status
-  const [modalCreate, setModalCreate] = useState(false)
-  const [keyCreate, setKeyCreate] = useState(Math.random()) 
-
-  // edit rural property modal status
-  const [modalEdit, setModalEdit] = useState(false)
-  const [keyEdit, setKeyEdit] = useState(Math.random())
 
   const loadRuralProperties = async () => {
     const res = await api.get('ruralProperties')
@@ -39,19 +31,29 @@ const RuralPropertyList = () => {
     loadRuralProperties()
   }, [])
 
-  const closeCreateModal = () => {
-    setModalCreate(false)
-    setKeyCreate(Math.random())
+  const openModalCreate = () => {
+    openModal({
+      title: 'Nova Propriedade Rural',
+      content: (
+        <CreateRuralPropertyForm
+          onCreated={handleCreated}
+          onCancel={closeModal}
+        />
+      )
+    })
   }
 
-  const closeEditModal = () => {
-    setModalEdit(false)
-    setKeyEdit(Math.random())
-  }
-
-  const openEditRuralPropertyModal = (id) => {
-    setModalEdit(true)
-    setSelectedId(id)
+  const openModalEdit = (id) => {
+    openModal({
+      title: 'Editar Propriedade Rural',
+      content: (
+        <EditRuralPropertyForm
+          entityId={id}
+          onEdited={handleEdited}
+          onCancel={closeModal}
+        />
+      )
+    })
   }
 
   const handleRemove = (id) => {
@@ -69,16 +71,14 @@ const RuralPropertyList = () => {
   }
 
   const handleCreated = () => {
-    setKeyCreate(Math.random())
+    closeModal()
     addToast({ title: 'Sucesso', description: 'Propriedade rural criada com sucesso!' })
-    setModalCreate(false)
     loadRuralProperties()
   }
 
   const handleEdited = () => {
-    setKeyEdit(Math.random())
+    closeModal()
     addToast({ title: 'Sucesso', description: 'Propriedade rural editada com sucesso!' })
-    setModalEdit(false)
     loadRuralProperties()
   }
 
@@ -102,7 +102,7 @@ const RuralPropertyList = () => {
           Propriedades Rurais
         </Title>
 
-        <Button variant="default" onClick={() => setModalCreate(true)}>
+        <Button variant="default" onClick={openModalCreate}>
           Criar
         </Button>
       </FlexRow>
@@ -114,7 +114,7 @@ const RuralPropertyList = () => {
           <ListItem
             hoverable
             key={index}
-            onClick={() => openEditRuralPropertyModal(item.id)}
+            onClick={() => openModalEdit(item.id)}
           >
             <ListItemBox grow={1}>
               <Subtitle>{item.name}</Subtitle>
@@ -130,33 +130,6 @@ const RuralPropertyList = () => {
           </ListItem>
         ))}
       </List>
-
-      <Modal
-        key={keyCreate}
-        show={modalCreate}
-        closeModal={closeCreateModal}
-        title="Nova Propriedade Rural"
-        content={(
-          <CreateRuralPropertyForm
-            onCreated={handleCreated}
-            onCancel={closeCreateModal}
-          />
-        )}
-      />
-
-      <Modal
-        key={keyEdit}
-        show={modalEdit}
-        closeModal={closeEditModal}
-        title="Propriedade Rural"
-        content={(
-          <EditRuralPropertyForm
-            entityId={selectedId}
-            onEdited={handleEdited}
-            onCancel={closeEditModal}
-          />
-        )}
-      />
     </Container>
   )
 }

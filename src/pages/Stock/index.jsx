@@ -1,19 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { useModal } from '@hooks/modal'
 
 import api from '@services/api'
 
 import { Container, Title, AvatarImg } from '@styles/components'
 import { StockItemsContainer, StockItem, StockItemData, CultivationName, ClassificationName, Quantity, UnitMeasureAbbreviation } from './styles'
-import Modal from '@components/Modal'
 import StockItemDetail from './components/StockItemDetail'
 
 const Stock = () => {
-  const [productions, setProductions] = useState([])
-  const [selectedItem, setSelectedItem] = useState(null)
+  const { openModal } = useModal()
 
-  // modal details status
-  const [modalDetails, setModalDetails] = useState(false)
-  const [keyDetails, setKeyDetails] = useState(Math.random())
+  const [productions, setProductions] = useState([])
 
   const loadProductions = async () => {
     const res = await api.get('productions?_expand=cultivation&_expand=classification&_expand=unitMeasure&_expand=field')
@@ -84,13 +81,12 @@ const Stock = () => {
   }, [productions])
 
   const openModalDetails = (index) => {
-    setSelectedItem(index)
-    setModalDetails(true)
-  }
-
-  const closeModalDetails = () => {
-    setModalDetails(false)
-    setKeyDetails(Math.random())
+    openModal({
+      title: 'Detalhes do Produto',
+      content: (
+        <StockItemDetail item={stockItems[index]} />
+      )
+    })
   }
 
   return (
@@ -124,16 +120,6 @@ const Stock = () => {
           </StockItem>
         ))}
       </StockItemsContainer>
-
-      <Modal 
-        key={keyDetails}
-        show={modalDetails}
-        closeModal={closeModalDetails}
-        title="Detalhes do Produto"
-        content={(
-          <StockItemDetail item={stockItems[selectedItem]} />
-        )}
-      />
     </Container>
   )
 }

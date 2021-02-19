@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useToast } from '@hooks/Toast/toast'
 import { useConfirmDialog } from '@hooks/confirmDialog'
 import { useOptionDialog } from '@hooks/optionDialog'
+import { useModal } from '@hooks/modal'
 
 import api from '@services/api'
 import { format } from 'date-fns'
@@ -11,7 +12,6 @@ import { FiMoreVertical } from 'react-icons/fi'
 import { Container, Title, FlexRow, List, ListEmpty, ListItem, ListItemBox, IconButton, Subtitle } from '@styles/components'
 import { FieldInfo, InfoField } from './styles'
 import Button from '@components/Button'
-import Modal from '@components/Modal'
 import EditFieldForm from '@components/Forms/EditFieldForm'
 import CreateProductionForm from '@components/Forms/CreateProductionForm'
 import EditProductionForm from '@components/Forms/EditProductionForm'
@@ -21,22 +21,10 @@ const ManageRP = () => {
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
+  const { openModal, closeModal } = useModal()
 
   const [field, setField] = useState(null)
   const [productions, setProductions] = useState([])
-  const [selectedProductionId, setSelectedProductionId] = useState(null)
-
-  // edit field modal status
-  const [modalEditField, setModalEditField] = useState(false)
-  const [keyEditField, setKeyEditField] = useState(Math.random())
-
-  // create production modal status
-  const [modalCreateProduction, setModalCreateProduction] = useState(false)
-  const [keyCreateProduction, setKeyCreateProduction] = useState(Math.random())
-
-  // edit production modal status
-  const [modalEditProduction, setModalEditProduction] = useState(false)
-  const [keyEditProduction, setKeyEditProduction] = useState(Math.random())
 
   const loadField = useCallback(async () => {
     const res = await api.get(`fields/${id}?_expand=ruralProperty&_expand=cultivation`)
@@ -59,30 +47,50 @@ const ManageRP = () => {
     loadProductions()
   }, [loadField, loadProductions])
 
-  const closeEditFieldModal = () => {
-    setModalEditField(false)
-    setKeyEditField(Math.random())
+  const openModalEditField = () => {
+    openModal({
+      title: 'Editar Talhão',
+      content: (
+        <EditFieldForm
+          entityId={id}
+          onEdited={handleFieldEdited}
+          onCancel={closeModal}
+        />
+      )
+    })
   }
 
-  const closeCreateProductionModal = () => {
-    setModalCreateProduction(false)
-    setKeyCreateProduction(Math.random())
+  const openModalCreateProduction = () => {
+    openModal({
+      title: 'Nova Produção',
+      content: (
+        <CreateProductionForm
+          ruralProperty={{ id: field?.ruralProperty.id, name: field?.ruralProperty.name || '' }}
+          field={{ id: field?.id, name: field?.name || '' }}
+          cultivation={{ id: field?.cultivation.id, name: field?.cultivation.name }}
+          onCreated={handleProductionCreated}
+          onCancel={closeModal}
+        />
+      )
+    })
   }
 
-  const closeEditProductionModal = () => {
-    setModalEditProduction(false)
-    setKeyEditProduction(Math.random())
-  }
-
-  const openEditProductionModal = (id) => {
-    setModalEditProduction(true)
-    setSelectedProductionId(id)
+  const openModalEditProduction = (id) => {
+    openModal({
+      title: 'Editar Produção',
+      content: (
+        <EditProductionForm
+          entityId={id}
+          onEdited={handleProductionEdited}
+          onCancel={closeModal}
+        />
+      )
+    })
   }
 
   const handleFieldEdited = () => {
-    setKeyEditField(Math.random())
+    closeModal()
     addToast({ title: 'Sucesso', description: 'Talhão editado com sucesso!' })
-    setModalEditField(false)
     loadField()
   }
 
@@ -101,16 +109,14 @@ const ManageRP = () => {
   }
 
   const handleProductionCreated = () => {
-    setKeyCreateProduction(Math.random())
+    closeModal()
     addToast({ title: 'Sucesso', description: 'Produção criada com sucesso!' })
-    setModalCreateProduction(false)
     loadProductions()
   }
 
   const handleProductionEdited = () => {
-    setKeyEditProduction(Math.random())
+    closeModal()
     addToast({ title: 'Sucesso', description: 'Produção editada com sucesso!' })
-    setModalEditProduction(false)
     loadProductions()
   }
 
@@ -160,7 +166,7 @@ const ManageRP = () => {
           <p>{field?.ruralProperty.name}</p>
         </InfoField>
 
-        <Button variant="warning" full={window.screen.width <= 375} onClick={() => setModalEditField(true)}>
+        <Button variant="warning" full={window.screen.width <= 375} onClick={openModalEditField}>
           Editar Informações
         </Button>
       </FieldInfo>
@@ -170,7 +176,7 @@ const ManageRP = () => {
           Produções
         </Title>
 
-        <Button onClick={() => setModalCreateProduction(true)}>
+        <Button onClick={openModalCreateProduction}>
           Criar
         </Button>
       </FlexRow>
@@ -183,7 +189,7 @@ const ManageRP = () => {
             <ListItem
               hoverable
               key={index}
-              onClick={() => openEditProductionModal(item.id)}
+              onClick={() => openModalEditProduction(item.id)}
             >
               <ListItemBox grow={1}>
                 <Subtitle>{item.classification.name}</Subtitle>
@@ -204,50 +210,6 @@ const ManageRP = () => {
             )
         }
       </List>
-
-      <Modal
-        key={keyEditField}
-        show={modalEditField}
-        closeModal={closeEditFieldModal}
-        title="Talhão"
-        content={(
-          <EditFieldForm
-            entityId={id}
-            onEdited={handleFieldEdited}
-            onCancel={closeEditFieldModal}
-          />
-        )}
-      />
-
-      <Modal
-        key={keyCreateProduction}
-        show={modalCreateProduction}
-        closeModal={closeCreateProductionModal}
-        title="Nova Produção"
-        content={(
-          <CreateProductionForm
-            ruralProperty={{ id: field?.ruralProperty.id, name: field?.ruralProperty.name || '' }}
-            field={{ id: field?.id, name: field?.name || '' }}
-            cultivation={{ id: field?.cultivation.id, name: field?.cultivation.name }}
-            onCreated={handleProductionCreated}
-            onCancel={closeCreateProductionModal}
-          />
-        )}
-      />
-
-      <Modal
-        key={keyEditProduction}
-        show={modalEditProduction}
-        closeModal={closeEditProductionModal}
-        title="Produção"
-        content={(
-          <EditProductionForm
-            entityId={selectedProductionId}
-            onEdited={handleProductionEdited}
-            onCancel={closeEditProductionModal}
-          />
-        )}
-      />
     </Container>
   )
 }

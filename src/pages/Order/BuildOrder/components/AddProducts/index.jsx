@@ -1,22 +1,18 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { useGlobal } from '@hooks/global'
+import { useModal } from '@hooks/modal'
 
 import api from '@services/api'
 
 import { AvatarImg } from '@styles/components'
 import { StockItemsContainer, StockItem, StockItemData, CultivationName, ClassificationName, Quantity, UnitMeasureAbbreviation } from './styles'
-import Modal from '@components/Modal'
 import AddQuantityAndPrice from '../AddQuantityAndPrice'
 
-const AddProducts = ({ toggleModal, onAdd }) => {
+const AddProducts = ({ onAdd }) => {
   const { cart } = useGlobal()
+  const { openModal, closeModal } = useModal()
 
   const [productions, setProductions] = useState([])
-  const [selectedItem, setSelectedItem] = useState(null)
-
-  // modal add availableQuantity and price status
-  const [modalAddQuantityAndPrice, setModalAddQuantityAndPrice] = useState(false)
-  const [keyAddQuantityAndPrice, setKeyAddQuantityAndPrice] = useState(Math.random())
 
   const loadProductions = async () => {
     const res = await api.get('productions?_expand=cultivation&_expand=classification&_expand=unitMeasure&_expand=field')
@@ -29,16 +25,15 @@ const AddProducts = ({ toggleModal, onAdd }) => {
   }, [])
 
   const openModalAddQuantityAndPrice = (index) => {
-    toggleModal()
-    setSelectedItem(index)
-    setKeyAddQuantityAndPrice(Math.random())
-    setModalAddQuantityAndPrice(true)
-  }
-
-  const closeModalAddQuantityAndPrice = () => {
-    setModalAddQuantityAndPrice(false)
-    setKeyAddQuantityAndPrice(Math.random())
-    toggleModal()
+    openModal({
+      title: 'Quantidade e Preço',
+      content: (
+        <AddQuantityAndPrice
+          product={stockItems[index]}
+          onAdd={handleProductAdd}
+        />
+      )
+    })
   }
 
   const isStockItemDuplicated = (a, b) => {
@@ -111,9 +106,7 @@ const AddProducts = ({ toggleModal, onAdd }) => {
   }, [productions, cart])
 
   const handleProductAdd = (productsToAdd) => {
-    // toggleModal()
-    setModalAddQuantityAndPrice(false)
-    setKeyAddQuantityAndPrice(Math.random())
+    closeModal()
     onAdd(productsToAdd)
   }
 
@@ -150,19 +143,6 @@ const AddProducts = ({ toggleModal, onAdd }) => {
           </StockItem>
         ))}
       </StockItemsContainer>
-
-      <Modal
-        key={keyAddQuantityAndPrice}
-        show={modalAddQuantityAndPrice}
-        closeModal={closeModalAddQuantityAndPrice}
-        title="Quantidade e Preço"
-        content={(
-          <AddQuantityAndPrice
-            product={stockItems[selectedItem]}
-            onAdd={handleProductAdd}
-          />
-        )}
-      />
     </div>
   )
 }

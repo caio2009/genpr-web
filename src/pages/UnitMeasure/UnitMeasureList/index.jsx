@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { useToast } from '@hooks/Toast/toast'
 import { useConfirmDialog } from '@hooks/confirmDialog'
 import { useOptionDialog } from '@hooks/optionDialog'
+import { useModal } from '@hooks/modal'
 
 import { FiMoreVertical } from 'react-icons/fi'
-import { Container, Title, Subtitle, List, ListItem, ListItemBox, FlexRow, IconButton } from '@styles/components'
+import { Container, Title, List, ListItem, ListItemBox, FlexRow, IconButton } from '@styles/components'
 import Button from '@components/Button'
-import Modal from '@components/Modal'
 import CreateUnitMeasureForm from '@components/Forms/CreateUnitMeasureForm'
 import EditUnitMeasureForm from '@components/Forms/EditUnitMeasureForm'
 
@@ -16,17 +16,9 @@ const CultivationList = () => {
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
+  const { openModal, closeModal } = useModal()
 
   const [unitMeasures, setUnitMeasures] = useState([])
-  const [selectedId, setSelectedId] = useState(null)
-
-  // create rural property modal status
-  const [modalCreate, setModalCreate] = useState(false)
-  const [keyCreate, setKeyCreate] = useState(Math.random())
-
-  // edit rural property modal status
-  const [modalEdit, setModalEdit] = useState(false)
-  const [keyEdit, setKeyEdit] = useState(Math.random())
 
   const loadUnitMeasures = async () => {
     const res = await api.get('unitMeasures')
@@ -37,19 +29,29 @@ const CultivationList = () => {
     loadUnitMeasures()
   }, [])
 
-  const closeCreateModal = () => {
-    setModalCreate(false)
-    setKeyCreate(Math.random())
+  const openModalCreate = () => {
+    openModal({
+      title: 'Nova Unidade de Medida',
+      content: (
+        <CreateUnitMeasureForm
+          onCreated={handleCreated}
+          onCancel={closeModal}
+        />
+      )
+    })
   }
 
-  const closeEditModal = () => {
-    setModalEdit(false)
-    setKeyEdit(Math.random())
-  }
-
-  const openEditModal = (id) => {
-    setModalEdit(true)
-    setSelectedId(id)
+  const openModalEdit = (id) => {
+    openModal({
+      title: 'Editar Unidade de Medida',
+      content: (
+        <EditUnitMeasureForm
+          entityId={id}
+          onEdited={handleEdited}
+          onCancel={closeModal}
+        />
+      )
+    })
   }
 
   const handleRemove = (id) => {
@@ -67,16 +69,14 @@ const CultivationList = () => {
   }
 
   const handleCreated = () => {
-    setKeyCreate(Math.random())
+    closeModal()
     addToast({ title: 'Sucesso', description: 'Unidade de medida criada com sucesso!' })
-    setModalCreate(false)
     loadUnitMeasures()
   }
 
   const handleEdited = () => {
-    setKeyEdit(Math.random())
+    closeModal()
     addToast({ title: 'Sucesso', description: 'Unidade de medida editada com sucesso!' })
-    setModalEdit(false)
     loadUnitMeasures()
   }
 
@@ -95,7 +95,7 @@ const CultivationList = () => {
           Unidades de Medida
         </Title>
 
-        <Button variant="default" onClick={() => setModalCreate(true)}>
+        <Button variant="default" onClick={openModalCreate}>
           Criar
         </Button>
       </FlexRow>
@@ -107,7 +107,7 @@ const CultivationList = () => {
           <ListItem
             hoverable
             key={index}
-            onClick={() => openEditModal(item.id)}
+            onClick={() => openModalEdit(item.id)}
           >
             <ListItemBox grow={1}>
               <p>{item.name} ({item.abbreviation})</p>
@@ -121,33 +121,6 @@ const CultivationList = () => {
           </ListItem>
         ))}
       </List>
-
-      <Modal
-        key={keyCreate}
-        show={modalCreate}
-        closeModal={closeCreateModal}
-        title="Nova Unidade de Medida"
-        content={(
-          <CreateUnitMeasureForm
-            onCreated={handleCreated}
-            onCancel={closeCreateModal}
-          />
-        )}
-      />
-
-      <Modal
-        key={keyEdit}
-        show={modalEdit}
-        closeModal={closeEditModal}
-        title="Unidade de Medida"
-        content={(
-          <EditUnitMeasureForm
-            entityId={selectedId}
-            onEdited={handleEdited}
-            onCancel={closeEditModal}
-          />
-        )}
-      />
     </Container>
   )
 }

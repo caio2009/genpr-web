@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { useGlobal } from '@hooks/global'
 import { useConfirmDialog } from '@hooks/confirmDialog'
 import { useToast } from '@hooks/Toast/toast'
+import { useModal } from '@hooks/modal'
 import colors from '@styles/colors'
 
 import { FiTrash } from 'react-icons/fi'
 import { Container, Title, Subtitle, IconButton } from '@styles/components'
 import { Cart, CartItem, ItemDescription, ItemQuantity, ItemControl, Empty, TotalPrice } from './styles'
 import Button from '@components/Button'
-import Modal from '@components/Modal'
 import AddProducts from './components/AddProducts'
 import EditQuantityAndPrice from './components/EditQuantityAndPrice'
 
@@ -18,30 +18,29 @@ const BuildOrder = () => {
   const { cart, setCartData } = useGlobal()
   const { openConfirmDialog } = useConfirmDialog()
   const { addToast } = useToast()
+  const { openModal, closeModal } = useModal()
 
-  const [selectedProduct, setSelectedProduct] = useState(null)
-
-  // modal add product status
-  const [modalAddProduct, setModalAddProduct] = useState(false)
-  const [keyAddProduct, setKeyAddProduct] = useState(Math.random())
-
-  // modal edit product status
-  const [modalEditQuantityAndPrice, setModalEditQuantityAndPrice] = useState(false)
-  const [keyEditQuantityAndPrice, setKeyEditQuantityAndPrice] = useState(Math.random())
+  const openModalAddProducts = () => {
+    openModal({
+      title: 'Quantidade e Preço',
+      content: (
+        <AddProducts
+          onAdd={handleProductAdd}
+        />
+      )
+    })
+  }
 
   const openModalEditQuantityAndPrice = (index) => {
-    setSelectedProduct(index)
-    setModalEditQuantityAndPrice(true)
-  }
-
-  const closeModalAddProduct = () => {
-    setModalAddProduct(false)
-    setKeyAddProduct(Math.random())
-  }
-
-  const closeModalEditQuantityAndPrice = () => {
-    setModalEditQuantityAndPrice(false)
-    setKeyEditQuantityAndPrice(Math.random())
+    openModal({
+      title: 'Quantidade e Preço',
+      content: (
+        <EditQuantityAndPrice
+          product={cart[index]}
+          onEdit={handleEditQuantityAndPrice}
+        />
+      )
+    })
   }
 
   const handleProductAdd = (productsToAdd) => {
@@ -49,15 +48,14 @@ const BuildOrder = () => {
   }
 
   const handleEditQuantityAndPrice = (product) => {
+    closeModal()
+
     const newCart = [...cart]
 
     const index = newCart.findIndex(x => x.field.productionId === product.field.productionId)
     newCart[index] = product
 
     setCartData(newCart)
-
-    setModalEditQuantityAndPrice(false)
-    setKeyEditQuantityAndPrice(Math.random())
   }
 
   const removeProduct = (e, index) => {
@@ -93,7 +91,7 @@ const BuildOrder = () => {
         Realizar Venda
       </Title>
 
-      <Button full={window.screen.width <= 375} onClick={() => setModalAddProduct(true)}>
+      <Button full={window.screen.width <= 375} onClick={openModalAddProducts}>
         Adicionar Produto
       </Button>
 
@@ -158,32 +156,6 @@ const BuildOrder = () => {
       <Button variant="primary" full={window.screen.width <= 375} onClick={goFinishOrder}>
         Continuar
       </Button>
-
-      <Modal
-        key={keyAddProduct}
-        show={modalAddProduct}
-        closeModal={closeModalAddProduct}
-        title="Adicionar Produtos"
-        content={(
-          <AddProducts
-            toggleModal={() => setModalAddProduct(!modalAddProduct)}
-            onAdd={handleProductAdd}
-          />
-        )}
-      />
-
-      <Modal
-        key={keyEditQuantityAndPrice}
-        show={modalEditQuantityAndPrice}
-        closeModal={closeModalEditQuantityAndPrice}
-        title="Quantidade e Preço"
-        content={(
-          <EditQuantityAndPrice
-            product={cart[selectedProduct]}
-            onEdit={handleEditQuantityAndPrice}
-          />
-        )}
-      />
     </Container>
   )
 }

@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { Container, Title } from '@styles/components'
 import { OptionsContainer, OptionCard } from './styles'
-import Autocomplete from '@components/Autocomplete'
 
 import incomeSvg from '../../assets/images/income.svg'
 import stockSvg from '../../assets/images/stock.svg'
