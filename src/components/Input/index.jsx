@@ -19,19 +19,24 @@ const Input = React.forwardRef(({
   decimalMask: isDecimalMask = false,
   phoneMask: isPhoneMask = false,
   uppercase: isUppercase = false,
+  readOnly,
   ...rest
 }, ref) => {
   const [focus, setFocus] = useState(false)
   const [_inputMode, setInputMode] = useState(inputMode)
 
   const handleFocus = (e) => {
-    if (onFocus) onFocus(e)
-    setFocus(true)
+    if (!readOnly) {
+      if (onFocus) onFocus(e)
+      setFocus(true)
+    }
   }
 
   const handleBlur = (e) => {
-    if (onBlur) onBlur(e)
-    !e.target.value && setFocus(false)
+    if (!readOnly) {
+      if (onBlur) onBlur(e)
+      !e.target.value && setFocus(false)
+    }
   }
 
   const handleChange = (e) => {
@@ -99,6 +104,7 @@ const Input = React.forwardRef(({
         onChange={handleChange}
         onClick={handleClick}
         inputMode={inputMode}
+        readOnly={readOnly}
         {...rest}
       />
 

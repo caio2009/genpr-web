@@ -9,6 +9,7 @@ import { Container, Title, List, ListItem, ListItemBox, FlexRow, IconButton } fr
 import Button from '@components/Button'
 import CreateClassificationForm from '@components/Forms/CreateClassificationForm'
 import EditClassificationForm from '@components/Forms/EditClassificationForm'
+import ClassificationView from '@components/Containers/ModalViews/ClassificationView'
 
 import api from '@services/api'
 
@@ -41,6 +42,20 @@ const ClassificationList = () => {
     })
   }
 
+  const openModalView = (id) => {
+    openModal({
+      title: 'Classificação',
+      content: (
+        <ClassificationView 
+          entityId={id}
+          onClose={closeModal}
+          onEditClick={() => openModalEdit(id)}
+          onRemoveClick={() => handleRemove(id)}
+        />
+      )
+    })
+  }
+
   const openModalEdit = (id) => {
     openModal({
       title: 'Editar Classificação',
@@ -62,6 +77,7 @@ const ClassificationList = () => {
       if (res) {
         await api.delete(`classifications/${id}`)
 
+        closeModal()
         addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
         loadClassifications()
       }
@@ -84,6 +100,7 @@ const ClassificationList = () => {
     e.stopPropagation()
 
     openOptionDialog([
+      { label: 'Editar', action: () => openModalEdit(id) },
       { label: 'Remover', action: () => handleRemove(id) }
     ])
   }
@@ -107,7 +124,7 @@ const ClassificationList = () => {
           <ListItem
             hoverable
             key={index}
-            onClick={() => openModalEdit(item.id)}
+            onClick={() => openModalView(item.id)}
           >
             <ListItemBox grow={1}>
               <p>{item.name}</p>

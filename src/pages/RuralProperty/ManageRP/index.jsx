@@ -14,6 +14,8 @@ import { RuralPropertyInfo, InfoField } from './styles'
 import Button from '@components/Button'
 import EditRuralPropertyForm from '@components/Forms/EditRuralPropertyForm'
 import CreateFieldForm from '@components/Forms/CreateFieldForm'
+import FieldView from '@components/Containers/ModalViews/FieldView'
+import EditFieldForm from '@components/Forms/EditFieldForm'
 
 const ManageRP = () => {
   const { id } = useParams()
@@ -72,6 +74,34 @@ const ManageRP = () => {
     })
   }
 
+  const openModalViewField = (id) => {
+    openModal({
+      title: 'Talhão',
+      content: (
+        <FieldView 
+          entityId={id}
+          onClose={closeModal}
+          onManageClick={() => goManageField(id)}
+          onEditClick={() => openModalEditField(id)}
+          onRemoveClick={() => handleRemoveField(id)}
+        />
+      )
+    })
+  }
+
+  const openModalEditField = (id) => {
+    openModal({
+      title: 'Editar Talhão',
+      content: (
+        <EditFieldForm
+          entityId={id}
+          onEdited={handleFieldEdited}
+          onCancel={closeModal}
+        />
+      )
+    })
+  }
+
   const handleRuralPropertyEdited = () => {
     closeModal()
     addToast({ title: 'Sucesso', description: 'Propriedade rural editada com sucesso!' })
@@ -86,6 +116,7 @@ const ManageRP = () => {
       if (res) {
         await api.delete(`fields/${id}`)
 
+        closeModal()
         addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
         loadFields()
       }
@@ -98,10 +129,18 @@ const ManageRP = () => {
     loadFields()
   }
 
+  const handleFieldEdited = () => {
+    closeModal()
+    addToast({ title: 'Sucesso', description: 'Talhão editado com sucesso!' })
+    loadFields()
+  }
+
   const handleOpenOptionDialog = (e, id) => {
     e.stopPropagation()
 
     openOptionDialog([
+      { label: 'Gerenciar', action: () => goManageField(id)},
+      { label: 'Editar', action: () => openModalEditField(id) },
       { label: 'Remover', action: () => handleRemoveField(id) }
     ])
   }
@@ -168,7 +207,7 @@ const ManageRP = () => {
             <ListItem
               hoverable
               key={index}
-              onClick={() => goManageField(item.id)}
+              onClick={() => openModalViewField(item.id)}
             >
               <ListItemBox grow={1}>
                 <Subtitle>{item.name}</Subtitle>

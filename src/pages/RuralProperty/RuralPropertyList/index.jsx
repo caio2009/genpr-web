@@ -10,6 +10,7 @@ import { Container, Title, Subtitle, List, ListItem, ListItemBox, FlexRow, IconB
 import Button from '@components/Button'
 import CreateRuralPropertyForm from '@components/Forms/CreateRuralPropertyForm'
 import EditRuralPropertyForm from '@components/Forms/EditRuralPropertyForm'
+import RuralPropertyView from '@components/Containers/ModalViews/RuralPropertyView'
 
 import api from '@services/api'
 
@@ -43,6 +44,21 @@ const RuralPropertyList = () => {
     })
   }
 
+  const openModalView = (id) => {
+    openModal({
+      title: 'Propriedade Rural',
+      content: (
+        <RuralPropertyView 
+          entityId={id}
+          onClose={closeModal}
+          onManageClick={() => goManageRuralProperty(id)}
+          onEditClick={() => openModalEdit(id)}
+          onRemoveClick={() => handleRemove(id)}
+        />
+      )
+    })
+  }
+
   const openModalEdit = (id) => {
     openModal({
       title: 'Editar Propriedade Rural',
@@ -64,6 +80,7 @@ const RuralPropertyList = () => {
       if (res) {
         await api.delete(`ruralProperties/${id}`)
 
+        closeModal()
         addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
         loadRuralProperties()
       }
@@ -83,6 +100,7 @@ const RuralPropertyList = () => {
   }
 
   const goManageRuralProperty = (id) => {
+    closeModal()
     history.push(`/propriedades-rurais/gerenciar/${id}`)
   }
 
@@ -90,8 +108,9 @@ const RuralPropertyList = () => {
     e.stopPropagation()
 
     openOptionDialog([
-      { label: 'Remover', action: () => handleRemove(id) },
-      { label: 'Gerenciar', action: () => goManageRuralProperty(id) }
+      { label: 'Gerenciar', action: () => goManageRuralProperty(id) },
+      { label: 'Editar', action: () => openModalEdit(id) },
+      { label: 'Remover', action: () => handleRemove(id) }
     ])
   }
 
@@ -114,7 +133,7 @@ const RuralPropertyList = () => {
           <ListItem
             hoverable
             key={index}
-            onClick={() => openModalEdit(item.id)}
+            onClick={() => openModalView(item.id)}
           >
             <ListItemBox grow={1}>
               <Subtitle>{item.name}</Subtitle>

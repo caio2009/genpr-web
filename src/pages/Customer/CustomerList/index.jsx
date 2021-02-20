@@ -9,6 +9,7 @@ import { Container, Title, Subtitle, List, ListItem, ListItemBox, FlexRow, IconB
 import Button from '@components/Button'
 import CreateCustomerForm from '@components/Forms/CreateCustomerForm'
 import EditCustomerForm from '@components/Forms/EditCustomerForm'
+import CustomerView from '@components/Containers/ModalViews/CustomerView'
 
 import api from '@services/api'
 
@@ -41,6 +42,20 @@ const CustomerList = () => {
     })
   }
 
+  const openModalView = (id) => {
+    openModal({
+      title: 'Cliente',
+      content: (
+        <CustomerView 
+          entityId={id}
+          onClose={closeModal}
+          onEditClick={() => openModalEdit(id)}
+          onRemoveClick={() => handleRemove(id)}
+        />
+      )
+    })
+  }
+
   const openModalEdit = (id) => {
     openModal({
       title: 'Editar Cliente',
@@ -62,6 +77,7 @@ const CustomerList = () => {
       if (res) {
         await api.delete(`customers/${id}`)
 
+        closeModal()
         addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
         loadUnitMeasures()
       }
@@ -84,6 +100,7 @@ const CustomerList = () => {
     e.stopPropagation()
 
     openOptionDialog([
+      { label: 'Editar', action: () => openModalEdit(id) },
       { label: 'Remover', action: () => handleRemove(id) }
     ])
   }
@@ -107,7 +124,7 @@ const CustomerList = () => {
           <ListItem
             hoverable
             key={index}
-            onClick={() => openModalEdit(item.id)}
+            onClick={() => openModalView(item.id)}
           >
             <ListItemBox grow={1}>
               <Subtitle>{item.name}</Subtitle>

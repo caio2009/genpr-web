@@ -9,6 +9,7 @@ import { Container, Title, Subtitle, List, ListItem, ListItemBox, FlexRow, IconB
 import Button from '@components/Button'
 import CreateCultivationForm from '@components/Forms/CreateCultivationForm'
 import EditCultivationForm from '@components/Forms/EditCultivationForm'
+import CultivationView from '@components/Containers/ModalViews/CultivationView'
 
 import api from '@services/api'
 
@@ -41,6 +42,20 @@ const CultivationList = () => {
     })
   }
 
+  const openModalView = (id) => {
+    openModal({
+      title: 'Cultura',
+      content: (
+        <CultivationView 
+          entityId={id}
+          onClose={closeModal}
+          onEditClick={() => openModalEdit(id)}
+          onRemoveClick={() => handleRemove(id)}
+        />
+      )
+    })
+  }
+
   const openModalEdit = (id) => {
     openModal({
       title: 'Editar Cultura',
@@ -62,6 +77,7 @@ const CultivationList = () => {
       if (res) {
         await api.delete(`cultivations/${id}`)
 
+        closeModal()
         addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
         loadCultivations()
       }
@@ -84,6 +100,7 @@ const CultivationList = () => {
     e.stopPropagation()
 
     openOptionDialog([
+      { label: 'Editar', action: () => openModalEdit(id) },
       { label: 'Remover', action: () => handleRemove(id) }
     ])
   }
@@ -107,7 +124,7 @@ const CultivationList = () => {
           <ListItem
             hoverable
             key={index}
-            onClick={() => openModalEdit(item.id)}
+            onClick={() => openModalView(item.id)}
           >
             <ListItemBox style={{ marginRight: 16 }}>
               {item.imageUrl && <AvatarImg src={item.imageUrl} />}

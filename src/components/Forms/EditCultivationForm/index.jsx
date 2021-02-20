@@ -63,7 +63,7 @@ const EditCultivationForm = ({ entityId: id, onEdited, onCancel }) => {
       <Input
         ref={register}
         name="imageUrl"
-        label="URL da Imagem"
+        label="URL da imagem"
         onChange={(value) => setValue('imageUrl', value)}
         defaultValue={cultivation?.imageUrl}
       />

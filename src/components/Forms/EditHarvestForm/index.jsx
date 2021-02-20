@@ -76,7 +76,8 @@ const EditHarvestForm = ({ entityId: id, onEdited, onCancel }) => {
       ...data, 
       ruralPropertyId: harvest.ruralProperty.id, 
       fieldId: harvest.field.id, 
-      cultivationId: harvest.cultivation.id 
+      cultivationId: harvest.cultivation.id,
+      availableQuantity: data.quantity
     })
 
     onEdited()

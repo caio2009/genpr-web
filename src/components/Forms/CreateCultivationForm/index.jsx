@@ -48,7 +48,7 @@ const CreateCultivationForm = ({ onCreated, onCancel }) => {
       <Input
         ref={register}
         name="imageUrl"
-        label="URL da Imagem"
+        label="URL da imagem"
         onChange={(value) => setValue('imageUrl', value)}
         error={errors.imageUrl}
       />

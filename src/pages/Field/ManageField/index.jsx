@@ -15,6 +15,7 @@ import Button from '@components/Button'
 import EditFieldForm from '@components/Forms/EditFieldForm'
 import CreateHarvestForm from '@components/Forms/CreateHarvestForm'
 import EditHarvestForm from '@components/Forms/EditHarvestForm'
+import HarvestView from '@components/Containers/ModalViews/HarvestView'
 
 const ManageRP = () => {
   const { id } = useParams()
@@ -76,6 +77,20 @@ const ManageRP = () => {
     })
   }
 
+  const openModalViewHarvest = (id) => {
+    openModal({
+      title: 'Colheita',
+      content: (
+        <HarvestView 
+          entityId={id}
+          onClose={closeModal}
+          onEditClick={() => openModalEditHarvest(id)}
+          onRemoveClick={() => handleRemoveHarvest(id)}
+        />
+      )
+    })
+  }
+
   const openModalEditHarvest = (id) => {
     openModal({
       title: 'Editar Colheita',
@@ -95,7 +110,7 @@ const ManageRP = () => {
     loadField()
   }
 
-  const handleRemoveProduction = (id) => {
+  const handleRemoveHarvest = (id) => {
     openConfirmDialog({
       title: 'Confirmação de Remoção',
       message: 'Realmente tem certeza de realizar essa operação de remoção?'
@@ -103,6 +118,7 @@ const ManageRP = () => {
       if (res) {
         await api.delete(`harvests/${id}`)
 
+        closeModal()
         addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
         loadHarvests()
       }
@@ -125,7 +141,8 @@ const ManageRP = () => {
     e.stopPropagation()
 
     openOptionDialog([
-      { label: 'Remover', action: () => handleRemoveProduction(id) }
+      { label: 'Editar', action: () => openModalEditHarvest(id) },
+      { label: 'Remover', action: () => handleRemoveHarvest(id) }
     ])
   }
 
@@ -196,7 +213,7 @@ const ManageRP = () => {
             <ListItem
               hoverable
               key={index}
-              onClick={() => openModalEditHarvest(item.id)}
+              onClick={() => openModalViewHarvest(item.id)}
             >
               <ListItemBox grow={1}>
                 <Subtitle>{item.classification.name}</Subtitle>

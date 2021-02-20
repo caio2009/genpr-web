@@ -9,6 +9,7 @@ import { Container, Title, List, ListItem, ListItemBox, FlexRow, IconButton } fr
 import Button from '@components/Button'
 import CreateUnitMeasureForm from '@components/Forms/CreateUnitMeasureForm'
 import EditUnitMeasureForm from '@components/Forms/EditUnitMeasureForm'
+import UnitMeasureView from '@components/Containers/ModalViews/UnitMeasureView'
 
 import api from '@services/api'
 
@@ -41,6 +42,20 @@ const CultivationList = () => {
     })
   }
 
+  const openModalView = (id) => [
+    openModal({
+      title: 'Unidade de Medida',
+      content: (
+        <UnitMeasureView 
+          entityId={id}
+          onClose={closeModal}
+          onEditClick={() => openModalEdit(id)}
+          onRemoveClick={() => handleRemove(id)}
+        />
+      )
+    })
+  ]
+
   const openModalEdit = (id) => {
     openModal({
       title: 'Editar Unidade de Medida',
@@ -62,6 +77,7 @@ const CultivationList = () => {
       if (res) {
         await api.delete(`unitMeasures/${id}`)
 
+        closeModal()
         addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
         loadUnitMeasures()
       }
@@ -84,6 +100,7 @@ const CultivationList = () => {
     e.stopPropagation()
 
     openOptionDialog([
+      { label: 'Editar', action: () => openModalEdit(id) },
       { label: 'Remover', action: () => handleRemove(id) }
     ])
   }
@@ -107,7 +124,7 @@ const CultivationList = () => {
           <ListItem
             hoverable
             key={index}
-            onClick={() => openModalEdit(item.id)}
+            onClick={() => openModalView(item.id)}
           >
             <ListItemBox grow={1}>
               <p>{item.name} ({item.abbreviation})</p>
