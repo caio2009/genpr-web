@@ -45,6 +45,7 @@ const ManageRP = () => {
   }, [loadRuralProperty, loadFields])
 
   const goManageField = (id) => {
+    closeModal()
     history.push(`/talhoes/gerenciar/${id}`)
   }
 
@@ -151,6 +152,10 @@ const ManageRP = () => {
         Gerenciar Propriedade Rural
       </Title>
 
+      <Subtitle>
+        Informações da Propriedade Rural
+      </Subtitle>
+
       <RuralPropertyInfo>
         <div style={{ display: infoDisplay ? 'block' : 'none', marginBottom: '.25rem' }}>
           <FlexRow>
@@ -185,7 +190,7 @@ const ManageRP = () => {
         </div>
 
         <Button full onClick={() => setInfoDisplay(!infoDisplay)}>
-          {infoDisplay ? 'Esconder' : 'Informações da Propriedade Rural'}
+          {infoDisplay ? 'Esconder' : 'Mostrar'}
         </Button>
       </RuralPropertyInfo>
 

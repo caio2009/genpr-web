@@ -5,17 +5,18 @@ import colors from './colors'
 export const Container = styled.section`
   ${props => props.page && css`
     margin-top: 48px;
+    margin-bottom: 30px;
   `}
 
-  padding: 1.25rem 1rem 30px;
+  padding: 1.25rem 1rem;
 `
 
 export const Title = styled.h1`
   ${props => props.flex && css`flex: ${props.flex};`}
 
-  font-size: ${props => props.size ? `${props.size}rem` : '1.25rem'};
+  font-size: ${props => props.size ? props.size : 1.25}rem;
   font-weight: bold;
-  margin-bottom: ${props => props.marginBottom !== undefined ? props.marginBottom : '1rem'};
+  margin-bottom: ${props => props.marginBottom !== undefined ? props.marginBottom : 1}rem;
   text-transform: uppercase;
 
   ${props => props.centered && css`text-align: center;`}
@@ -26,7 +27,7 @@ export const Subtitle = styled.h2`
 
   font-size: ${props => props.size ? `${props.size}rem` : '1rem'};
   font-weight: bold;
-  margin-bottom: .5rem;
+  margin-bottom: ${props => props.marginBottom !== undefined ? props.marginBottom : 0.5}rem;
 `
 
 export const List = styled.div`

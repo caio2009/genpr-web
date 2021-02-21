@@ -7,7 +7,7 @@ import uppercase from '../Input/uppercase'
 const Autocomplete = React.forwardRef(({ 
   name, 
   label, 
-  options, 
+  options = [], 
   defaultValue = '', 
   error, 
   onBlur, 

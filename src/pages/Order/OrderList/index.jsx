@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { useToast } from '@hooks/Toast/toast'
 import { useConfirmDialog } from '@hooks/confirmDialog'
 import { useOptionDialog } from '@hooks/optionDialog'
-import { useModal } from '@hooks/modal'
+// import { useModal } from '@hooks/modal'
 
 import { FiMoreVertical } from 'react-icons/fi'
 import { Container, Title, List, ListItem, ListItemBox, FlexRow, IconButton } from '@styles/components'
@@ -18,7 +18,7 @@ const CultivationList = () => {
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
-  const { openModal, closeModal } = useModal()
+  // const { openModal, closeModal } = useModal()
 
   const [orders, setOrders] = useState([])
 
@@ -62,11 +62,11 @@ const CultivationList = () => {
     })
   }
 
-  const handleEdited = () => {
-    closeModal()
-    addToast({ title: 'Sucesso', description: 'Venda editada com sucesso!' })
-    loadClassifications()
-  }
+  // const handleEdited = () => {
+  //   closeModal()
+  //   addToast({ title: 'Sucesso', description: 'Venda editada com sucesso!' })
+  //   loadClassifications()
+  // }
 
   const handleOpenOptionDialog = (e, id) => {
     e.stopPropagation()
