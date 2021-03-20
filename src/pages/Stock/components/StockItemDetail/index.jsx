@@ -6,19 +6,18 @@ import { Subtitle, FlexRow } from '@styles/components'
 import { Wrapper, ItemDetail } from './styles'
 
 const StockItemDetail = ({ item }) => {
-  const [ruralProperties, setRuralProperties] = useState([])
-  const unitMeasureAbbreviation = item?.unitMeasure.abbreviation
+  const [details, setDetails] = useState([])
 
-  const loadRuralProperties = useCallback(async () => {
-    if (item?.fields) {
-      const res = await api.get('ruralProperties')
-      setRuralProperties(res.data.filter(x => item.fields.find(y => y.ruralPropertyId === x.id)))
+  const loadDetails = useCallback(async () => {
+    if (item) {
+      const res = await api.get(`stock/details?cultivation_id=${item.cultivation.id}&classification_id=${item.classification.id}&unit_measure_id=${item.unitMeasure.id}`)
+      setDetails(res.data)
     }
   }, [item])
 
   useEffect(() => {
-    loadRuralProperties()
-  }, [item, loadRuralProperties])
+    loadDetails()
+  }, [item, loadDetails])
 
   return (
     <div>
@@ -26,26 +25,26 @@ const StockItemDetail = ({ item }) => {
         Origem
       </Subtitle>
 
-      {ruralProperties.length > 0 && ruralProperties.map((rp, index) => (
+      {details?.origins?.map((origin, index) => (
         <Wrapper key={index}>
           <FlexRow justifyContent="space-between" bottom={0.5}>
             <p>
-              {rp.name}
+              {origin.ruralProperty.name}
             </p>
 
             <p>
-              Total: {item?.fields && item.fields.filter(item => item.ruralPropertyId === rp.id).map(item => item.availableQuantity).reduce((prev, curr) => prev + curr, 0)} {unitMeasureAbbreviation}
+              Total: {origin.ruralProperty.harvests.map(harvest => harvest.availableQuantity).reduce((prev, curr) => prev + curr, 0)} {details?.unitMeasure.abbreviation}
             </p>
           </FlexRow>
 
-          {item?.fields && item.fields.filter(item => item.ruralPropertyId === rp.id).map((item, index) => (
+          {origin.ruralProperty.harvests.map((harvest, index) => (
             <ItemDetail key={index}>
               <h4>
-                {item.name}
+                {harvest.field.name}
               </h4>
 
               <p>
-                {item.availableQuantity} {unitMeasureAbbreviation}
+                {harvest.availableQuantity} {details.unitMeasure.abbreviation}
               </p>
             </ItemDetail>
           ))}

@@ -22,7 +22,7 @@ const CultivationList = () => {
   const [unitMeasures, setUnitMeasures] = useState([])
 
   const loadUnitMeasures = async () => {
-    const res = await api.get('unitMeasures')
+    const res = await api.get('unit-measures')
     setUnitMeasures(res.data)
   }
 

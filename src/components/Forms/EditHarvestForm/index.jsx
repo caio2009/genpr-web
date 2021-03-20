@@ -17,7 +17,7 @@ const schema = yup.object().shape({
   classificationId: yup.string().required(errorMessages.required),
   unitMeasureId: yup.string().required(errorMessages.required),
   quantity: yup.number().positive().moreThan(0),
-  registerDate: yup.date()
+  date: yup.date()
 })
 
 const EditHarvestForm = ({ entityId: id, onEdited, onCancel }) => {
@@ -31,14 +31,8 @@ const EditHarvestForm = ({ entityId: id, onEdited, onCancel }) => {
 
   const loadProduction = useCallback(async () => {
     if (id) {
-      const res = await api.get(`harvests/${id}?_expand=ruralProperty&_expand=field&_expand=cultivation`)
-      setHarvest({
-        ...res.data,
-        cultivation: {
-          id: res.data.cultivation.id,
-          name: `${res.data.cultivation.name} ${res.data.cultivation.variety}`
-        }
-      })
+      const res = await api.get(`harvests/${id}`)
+      setHarvest(res.data)
     }
   }, [id])
 
@@ -48,7 +42,7 @@ const EditHarvestForm = ({ entityId: id, onEdited, onCancel }) => {
   }
 
   const loadUnitMeasures = async () => {
-    const res = await api.get('unitMeasures')
+    const res = await api.get('unit-measures')
     setUnitMeasures(res.data)
   }
 
@@ -58,26 +52,14 @@ const EditHarvestForm = ({ entityId: id, onEdited, onCancel }) => {
     loadUnitMeasures()
   }, [loadProduction])
 
-  const formatData = (data) => ({
-    ...data,
-    classificationId: Number(data.classificationId),
-    unitMeasureId: Number(data.unitMeasureId),
-    quantity: Number(data.quantity)
-  })
-
   const onSubmit = async (data) => {
-    data = formatData(data)
-
-    if (data.registerDate !== harvest.registerDate) {
-      data.registerDate = new Date(new Date(data.registerDate).getTime() + 1000 * 60 * 60 * 3)
-    }
+    // if (data.registerDate !== harvest.registerDate) {
+    //   data.registerDate = new Date(new Date(data.registerDate).getTime() + 1000 * 60 * 60 * 3)
+    // }
 
     await api.put(`harvests/${id}`, { 
-      ...data, 
-      ruralPropertyId: harvest.ruralProperty.id, 
-      fieldId: harvest.field.id, 
-      cultivationId: harvest.cultivation.id,
-      availableQuantity: data.quantity
+      ...data,
+      fieldId: harvest.field.id
     })
 
     onEdited()
@@ -99,7 +81,7 @@ const EditHarvestForm = ({ entityId: id, onEdited, onCancel }) => {
 
       <Input
         label="Cultura *"
-        defaultValue={harvest?.cultivation.name}
+        defaultValue={harvest?.cultivation.fullname}
         readOnly
       />
 
@@ -109,7 +91,7 @@ const EditHarvestForm = ({ entityId: id, onEdited, onCancel }) => {
         name="classificationId"
         label="Classificação *"
         onChange={(value) => setValue('classificationId', value)}
-        defaultValue={harvest?.classificationId}
+        defaultValue={harvest?.classification?.id}
         error={errors.classificationId}
       />
 
@@ -119,7 +101,7 @@ const EditHarvestForm = ({ entityId: id, onEdited, onCancel }) => {
         name="unitMeasureId"
         label="Unidade de medida *"
         onChange={(value) => setValue('unitMeasureId', value)}
-        defaultValue={harvest?.unitMeasureId}
+        defaultValue={harvest?.unitMeasure?.id}
         error={errors.unitMeasureId}
       />
 
@@ -128,21 +110,21 @@ const EditHarvestForm = ({ entityId: id, onEdited, onCancel }) => {
         name="quantity"
         label="Quantidade *"
         inputMode="numeric"
-        onChange={(value) => setValue('area', value)}
+        onChange={(value) => setValue('quantity', Number(value))}
         defaultValue={harvest?.quantity}
         error={errors.quantity}
       />
 
       {harvest?.registerDate && <Controller
         control={control}
-        name="registerDate"
+        name="date"
         defaultValue={new Date(harvest?.registerDate)}
         render={() => (
           <InputDate
-            label="Data de registro *"
-            onChange={(value) => setValue('registerDate', new Date(value))}
-            defaultValue={format(new Date(harvest?.registerDate), 'yyyy-MM-dd')}
-            error={errors.registerDate}
+            label="Data *"
+            onChange={(value) => setValue('date', new Date(value))}
+            defaultValue={format(new Date(harvest?.date), 'yyyy-MM-dd')}
+            error={errors.date}
           />
         )}
       />}

@@ -11,20 +11,20 @@ import Button from '@components/Button'
 const AddQuantityAndPrice = ({ product, onAdd }) => {
   const { cart } = useGlobal()
 
-  const [ruralProperties, setRuralProperties] = useState([])
+  const [details, setDetails] = useState([])
   const [quantityValues, setQuantityValues] = useState({})
   const [unitPrice, setUnitPrice] = useState(null)
 
-  const loadRuralProperties = useCallback(async () => {
-    if (product?.fields) {
-      const res = await api.get('ruralProperties')
-      setRuralProperties(res.data.filter(x => product.fields.find(y => y.ruralPropertyId === x.id)))
+  const loadDetails = useCallback(async () => {
+    if (product) {
+      const res = await api.get(`stock/details?cultivation_id=${product.cultivation.id}&classification_id=${product.classification.id}&unit_measure_id=${product.unitMeasure.id}`)
+      setDetails(res.data)
     }
   }, [product])
 
   useEffect(() => {
-    loadRuralProperties()
-  }, [product, loadRuralProperties])
+    loadDetails()
+  }, [product, loadDetails])
 
   const setQuantityValue = (key, value) => {
     const newObj = { ...quantityValues }
@@ -36,21 +36,18 @@ const AddQuantityAndPrice = ({ product, onAdd }) => {
     const productsToAdd = []
 
     for (let key in quantityValues) {
+      let ruralProperty = details.origins.find(origin => origin.ruralProperty.harvests.map(harvest => harvest.id).includes(Number(key))).ruralProperty
+      let harvest = ruralProperty.harvests.find(harvest => harvest.id === Number(key))
+
       if (quantityValues[key] > 0) {
-        const field = product.fields.find(item => item.id === Number(key))
-
-        const ruralProperty = ruralProperties.find(item => item.id === field.ruralPropertyId)
-
         const obj = {
           ...product,
-          field,
-          ruralProperty,
-          orderedQuantity: Number(quantityValues[key]),
+          harvestId: harvest.id,
+          ruralProperty: { id: ruralProperty.id, name: ruralProperty.name },
+          field: { id: harvest.field.id, name: harvest.field.name },
+          quantity: Number(quantityValues[key]),
           unitPrice: Number(unitPrice)
         }
-
-        // delete obj.availableQuantity
-        delete obj.fields
 
         productsToAdd.push(obj)
       }
@@ -63,7 +60,7 @@ const AddQuantityAndPrice = ({ product, onAdd }) => {
     <div>
       <Input
         label="Produto"
-        defaultValue={product?.cultivation.name}
+        defaultValue={product?.cultivation.fullname}
         readOnly
       />
 
@@ -81,24 +78,24 @@ const AddQuantityAndPrice = ({ product, onAdd }) => {
 
       <br />
 
-      {ruralProperties.length > 0 && ruralProperties.map((rp, index) => (
+      {details?.origins?.map((origin, index) => (
         <Wrapper key={index}>
           <FlexRow justifyContent="space-between">
             <h4>
-              {rp.name}
+              {origin.ruralProperty.name}
             </h4>
           </FlexRow>
 
-          {product?.fields && product.fields.filter(item => item.ruralPropertyId === rp.id).map((item, index) => (
+          {origin.ruralProperty.harvests.map((harvest, index) => (
             <ProductField key={index}>
               <FlexRow alignItems="center" justifyContent="space-between">
                 <div>
                   <h4>
-                    {item.name}
+                    {harvest.field.name}
                   </h4>
 
                   <p>
-                    Qtd. Disponível: {item.availableQuantity - (cart.filter(product => product.productionId === item.productionId).map(product => product.orderedQuantity).reduce((prev, curr) => prev + curr, 0)) - (quantityValues[item.id] || 0)}
+                    Qtd. Disponível: {harvest.availableQuantity - (cart.filter(product => product.harvestId === harvest.id).map(product => product.quantity).reduce((prev, curr) => prev + curr, 0)) - (quantityValues[harvest.id] || 0)}
                   </p>
                 </div>
 
@@ -106,8 +103,8 @@ const AddQuantityAndPrice = ({ product, onAdd }) => {
                   type="text"
                   inputMode="numeric"
                   size={3}
-                  defaultValue={quantityValues[item.id] || '0'}
-                  onChange={(e) => setQuantityValue(item.id, Number(e.target.value))}
+                  defaultValue={quantityValues[harvest.id] || '0'}
+                  onChange={(e) => setQuantityValue(harvest.id, Number(e.target.value))}
                   onClick={(e) => e.target.select()}
                   onBlur={(e) => !e.target.value && (e.target.value = '0')}
                 />

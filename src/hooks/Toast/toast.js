@@ -10,7 +10,7 @@ const ToastProvider = ({ children }) => {
   const addToast = ({ type = 'success', title, description }) => {
     const id = Math.floor(Math.random() * 100 + 1)
 
-    setToasts([...toasts, { id, type, title, description }])
+    setToasts(state => [...state, { id, type, title, description }])
   }
 
   const removeToast = (id) => {

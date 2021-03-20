@@ -30,12 +30,12 @@ const ManageRP = () => {
   const [infoDisplay, setInfoDisplay] = useState(false)
 
   const loadRuralProperty = useCallback(async () => {
-    const res = await api.get(`ruralProperties/${id}`)
+    const res = await api.get(`rural-properties/${id}`)
     setRuralProperty(res.data)
   }, [id])
 
   const loadFields = useCallback(async () => {
-    const res = await api.get(`ruralProperties/${id}/fields?_expand=cultivation`)
+    const res = await api.get(`rural-properties/${id}/fields`)
     setFields(res.data)
   }, [id])
 

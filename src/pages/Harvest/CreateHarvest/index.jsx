@@ -18,14 +18,8 @@ const CreateHarvest = () => {
   const [field, setField] = useState(null)
 
   const loadField = useCallback(async () => {
-    const res = await api.get(`fields/${fieldId}?_expand=ruralProperty&_expand=cultivation`)
-    setField({
-      ...res.data,
-      cultivation: {
-        id: res.data.cultivation.id,
-        name: `${res.data.cultivation.name} ${res.data.cultivation.variety}`
-      }
-    })
+    const res = await api.get(`fields/${fieldId}`)
+    setField(res.data)
   }, [fieldId])
 
   useEffect(() => {
@@ -46,9 +40,9 @@ const CreateHarvest = () => {
         title="Nova Colheita"
         content={(
           <CreateHarvestForm 
-            ruralProperty={{ id: field?.ruralProperty.id, name: field?.ruralProperty.name || '' }}
-            field={{ id: field?.id, name: field?.name || '' }}
-            cultivation={{ id: field?.cultivation.id, name: field?.cultivation.name }}
+            ruralProperty={{ name: field?.ruralProperty.name }}
+            field={{ id: field?.id, name: field?.name }}
+            cultivation={{ id: field?.cultivation.id, fullname: field?.cultivation.fullname }}
             onCreated={handleCreated}
             onCancel={() => history.goBack()}
           />

@@ -13,7 +13,7 @@ const ClassificationView = ({ entityId: id, onClose, onEditClick, onRemoveClick 
 
   const loadHarvest = useCallback(async () => {
     if (id) {
-      const res = await api.get(`harvests/${id}?_expand=ruralProperty&_expand=field&_expand=cultivation&_expand=classification&_expand=unitMeasure`)
+      const res = await api.get(`harvests/${id}`)
       setHarvest(res.data)
     }
   }, [id])
@@ -51,7 +51,7 @@ const ClassificationView = ({ entityId: id, onClose, onEditClick, onRemoveClick 
       <Input
         name="cultivation"
         label="Cultura"
-        defaultValue={harvest?.cultivation.name}
+        defaultValue={harvest?.cultivation.fullname}
         readOnly
       />
 
@@ -65,7 +65,7 @@ const ClassificationView = ({ entityId: id, onClose, onEditClick, onRemoveClick 
       <Input
         name="unitMeasureName"
         label="Unidade de Medida"
-        defaultValue={harvest?.unitMeasure.name}
+        defaultValue={harvest?.unitMeasure.abbreviation}
         readOnly
       />
 
@@ -79,7 +79,7 @@ const ClassificationView = ({ entityId: id, onClose, onEditClick, onRemoveClick 
       <Input
         name="registerDate"
         label="Data de registro"
-        defaultValue={harvest?.registerDate && format(new Date(harvest?.registerDate), 'dd/MM/yyyy')}
+        defaultValue={harvest?.date && format(new Date(harvest?.date), 'dd/MM/yyyy')}
         readOnly
       />
 

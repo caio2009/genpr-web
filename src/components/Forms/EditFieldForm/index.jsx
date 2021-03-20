@@ -78,7 +78,7 @@ const EditFieldForm = ({ entityId: id, onEdited, onCancel }) => {
         name="cultivationId"
         label="Cultura *"
         onChange={(value) => setValue('cultivationId', value)}
-        defaultValue={field?.cultivationId}
+        defaultValue={field?.cultivation.id}
         error={errors.cultivationId}
       />
 
@@ -91,7 +91,7 @@ const EditFieldForm = ({ entityId: id, onEdited, onCancel }) => {
             label="Área"
             inputMode="numeric"
             decimalMask
-            defaultValue={field.area.toFixed(2)}
+            defaultValue={field.area}
             onChange={(value) => setValue('area', Number(value))}
             error={errors.area}
           />

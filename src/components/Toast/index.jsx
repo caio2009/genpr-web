@@ -7,7 +7,7 @@ import { Wrapper, IconWrapper, ContentWrapper, Title, Description, CloseButton }
 const Toast = ({ id, type, title, description }) => {
   const { removeToast } = useToast()
 
-  const AUTO_REMOVE_TIME = 4 * 1000
+  const AUTO_REMOVE_TIME = 10 * 1000
 
   const icons = {
     success: <FiCheckCircle size={20} />,

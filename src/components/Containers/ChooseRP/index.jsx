@@ -9,7 +9,7 @@ const ChooseRP = ({ description, onChange }) => {
   const [ruralProperties, setRuralProperties] = useState([])
 
   const loadRuralProperties = async () => {
-    const res = await api.get('ruralProperties')
+    const res = await api.get('rural-properties')
     setRuralProperties(res.data)
   }
 

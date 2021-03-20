@@ -31,31 +31,32 @@ const ManageRP = () => {
   const today = new Date()
 
   const [field, setField] = useState(null)
-  const [harvests, setHarvests] = useState([])
+  const [mappedHarvest, setMappedHarvests] = useState([])
   const [infoDisplay, setInfoDisplay] = useState(false)
   const [selectedYear, setSelectedYear] = useState(() => getYear(today))
   const [selectedMonth, setSelectedMonth] = useState(() => getMonth(today))
+  const [years, setYears] = useState([])
 
   const loadField = useCallback(async () => {
-    const res = await api.get(`fields/${id}?_expand=ruralProperty&_expand=cultivation`)
-    setField({
-      ...res.data,
-      cultivation: {
-        id: res.data.cultivation.id,
-        name: `${res.data.cultivation.name} ${res.data.cultivation.variety}`
-      }
-    })
+    const res = await api.get(`fields/${id}`)
+    setField(res.data)
   }, [id])
 
   const loadHarvests = useCallback(async () => {
-    const res = await api.get(`fields/${id}/harvests?_expand=classification&_expand=unitMeasure`)
-    setHarvests(res.data)
+    const res = await api.get(`harvests/query?field_id=${id}&year=${selectedYear}&month=${selectedMonth + 1}`)
+    setMappedHarvests(res.data)
+  }, [id, selectedYear, selectedMonth])
+
+  const loadYears = useCallback(async () => {
+    const res = await api.get(`harvests/years?field_id=${id}`)
+    setYears(res.data)
   }, [id])
 
   useEffect(() => {
     loadField()
     loadHarvests()
-  }, [loadField, loadHarvests])
+    loadYears()
+  }, [loadField, loadHarvests, loadYears])
 
   const openModalEditField = () => {
     openModal({
@@ -75,9 +76,9 @@ const ManageRP = () => {
       title: 'Nova Colheita',
       content: (
         <CreateHarvestForm
-          ruralProperty={{ id: field?.ruralProperty.id, name: field?.ruralProperty.name || '' }}
-          field={{ id: field?.id, name: field?.name || '' }}
-          cultivation={{ id: field?.cultivation.id, name: field?.cultivation.name }}
+          ruralProperty={{ name: field?.ruralProperty.name }}
+          field={{ id: field?.id, name: field?.name }}
+          cultivation={{ fullname: field?.cultivation.fullname }}
           onCreated={handleHarvestCreated}
           onCancel={closeModal}
         />
@@ -154,35 +155,39 @@ const ManageRP = () => {
     ])
   }
 
-  const years = useMemo(() => {
-    return [...new Set(harvests.map(x => getYear(new Date(x.registerDate))))].map(year => ({ value: year, label: year }))
-  }, [harvests])
+  const yearsOptions = useMemo(() => {
+    return years.map(year => ({ value: year, label: year }))
+  }, [years])
 
-  const formatMonth = (value) => {
-    return value < 10 ? `0${value}` : value
-  }
+  // const years = useMemo(() => {
+  //   return [...new Set(harvests.map(x => getYear(new Date(x.registerDate))))].map(year => ({ value: year, label: year }))
+  // }, [harvests])
 
-  const filteredHarvests = useMemo(() => {
-    const mappedHarvests = new Map()
+  // const formatMonth = (value) => {
+  //   return value < 10 ? `0${value}` : value
+  // }
 
-    const dates = new Set(harvests.map(x => {
-      const date = new Date(x.registerDate)
-      return new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`)
-    }))
+  // const filteredHarvests = useMemo(() => {
+  //   const mappedHarvests = new Map()
 
-    dates.forEach(date => {
-      mappedHarvests.set(format(date, 'dd/MM/yyyy'), harvests.filter(x => format(new Date(x.registerDate), 'dd/MM/yyyy') === format(date, 'dd/MM/yyyy')))
-    })
+  //   const dates = new Set(harvests.map(x => {
+  //     const date = new Date(x.registerDate)
+  //     return new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`)
+  //   }))
 
-    const filteredHarvests = Array.from(mappedHarvests).filter(x => x[0].split('/').slice(1).join('/') === `${formatMonth(selectedMonth + 1)}/${selectedYear}`)
+  //   dates.forEach(date => {
+  //     mappedHarvests.set(format(date, 'dd/MM/yyyy'), harvests.filter(x => format(new Date(x.registerDate), 'dd/MM/yyyy') === format(date, 'dd/MM/yyyy')))
+  //   })
 
-    return filteredHarvests.map(x => ({ date: x[0], harvests: x[1] }))
-  }, [harvests, selectedYear, selectedMonth])
+  //   const filteredHarvests = Array.from(mappedHarvests).filter(x => x[0].split('/').slice(1).join('/') === `${formatMonth(selectedMonth + 1)}/${selectedYear}`)
+
+  //   return filteredHarvests.map(x => ({ date: x[0], harvests: x[1] }))
+  // }, [harvests, selectedYear, selectedMonth])
 
   const openSelectYear = () => {
     openSelectDialog({
       title: 'Selecione um ano',
-      options: years
+      options: yearsOptions
     }).then(value => {
       setSelectedYear(value)
     })
@@ -226,7 +231,7 @@ const ManageRP = () => {
           <FlexRow>
             <InfoField style={{ flex: 1 }}>
               <h4>Cultura</h4>
-              <p>{field?.cultivation.name} {field?.cultivation.variety}</p>
+              <p>{field?.cultivation.fullname}</p>
             </InfoField>
 
             <InfoField style={{ flex: 1 }}>
@@ -276,14 +281,19 @@ const ManageRP = () => {
 
       <br />
 
-      {filteredHarvests.length ? filteredHarvests.map((item, index) => (
+      {/* 
+        index 0: date
+        index 1: harvest  
+      */}
+
+      {mappedHarvest.length ? mappedHarvest.map((item, index) => (
         <Accordion
           key={index}
-          title={item.date}
+          title={item[0]}
           content={(
             <List>
               {
-                item.harvests.map((item, index) => (
+                item[1].map((item, index) => (
                   <ListItem
                     hoverable
                     key={index}

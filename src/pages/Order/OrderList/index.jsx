@@ -3,22 +3,22 @@ import { useHistory } from 'react-router-dom'
 import { useToast } from '@hooks/Toast/toast'
 import { useConfirmDialog } from '@hooks/confirmDialog'
 import { useOptionDialog } from '@hooks/optionDialog'
-// import { useModal } from '@hooks/modal'
+import { useModal } from '@hooks/modal'
 
 import { FiMoreVertical } from 'react-icons/fi'
 import { Container, Title, List, ListItem, ListItemBox, FlexRow, IconButton } from '@styles/components'
 import Button from '@components/Button'
-// import EditOrderForm from '@components/Forms/EditOrderForm'
+import EditOrderForm from '@components/Forms/EditOrderForm'
 
 import api from '@services/api'
 import { format } from 'date-fns'
 
-const CultivationList = () => {
+const OrderList = () => {
   const history = useHistory()
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
-  // const { openModal, closeModal } = useModal()
+  const { openModal, closeModal } = useModal()
 
   const [orders, setOrders] = useState([])
 
@@ -36,16 +36,16 @@ const CultivationList = () => {
   }
 
   const openModalEdit = (id) => {
-    // openModal({
-    //   title: 'Editar Venda',
-    //   content: (
-    //     <EditOrderForm
-    //       entityId={id}
-    //       onEdited={handleEdited}
-    //       onCancel={closeModal}
-    //     />
-    //   )
-    // })
+    openModal({
+      title: 'Editar Venda',
+      content: (
+        <EditOrderForm
+          entityId={id}
+          onEdited={handleEdited}
+          onCancel={closeModal}
+        />
+      )
+    })
   }
 
   const handleRemove = (id) => {
@@ -62,16 +62,17 @@ const CultivationList = () => {
     })
   }
 
-  // const handleEdited = () => {
-  //   closeModal()
-  //   addToast({ title: 'Sucesso', description: 'Venda editada com sucesso!' })
-  //   loadClassifications()
-  // }
+  const handleEdited = () => {
+    closeModal()
+    addToast({ title: 'Sucesso', description: 'Venda editada com sucesso!' })
+    loadClassifications()
+  }
 
   const handleOpenOptionDialog = (e, id) => {
     e.stopPropagation()
 
     openOptionDialog([
+      { label: 'Editar', action: () => openModalEdit(id) },
       { label: 'Remover', action: () => handleRemove(id) }
     ])
   }
@@ -99,10 +100,10 @@ const CultivationList = () => {
           >
             <ListItemBox grow={1}>
               <h4>Venda {format(new Date(item.date), 'dd/MM/yyyy')}</h4>
-              <p>Cliente: {item.customer}</p>
-              <p>Local de entrega: {item.deliveryPlace}</p>
-              <p>Placa do veículo: {item.numberPlate}</p>
-              <p>Total: {item.totalPrice.toFixed(2)}</p>
+              <p>Cliente: {item.customer.name || item.customer}</p>
+              <p>Local de entrega: {item.deliveryPlace.description || item.deliveryPlace}</p>
+              <p>Placa do veículo: {item.licensePlate.code || item.licensePlate}</p>
+              <p>Total: {item.totalPrice}</p>
             </ListItemBox>
 
             <ListItemBox>
@@ -117,4 +118,4 @@ const CultivationList = () => {
   )
 }
 
-export default CultivationList;
+export default OrderList;

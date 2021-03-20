@@ -24,7 +24,7 @@ const EditUnitMeasureForm = ({ entityId: id, onEdited, onCancel }) => {
 
   const loadRuralProperty = useCallback(async () => {
     if (id) {
-      const res = await api.get(`unitMeasures/${id}`)
+      const res = await api.get(`unit-measures/${id}`)
       setUnitMeasure(res.data)
     }
   }, [id])

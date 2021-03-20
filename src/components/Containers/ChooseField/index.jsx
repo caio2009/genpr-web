@@ -10,7 +10,7 @@ const ChooseField = ({ ruralPropertyId, description, onChange }) => {
 
   const loadFields = useCallback(async () => {
     if (ruralPropertyId) {
-      const res = await api.get(`ruralProperties/${ruralPropertyId}/fields`)
+      const res = await api.get(`rural-properties/${ruralPropertyId}/fields`)
       setFields(res.data)
     }
   }, [ruralPropertyId])

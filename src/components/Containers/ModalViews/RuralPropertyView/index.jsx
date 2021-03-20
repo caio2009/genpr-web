@@ -12,7 +12,7 @@ const RuralPropertyView = ({ entityId: id, onClose, onManageClick, onEditClick, 
 
   const loadRuralProperty = useCallback(async () => {
     if (id) {
-      const res = await api.get(`ruralProperties/${id}`)
+      const res = await api.get(`rural-properties/${id}`)
       setRuralProperty(res.data)
     }
   }, [id])
@@ -54,7 +54,7 @@ const RuralPropertyView = ({ entityId: id, onClose, onManageClick, onEditClick, 
       <Input
         name="area"
         label="Área"
-        defaultValue={ruralProperty?.area.toFixed(2)}
+        defaultValue={ruralProperty?.area}
         readOnly
       />
 

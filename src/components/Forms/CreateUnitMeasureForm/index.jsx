@@ -21,7 +21,7 @@ const CreateUnitMeasureForm = ({ onCreated, onCancel }) => {
   })
 
   const onSubmit = async (data) => {
-    await api.post('unitMeasures', data)
+    await api.post('unit-measures', data)
 
     onCreated()
   }

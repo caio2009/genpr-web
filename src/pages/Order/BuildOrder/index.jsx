@@ -22,7 +22,7 @@ const BuildOrder = () => {
 
   const openModalAddProducts = () => {
     openModal({
-      title: 'Quantidade e Preço',
+      title: 'Adicionar Produto',
       content: (
         <AddProducts
           onAdd={handleProductAdd}
@@ -106,11 +106,11 @@ const BuildOrder = () => {
           <CartItem key={index} onClick={() => openModalEditQuantityAndPrice(index)}>
             <ItemDescription>
               <strong>
-                {item.cultivation.name} {item.classification.name} {item.unitMeasure.abbreviation}
+                {item.cultivation.fullname} {item.classification.name} {item.unitMeasure.abbreviation}
               </strong>
 
               <p>
-                Origem: {item.ruralProperty.name} / {item.field.name}
+                {item.ruralProperty.name} / {item.field.name}
               </p>
 
               <p>
@@ -118,12 +118,12 @@ const BuildOrder = () => {
               </p>
 
               <p>
-                Subtotal: R$ {Number(item.unitPrice * item.orderedQuantity).toFixed(2)}
+                Subtotal: R$ {Number(item.unitPrice * item.quantity).toFixed(2)}
               </p>
             </ItemDescription>
 
             <ItemQuantity>
-              <strong>X {item.orderedQuantity}</strong>
+              <strong>X {item.quantity}</strong>
             </ItemQuantity>
 
             <ItemControl>
@@ -147,7 +147,7 @@ const BuildOrder = () => {
         </span>
 
         <span>
-          R$ {cart.map(product => product.orderedQuantity * product.unitPrice).reduce((prev, curr) => prev + curr, 0).toFixed(2)}
+          R$ {cart.map(product => product.quantity * product.unitPrice).reduce((prev, curr) => prev + curr, 0).toFixed(2)}
         </span>
       </TotalPrice>
 

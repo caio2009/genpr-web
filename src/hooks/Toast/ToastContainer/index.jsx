@@ -7,9 +7,9 @@ import Toast from '@components/Toast'
 const ToastContainer = ({ toasts }) => {
   return createPortal(
     <Wrapper>
-      {toasts.map((toast, index) => (
+      {toasts.map(toast => (
         <Toast
-          key={index}
+          key={toast.id}
           id={toast.id}
           type={toast.type}
           title={toast.title}

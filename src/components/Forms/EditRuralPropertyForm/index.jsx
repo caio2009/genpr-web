@@ -26,13 +26,13 @@ const EditRuralPropertyForm = ({ entityId: id, onEdited, onCancel }) => {
 
   const loadRuralProperty = useCallback(async () => {
     if (id) {
-      const res = await api.get(`ruralProperties/${id}`)
+      const res = await api.get(`rural-properties/${id}`)
       setRuralProperty(res.data)
     }
   }, [id])
 
   const onSubmit = async (data) => {
-    await api.put(`ruralProperties/${id}`, data)
+    await api.put(`rural-properties/${id}`, data)
 
     onEdited()
   }
@@ -70,7 +70,7 @@ const EditRuralPropertyForm = ({ entityId: id, onEdited, onCancel }) => {
             label="Área"
             inputMode="numeric"
             decimalMask
-            defaultValue={ruralProperty.area.toFixed(2)}
+            defaultValue={ruralProperty.area}
             onChange={(value) => setValue('area', Number(value))}
             error={errors.area}
           />

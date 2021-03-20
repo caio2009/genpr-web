@@ -1,47 +1,45 @@
-import React, { useCallback, useEffect, useState } from 'react'
-
-import api from '@services/api'
+import React, { useEffect, useState, useCallback } from 'react'
 
 import { FlexRow } from '@styles/components'
 import { Wrapper, ProductField } from './styles'
 import Input from '@components/Input'
 import Button from '@components/Button'
 
+import api from '@services/api'
+
 const EditQuantityAndPrice = ({ product, onEdit }) => {
-  const [production, setProduction] = useState(null)
+  const [harvest, setHarvest] = useState(null)
   const [quantity, setQuantity] = useState(undefined)
   const [unitPrice, setUnitPrice] = useState(undefined)
 
-  const loadProduction = useCallback(async () => {
+  const loadHarvest = useCallback(async () => {
     if (product) {
-      const res = await api.get(`productions/${product.productionId}`)
-      setProduction(res.data)
+      const res = await api.get(`harvests/${product.harvestId}`)
+      setHarvest(res.data)
     }
   }, [product])
 
   useEffect(() => {
-    loadProduction()
-  }, [product, loadProduction])
+    loadHarvest()
 
-  useEffect(() => {
-    if (product?.orderedQuantity) {
-      setQuantity(product.orderedQuantity)
+    if (product?.quantity) {
+      setQuantity(product.quantity)
     }
 
     if (product?.unitPrice) {
-      setUnitPrice(product.unitPrice.toFixed(2))
+      setUnitPrice(product.unitPrice)
     }
-  }, [product])
+  }, [product, loadHarvest])
 
   const updateProduct = () => {
-    onEdit({ ...product, orderedQuantity: Number(quantity), unitPrice: Number(unitPrice) })
+    onEdit({ ...product, quantity: Number(quantity), unitPrice: Number(unitPrice) })
   }
 
   return (
     <div>
       <Input
         label="Produto"
-        defaultValue={product?.cultivation.name}
+        defaultValue={product?.cultivation.fullname}
       />
 
       <Input
@@ -71,7 +69,7 @@ const EditQuantityAndPrice = ({ product, onEdit }) => {
               </h4>
 
               <p>
-                Qtd. Disponível: {production?.quantity - quantity}
+                Qtd. Disponível: {harvest?.availableQuantity + product.quantity - quantity}
               </p>
             </div>
 
@@ -81,6 +79,7 @@ const EditQuantityAndPrice = ({ product, onEdit }) => {
               size={3}
               defaultValue={quantity}
               onChange={(e) => setQuantity(e.target.value)}
+              onBlur={(e) => !e.target.value && (e.target.value = '0')}
               onClick={(e) => e.target.select()}
             />
           </FlexRow>

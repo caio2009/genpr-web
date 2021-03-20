@@ -12,7 +12,7 @@ const UnitMeasureView = ({ entityId: id, onClose, onEditClick, onRemoveClick }) 
 
   const loadUnitMeasure = useCallback(async () => {
     if (id) {
-      const res = await api.get(`unitMeasures/${id}`)
+      const res = await api.get(`unit-measures/${id}`)
       setUnitMeasure(res.data)
     }
   }, [id])

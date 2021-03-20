@@ -41,14 +41,14 @@ const CultivationView = ({ entityId: id, onClose, onEditClick, onRemoveClick }) 
       />
 
       <Input
-        name="name"
+        name="variety"
         label="Variedade"
         defaultValue={cultivation?.variety}
         readOnly
       />
 
       <Input
-        name="name"
+        name="imageUrl"
         label="URL da imagem"
         defaultValue={cultivation?.imageUrl}
         readOnly

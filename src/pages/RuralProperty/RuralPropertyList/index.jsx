@@ -24,7 +24,7 @@ const RuralPropertyList = () => {
   const [ruralProperties, setRuralProperties] = useState([])
 
   const loadRuralProperties = async () => {
-    const res = await api.get('ruralProperties')
+    const res = await api.get('rural-properties')
     setRuralProperties(res.data)
   }
 
@@ -78,7 +78,7 @@ const RuralPropertyList = () => {
       message: 'Realmente tem certeza de realizar essa operação de remoção?'
     }).then(async res => {
       if (res) {
-        await api.delete(`ruralProperties/${id}`)
+        await api.delete(`rural-properties/${id}`)
 
         closeModal()
         addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })

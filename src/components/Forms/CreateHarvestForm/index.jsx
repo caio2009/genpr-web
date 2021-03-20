@@ -17,7 +17,7 @@ const schema = yup.object().shape({
   classificationId: yup.string().required(errorMessages.required),
   unitMeasureId: yup.string().required(errorMessages.required),
   quantity: yup.number().positive().moreThan(0),
-  registerDate: yup.date()
+  date: yup.date()
 })
 
 const CreateHarvestForm = ({ ruralProperty, field, cultivation, onCreated, onCancel }) => {
@@ -35,7 +35,7 @@ const CreateHarvestForm = ({ ruralProperty, field, cultivation, onCreated, onCan
   }
 
   const loadUnitMeasures = async () => {
-    const res = await api.get('unitMeasures')
+    const res = await api.get('unit-measures')
     setUnitMeasures(res.data)
   }
 
@@ -44,26 +44,14 @@ const CreateHarvestForm = ({ ruralProperty, field, cultivation, onCreated, onCan
     loadUnitMeasures()
   }, [])
 
-  const formatData = (data) => ({
-    ...data,
-    classificationId: Number(data.classificationId),
-    unitMeasureId: Number(data.unitMeasureId),
-    quantity: Number(data.quantity)
-  })
-
   const onSubmit = async (data) => {
-    data = formatData(data)
-
-    if (data.registerDate.getTime() !== defaultDate.getTime()) {
-      data.registerDate = new Date(new Date(data.registerDate).getTime() + 1000 * 60 * 60 * 3)
-    }
+    // if (data.registerDate.getTime() !== defaultDate.getTime()) {
+    //   data.registerDate = new Date(new Date(data.registerDate).getTime() + 1000 * 60 * 60 * 3)
+    // }
 
     await api.post('harvests', { 
-      ...data, 
-      ruralPropertyId: ruralProperty.id, 
-      fieldId: field.id, 
-      cultivationId: cultivation.id,
-      availableQuantity: data.quantity
+      ...data,
+      fieldId: field.id
     })
 
     onCreated()
@@ -85,7 +73,7 @@ const CreateHarvestForm = ({ ruralProperty, field, cultivation, onCreated, onCan
 
       <Input
         label="Cultura *"
-        defaultValue={cultivation.name}
+        defaultValue={cultivation.fullname}
         readOnly
       />
 
@@ -112,21 +100,21 @@ const CreateHarvestForm = ({ ruralProperty, field, cultivation, onCreated, onCan
         name="quantity"
         label="Quantidade *"
         inputMode="numeric"
-        onChange={(value) => setValue('area', value)}
+        onChange={(value) => setValue('area', Number(value))}
         defaultValue="0"
         error={errors.quantity}
       />
 
       <Controller
         control={control}
-        name="registerDate"
+        name="date"
         defaultValue={defaultDate}
         render={() => (
           <InputDate
-            label="Data de registro *"
-            onChange={(value) => setValue('registerDate', new Date(value))}
+            label="Data *"
+            onChange={(value) => setValue('date', new Date(value))}
             defaultValue={format(defaultDate, 'yyyy-MM-dd')}
-            error={errors.registerDate}
+            error={errors.date}
           />
         )}
       />

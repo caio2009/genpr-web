@@ -13,7 +13,7 @@ const FieldView = ({ entityId: id, onClose, onManageClick, onEditClick, onRemove
 
   const loadField = useCallback(async () => {
     if (id) {
-      const res = await api.get(`fields/${id}?_expand=ruralProperty&_expand=cultivation`)
+      const res = await api.get(`fields/${id}`)
       setField(res.data)
     }
   }, [id])
@@ -55,14 +55,14 @@ const FieldView = ({ entityId: id, onClose, onManageClick, onEditClick, onRemove
       <Input
         name="cultivationName"
         label="Cultura"
-        defaultValue={field?.cultivation.name}
+        defaultValue={field?.cultivation.fullname}
         readOnly
       />
 
       <Input
         name="area"
         label="Área"
-        defaultValue={field?.area.toFixed(2)}
+        defaultValue={field?.area}
         readOnly
       />
 

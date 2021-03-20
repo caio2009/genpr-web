@@ -11,7 +11,7 @@ import errorMessages from '../errorMessages'
 import { format } from 'date-fns'
 
 import { FiTrash } from 'react-icons/fi'
-import { FlexRow, IconButton } from '@styles/components'
+import { FlexRow, IconButton, Subtitle } from '@styles/components'
 import { Cart, CartItem, ItemDescription, ItemQuantity, ItemControl } from '@pages/Order/BuildOrder/styles'
 import Input from '@components/Input'
 import InputDate from '@components/InputDate'
@@ -33,13 +33,13 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
   const { openModal, closeModal } = useModal()
 
   const [order, setOrder] = useState(null)
-  const [filteredNumberPlates, setFilteredNumberPlates] = useState([])
+  const [filteredNumberPlates, setFilteredLicensePlates] = useState([])
   const [filteredDeliveryPlaces, setFilteredDeliveryPlaces] = useState([])
-  const [customerId, setCustomerId] = useState(-1)
+  const [customerId, setCustomerId] = useState(undefined)
 
   const loadOrder = useCallback(async () => {
     if (id) {
-      const res = await api.get(`orders/${id}?_embed=orderItems`)
+      const res = await api.get(`orders/${id}`)
       setOrder(res.data)
 
       if (res.data.customerId) {
@@ -49,41 +49,41 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
   }, [id])
 
   const onSubmit = async (data) => {
-    // await api.put(`classifications/${id}`, data)
+    await api.put(`classifications/${id}`, { ...data, customerId })
 
-    // onEdited()
+    onEdited()
   }
 
   useEffect(() => {
     loadOrder()
   }, [loadOrder, id])
 
-  const filterNumberPlates = async (value, { isSelected }) => {
+  const filterLicensePlates = async (value, { isSelected }) => {
     if (isSelected) {
-      setFilteredNumberPlates([])
-      setValue('numberPlate', value)
+      setFilteredLicensePlates([])
+      setValue('licensePlate', value)
 
       getCostumerByNumberPlate()
       return
     }
 
     if (value) {
-      const res = await api.get('numberPlates')
-      const numberPlates = res.data
+      const res = await api.get('licensePlates')
+      const licensePlates = res.data
 
-      setFilteredNumberPlates(numberPlates.filter(x => x.code.toLowerCase().includes(value.toLowerCase())).map(x => ({ label: x.code })))
-      setValue('numberPlate', value)
+      setFilteredLicensePlates(licensePlates.filter(licensePlate => licensePlate.code.toLowerCase().includes(value.toLowerCase())).map(licensePlate => ({ label: licensePlate.code })))
+      setValue('licensePlate', value)
     } else {
-      setFilteredNumberPlates([])
+      setFilteredLicensePlates([])
     }
   }
 
   const getCostumerByNumberPlate = async () => {
-    const numberPlate = getValues('numberPlate')
+    const licensePlate = getValues('licensePlate')
 
-    if (numberPlate) {
-      const res = await api.get(`numberPlates?code=${numberPlate}&_expand=customer`)
-      const data = res.data[0]
+    if (licensePlate) {
+      const res = await api.get(`licensePlates/query?code=${licensePlate}`)
+      const data = res.data
 
       if (data) {
         customerInputRef.current.value = data.customer.name
@@ -105,7 +105,7 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
       const res = await api.get('deliveryPlaces')
       const deliveryPlaces = res.data
 
-      setFilteredDeliveryPlaces(deliveryPlaces.filter(x => x.description.toLowerCase().includes(value.toLowerCase())).map(x => ({ label: x.description })))
+      setFilteredDeliveryPlaces(deliveryPlaces.filter(deliveryPlace => deliveryPlace.description.toLowerCase().includes(value.toLowerCase())).map(deliveryPlace => ({ label: deliveryPlace.description })))
       setValue('deliveryPlace', value)
     } else {
       setFilteredDeliveryPlaces([])
@@ -125,11 +125,11 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
   }
 
   const handleEditQuantityAndPrice = (product) => {
-    closeModal()
+    // closeModal()
 
     const newOrderItems = [...order.orderItems]
 
-    const index = newOrderItems.findIndex(x => x.field.productionId === product.field.productionId)
+    const index = newOrderItems.findIndex(orderItem => orderItem.harvestId === product.harvestId)
     newOrderItems[index] = product
 
     setOrder({ ...order, orderItems: newOrderItems })
@@ -154,13 +154,13 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Autocomplete
         ref={register}
-        name="numberPlate"
+        name="licensePlate"
         label="Placa do veículo *"
         uppercase
         options={filteredNumberPlates}
-        defaultValue={order?.numberPlate}
-        onChange={filterNumberPlates}
-        error={errors.numberPlate}
+        defaultValue={order?.licensePlate || order?.licensePlate.code}
+        onChange={filterLicensePlates}
+        error={errors.licensePlate}
       />
 
       <Controller
@@ -171,7 +171,7 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
           <Input
             ref={customerInputRef}
             label="Cliente *"
-            defaultValue={order?.customer}
+            defaultValue={order?.customer || order?.customer.name}
             onChange={(value) => setValue('customer', value)}
             error={errors.customer}
           />
@@ -183,7 +183,7 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
         name="deliveryPlace"
         label="Local de entrega *"
         options={filteredDeliveryPlaces}
-        defaultValue={order?.deliveryPlace}
+        defaultValue={order?.deliveryPlace || order?.deliveryPlace.description}
         onChange={filterDeliveryPlaces}
         error={errors.deliveryPlace}
       />
@@ -202,29 +202,35 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
         )}
       />
 
+      <br />
+
+      <Subtitle>
+        Produtos da venda
+      </Subtitle>
+
       <Cart>
         {order?.orderItems.map((item, index) => (
           <CartItem key={index} onClick={() => openModalEditQuantityAndPrice(index)}>
             <ItemDescription>
               <strong>
-                {item.cultivation.name} {item.classification.name} {item.unitMeasure.abbreviation}
+                {item.cultivation.fullname} {item.classification.name} {item.unitMeasure.abbreviation}
               </strong>
 
               <p>
-                Origem: {item.ruralProperty.name} / {item.field.name}
+                {/* Origem: {item.ruralProperty.name} / {item.field.name} */}
               </p>
 
               <p>
-                Preço Unitário: R$ {Number(item.unitPrice).toFixed(2)}
+                Preço Unitário: R$ {item.unitPrice}
               </p>
 
               <p>
-                Subtotal: R$ {Number(item.unitPrice * item.orderedQuantity).toFixed(2)}
+                Subtotal: R$ {item.unitPrice * item.quantity}
               </p>
             </ItemDescription>
 
             <ItemQuantity>
-              <strong>X {item.orderedQuantity}</strong>
+              <strong>X {item.quantity}</strong>
             </ItemQuantity>
 
             <ItemControl>

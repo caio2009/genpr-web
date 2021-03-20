@@ -18,7 +18,7 @@ import Autocomplete from '@components/Autocomplete'
 import Button from '@components/Button'
 
 const schema = yup.object().shape({
-  numberPlate: yup.string().required(errorMessages.required),
+  licensePlate: yup.string().required(errorMessages.required),
   customer: yup.string().required(errorMessages.required),
   deliveryPlace: yup.string().required(errorMessages.required),
   date: yup.date()
@@ -34,32 +34,25 @@ const FinishOrder = () => {
   const { cart, setCartData } = useGlobal()
   const { addToast } = useToast()
 
-  const [filteredNumberPlates, setFilteredNumberPlates] = useState([])
+  const [filteredlicensePlates, setFilteredLicensePlates] = useState([])
   const [filteredDeliveryPlaces, setFilteredDeliveryPlaces] = useState([])
-  const [customerId, setCustomerId] = useState(-1)
+  const [customerId, setCustomerId] = useState(undefined)
 
   const defaultDate = new Date()
-  const totalPrice = cart.map(product => product.orderedQuantity * product.unitPrice).reduce((prev, curr) => prev + curr, 0)
+  const totalPrice = cart.map(product => product.quantity * product.unitPrice).reduce((prev, curr) => prev + curr, 0)
 
   const onSubmit = async (data) => {
-    let res = await api.post('orders', { ...data, customerId, totalPrice })
+    const orderItems = []
 
-    for (const orderItem of cart) {
-      await api.post('orderItems', {
-        orderId: res.data.id,
-        productionId: orderItem.productionId,
-        orderedQuantity: orderItem.orderedQuantity,
-        unitPrice: orderItem.unitPrice
+    cart.forEach(product => {
+      orderItems.push({
+        unitPrice: product.unitPrice,
+        quantity: product.quantity,
+        harvestId: product.harvestId
       })
+    })
 
-      res = await api.get(`/harvests/${orderItem.productionId}`)
-      const production = res.data
-
-      await api.put(`harvests/${orderItem.productionId}`, {
-        ...production,
-        availableQuantity: production.availableQuantity - orderItem.orderedQuantity
-      })
-    }
+    await api.post('orders', { ...data, customerId, totalPrice, orderItems })
 
     addToast({
       title: 'Sucesso',
@@ -70,38 +63,37 @@ const FinishOrder = () => {
     history.push('/vendas/criar')
   }
 
-  const filterNumberPlates = async (value, { isSelected }) => {
+  const filterLicensePlates = async (value, { isSelected }) => {
     if (isSelected) {
-      setFilteredNumberPlates([])
-      setValue('numberPlate', value)
+      setFilteredLicensePlates([])
+      setValue('licensePlate', value)
 
-      getCostumerByNumberPlate()
+      getCustomerByLicensePlate()
       return
     }
 
     if (value) {
-      const res = await api.get('numberPlates')
-      const numberPlates = res.data
+      const res = await api.get('license-plates')
+      const licensePlates = res.data
 
-      setFilteredNumberPlates(numberPlates.filter(x => x.code.toLowerCase().includes(value.toLowerCase())).map(x => ({ label: x.code })))
-      setValue('numberPlate', value)
+      setFilteredLicensePlates(licensePlates.filter(licensePlate => licensePlate.code.toLowerCase().includes(value.toLowerCase())).map(licensePlate => ({ label: licensePlate.code })))
+      setValue('licensePlate', value)
     } else {
-      setFilteredNumberPlates([])
+      setFilteredLicensePlates([])
     }
   }
 
-  const getCostumerByNumberPlate = async () => {
-    const numberPlate = getValues('numberPlate')
+  const getCustomerByLicensePlate = async () => {
+    const licensePlate = getValues('licensePlate')
 
-    if (numberPlate) {
-      const res = await api.get(`numberPlates?code=${numberPlate}&_expand=customer`)
-      const data = res.data[0]
+    if (licensePlate) {
+      const res = await api.get(`license-plates/query?code=${licensePlate}`)
+      const data = res.data
 
       if (data) {
         customerInputRef.current.value = data.customer.name
         setValue('customer', data.customer.name)
         setCustomerId(data.customer.id)
-        console.log(getValues('customerId'))
       }
     }
   }
@@ -114,10 +106,10 @@ const FinishOrder = () => {
     }
 
     if (value) {
-      const res = await api.get('deliveryPlaces')
+      const res = await api.get('delivery-places')
       const deliveryPlaces = res.data
 
-      setFilteredDeliveryPlaces(deliveryPlaces.filter(x => x.description.toLowerCase().includes(value.toLowerCase())).map(x => ({ label: x.description })))
+      setFilteredDeliveryPlaces(deliveryPlaces.filter(deliveryPlace => deliveryPlace.description.toLowerCase().includes(value.toLowerCase())).map(deliveryPlace => ({ label: deliveryPlace.description })))
       setValue('deliveryPlace', value)
     } else {
       setFilteredDeliveryPlaces([])
@@ -133,12 +125,12 @@ const FinishOrder = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Autocomplete
           ref={register}
-          name="numberPlate"
+          name="licensePlate"
           label="Placa do veículo *"
           uppercase
-          options={filteredNumberPlates}
-          onChange={filterNumberPlates}
-          error={errors.numberPlate}
+          options={filteredlicensePlates}
+          onChange={filterLicensePlates}
+          error={errors.licensePlate}
         />
 
         <Controller
@@ -182,7 +174,7 @@ const FinishOrder = () => {
           name="totalPrice"
           label="Preço total *"
           readOnly
-          defaultValue={`R$ ${totalPrice.toFixed(2)}`}
+          defaultValue={`R$ ${totalPrice}`}
         />
 
         <br />
@@ -200,20 +192,20 @@ const FinishOrder = () => {
                 </strong>
 
                 <p>
-                  Origem: {item.ruralProperty.name} / {item.field.name}
+                  {item.ruralProperty.name} / {item.field.name}
                 </p>
 
                 <p>
-                  Preço Unitário: R$ {Number(item.unitPrice).toFixed(2)}
+                  Preço Unitário: R$ {item.unitPrice}
                 </p>
 
                 <p>
-                  Subtotal: R$ {Number(item.unitPrice * item.orderedQuantity).toFixed(2)}
+                  Subtotal: R$ {item.unitPrice * item.quantity}
                 </p>
               </ItemDescription>
 
               <ItemQuantity>
-                <strong>X {item.orderedQuantity}</strong>
+                <strong>X {item.quantity}</strong>
               </ItemQuantity>
             </CartItem>
           ))}

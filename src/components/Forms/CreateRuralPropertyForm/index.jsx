@@ -23,7 +23,7 @@ const CreateRuralPropertyForm = ({ onCreated, onCancel }) => {
   })
 
   const onSubmit = async (data) => {
-    await api.post('ruralProperties', data)
+    await api.post('rural-properties', data)
 
     onCreated()
   }
