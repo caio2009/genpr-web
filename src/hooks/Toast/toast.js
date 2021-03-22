@@ -10,16 +10,18 @@ const ToastProvider = ({ children }) => {
   const addToast = ({ type = 'success', title, description }) => {
     const id = Math.floor(Math.random() * 100 + 1)
 
-    setToasts(state => [...state, { id, type, title, description }])
+    const toast = { id, type, title, description }
+
+    setToasts(state => [...state, toast])
   }
 
   const removeToast = (id) => {
-    setToasts(toasts.filter(toast => toast.id !== id))
+    setToasts(state => state.filter(toast => toast.id !== id))
   }
 
   return (
-    <ToastContext.Provider value={{ addToast, removeToast }}>
-      <ToastContainer toasts={toasts} />
+    <ToastContext.Provider value={{ addToast, removeToast, toasts }}>
+      <ToastContainer />
       {children}
     </ToastContext.Provider>
   )

@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useToast } from '../../hooks/Toast/toast'
 
 import { FiX, FiCheckCircle, FiAlertCircle, FiAlertTriangle, FiInfo } from 'react-icons/fi'
-import { Wrapper, IconWrapper, ContentWrapper, Title, Description, CloseButton } from './styles'
+import { Wrapper, IconWrapper, ContentWrapper, Title, Description, CloseButton, Bar } from './styles'
 
 const Toast = ({ id, type, title, description }) => {
   const { removeToast } = useToast()
-
-  const AUTO_REMOVE_TIME = 10 * 1000
+  const barRef = useRef(null)
+  const toastRef = useRef(null)
 
   const icons = {
     success: <FiCheckCircle size={20} />,
@@ -17,17 +17,19 @@ const Toast = ({ id, type, title, description }) => {
   }
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      removeToast(id)
-    }, AUTO_REMOVE_TIME)
+    barRef.current.addEventListener('animationend', () => {
+      toastRef.current.style.animationPlayState = 'running'
 
-    return () => {
-      clearTimeout(timer)
-    }
-  }, [removeToast, id, AUTO_REMOVE_TIME])
+      // setTimeout(() => { removeToast(id) }, 400)
+    })
+
+    toastRef.current.addEventListener('animationend', () => {
+      setTimeout(() => { removeToast(id) }, 400)
+    })
+  }, [removeToast, id, barRef])
 
   return (
-    <Wrapper type={type}>
+    <Wrapper ref={toastRef} type={type}>
       <IconWrapper>
         {icons[type]}
       </IconWrapper>
@@ -45,6 +47,8 @@ const Toast = ({ id, type, title, description }) => {
       <CloseButton onClick={() => removeToast(id)}>
         <FiX size={20} />
       </CloseButton>
+
+      <Bar ref={barRef} />
     </Wrapper>
   )
 }

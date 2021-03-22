@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useGlobal } from '@hooks/global'
+// import { useGlobal } from '@hooks/global'
 import { useModal } from '@hooks/modal'
 
 import api from '@services/api'
@@ -9,7 +9,7 @@ import { StockItemsContainer, StockItem, StockItemData, CultivationName, Classif
 import AddQuantityAndPrice from '../AddQuantityAndPrice'
 
 const AddProducts = ({ onAdd }) => {
-  const { cart } = useGlobal()
+  // const { cart } = useGlobal()
   const { openModal, closeModal } = useModal()
 
   const [stockItems, setStockItems] = useState([])

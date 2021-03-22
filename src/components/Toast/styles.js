@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import colors from '../../styles/colors'
 
 const types = {
@@ -8,9 +8,37 @@ const types = {
   info: { bg: colors.blue, fc: colors.white }
 }
 
+const barAnimation = keyframes`
+  from {
+    width: 100%;
+  }
+
+  to {
+    width: 0%;
+  }
+`
+const hideToast = keyframes`
+  0% {
+    opacity: 1;
+  }
+
+  25% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0;
+    height: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+  }
+`
+
 export const Wrapper = styled.div`
   display: flex;
   align-items: flex-start;
+
+  position: relative;
 
   max-width: 400px;
   padding: .5rem;
@@ -18,10 +46,9 @@ export const Wrapper = styled.div`
   background: ${props => types[props.type].bg};
   color: ${props => types[props.type].fc};
   box-shadow: 0 0 2px 2px #0005;
+  margin-bottom: .25rem;
 
-  & + div {
-    margin-top: .5rem;
-  }
+  animation: ${hideToast} linear .4s paused;
 
   @media screen and (max-width: 375px) {
     max-width: 100%;
@@ -59,4 +86,15 @@ export const CloseButton = styled.button`
   border-radius: 50%;
   background: transparent;
   color: inherit;
+`
+
+export const Bar = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  height: 2px;
+  background: ${colors.white};
+
+  animation: ${barAnimation} 10s linear;
 `

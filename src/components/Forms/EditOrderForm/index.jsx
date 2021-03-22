@@ -125,7 +125,7 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
   }
 
   const handleEditQuantityAndPrice = (product) => {
-    // closeModal()
+    closeModal()
 
     const newOrderItems = [...order.orderItems]
 

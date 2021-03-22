@@ -1,11 +1,13 @@
 import React from 'react'
-import { createPortal } from 'react-dom'
+import { useToast } from '@hooks/Toast/toast'
 
 import { Wrapper } from './styles'
 import Toast from '@components/Toast'
 
-const ToastContainer = ({ toasts }) => {
-  return createPortal(
+const ToastContainer = () => {
+  const { toasts } = useToast()
+
+  return (
     <Wrapper>
       {toasts.map(toast => (
         <Toast
@@ -16,7 +18,7 @@ const ToastContainer = ({ toasts }) => {
           description={toast.description}
         />
       ))}
-    </Wrapper>, document.body
+    </Wrapper>
   )
 }
 
