@@ -19,7 +19,7 @@ const RuralPropertyList = () => {
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
-  const { openModal, closeModal } = useModal()
+  const { openModal, closeAllModals } = useModal()
 
   const [ruralProperties, setRuralProperties] = useState([])
 
@@ -34,11 +34,12 @@ const RuralPropertyList = () => {
 
   const openModalCreate = () => {
     openModal({
+      id: 'createRuralProperty',
       title: 'Nova Propriedade Rural',
       content: (
         <CreateRuralPropertyForm
           onCreated={handleCreated}
-          onCancel={closeModal}
+          onCancel={closeAllModals}
         />
       )
     })
@@ -46,11 +47,12 @@ const RuralPropertyList = () => {
 
   const openModalView = (id) => {
     openModal({
+      id: 'viewRuralProperty',
       title: 'Propriedade Rural',
       content: (
         <RuralPropertyView 
           entityId={id}
-          onClose={closeModal}
+          onClose={closeAllModals}
           onManageClick={() => goManageRuralProperty(id)}
           onEditClick={() => openModalEdit(id)}
           onRemoveClick={() => handleRemove(id)}
@@ -60,13 +62,16 @@ const RuralPropertyList = () => {
   }
 
   const openModalEdit = (id) => {
+    closeAllModals()
+
     openModal({
+      id: 'editRuralProperty',
       title: 'Editar Propriedade Rural',
       content: (
         <EditRuralPropertyForm
           entityId={id}
           onEdited={handleEdited}
-          onCancel={closeModal}
+          onCancel={closeAllModals}
         />
       )
     })
@@ -80,7 +85,7 @@ const RuralPropertyList = () => {
       if (res) {
         await api.delete(`rural-properties/${id}`)
 
-        closeModal()
+        closeAllModals()
         addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
         loadRuralProperties()
       }
@@ -88,19 +93,19 @@ const RuralPropertyList = () => {
   }
 
   const handleCreated = () => {
-    closeModal()
+    closeAllModals()
     addToast({ title: 'Sucesso', description: 'Propriedade rural criada com sucesso!' })
     loadRuralProperties()
   }
 
   const handleEdited = () => {
-    closeModal()
+    closeAllModals()
     addToast({ title: 'Sucesso', description: 'Propriedade rural editada com sucesso!' })
     loadRuralProperties()
   }
 
   const goManageRuralProperty = (id) => {
-    closeModal()
+    closeAllModals()
     history.push(`/propriedades-rurais/gerenciar/${id}`)
   }
 

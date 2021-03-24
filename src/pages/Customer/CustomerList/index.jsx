@@ -17,7 +17,7 @@ const CustomerList = () => {
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
-  const { openModal, closeModal } = useModal()
+  const { openModal, closeAllModals } = useModal()
 
   const [customers, setUnitMeasures] = useState([])
 
@@ -32,11 +32,12 @@ const CustomerList = () => {
 
   const openModalCreate = () => {
     openModal({
+      id: 'createCustomer',
       title: 'Novo Cliente',
       content: (
         <CreateCustomerForm
           onCreated={handleCreated}
-          onCancel={closeModal}
+          onCancel={closeAllModals}
         />
       )
     })
@@ -44,11 +45,12 @@ const CustomerList = () => {
 
   const openModalView = (id) => {
     openModal({
+      id: 'viewCustomer',
       title: 'Cliente',
       content: (
         <CustomerView 
           entityId={id}
-          onClose={closeModal}
+          onClose={closeAllModals}
           onEditClick={() => openModalEdit(id)}
           onRemoveClick={() => handleRemove(id)}
         />
@@ -57,13 +59,16 @@ const CustomerList = () => {
   }
 
   const openModalEdit = (id) => {
+    closeAllModals()
+
     openModal({
+      id: 'editCustomer',
       title: 'Editar Cliente',
       content: (
         <EditCustomerForm
           entityId={id}
           onEdited={handleEdited}
-          onCancel={closeModal}
+          onCancel={closeAllModals}
         />
       )
     })
@@ -77,7 +82,7 @@ const CustomerList = () => {
       if (res) {
         await api.delete(`customers/${id}`)
 
-        closeModal()
+        closeAllModals()
         addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
         loadUnitMeasures()
       }
@@ -85,13 +90,13 @@ const CustomerList = () => {
   }
 
   const handleCreated = () => {
-    closeModal()
+    closeAllModals()
     addToast({ title: 'Sucesso', description: 'Cliente criado com sucesso!' })
     loadUnitMeasures()
   }
 
   const handleEdited = () => {
-    closeModal()
+    closeAllModals()
     addToast({ title: 'Sucesso', description: 'Cliente editado com sucesso!' })
     loadUnitMeasures()
   }

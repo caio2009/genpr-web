@@ -5,33 +5,39 @@ import Modal from '@components/Modal'
 const ModalContext = createContext(null)
 
 const ModalProvider = ({ children }) => {
-  const [isOpened, setIsOpened] = useState(false) 
-  const [data, setData] = useState({})
+  const [data, setData] = useState([])
 
-  const openModal = ({ title, content, actions, fullPage }) => {
-    setData({ title, content, actions, fullPage })
-    setIsOpened(true)
+  const openModal = ({ id, title, content, actions, fullPage }) => {
+    const newModal = { id, title, content, actions, fullPage }
+
+    setData(state => [...state, newModal])
   }
 
-  const closeModal = () => {
-    setData({})
-    setIsOpened(false)
+  const closeModal = (id) => {
+    setData(state => state.filter(modal => modal.id !== id))
+  }
+
+  const closeAllModals = () => {
+    setData([])
   }
 
   return (
-    <ModalContext.Provider value={{ openModal, closeModal }}>
-      <Modal 
-        show={isOpened}
-        closeModal={closeModal}
-        title={data.title}
-        content={data.content}
-        actions={data.actions}
-        fullPage={data.fullPage}
-      />
+    <ModalContext.Provider value={{ openModal, closeModal, closeAllModals }}>
+      {data.map(model => (
+        <Modal
+          key={model.id}
+          show={true}
+          closeModal={() => closeModal(model.id)}
+          title={model.title}
+          content={model.content}
+          actions={model.actions}
+          fullPage={model.fullPage}
+        />
+      ))}
       {children}
     </ModalContext.Provider>
   )
-} 
+}
 
 const useModal = () => {
   return useContext(ModalContext)

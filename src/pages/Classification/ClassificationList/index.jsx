@@ -17,7 +17,7 @@ const ClassificationList = () => {
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
-  const { openModal, closeModal } = useModal()
+  const { openModal, closeAllModals } = useModal()
 
   const [classifications, setClassifications] = useState([])
 
@@ -32,11 +32,12 @@ const ClassificationList = () => {
 
   const openModalCreate = () => {
     openModal({
+      id: 'createClassification',
       title: 'Nova Classificação',
       content: (
         <CreateClassificationForm
           onCreated={handleCreated}
-          onCancel={closeModal}
+          onCancel={closeAllModals}
         />
       )
     })
@@ -44,11 +45,12 @@ const ClassificationList = () => {
 
   const openModalView = (id) => {
     openModal({
+      id: 'viewClassification',
       title: 'Classificação',
       content: (
         <ClassificationView 
           entityId={id}
-          onClose={closeModal}
+          onClose={closeAllModals}
           onEditClick={() => openModalEdit(id)}
           onRemoveClick={() => handleRemove(id)}
         />
@@ -57,13 +59,16 @@ const ClassificationList = () => {
   }
 
   const openModalEdit = (id) => {
+    closeAllModals()
+
     openModal({
+      id: 'editClassification',
       title: 'Editar Classificação',
       content: (
         <EditClassificationForm
           entityId={id}
           onEdited={handleEdited}
-          onCancel={closeModal}
+          onCancel={closeAllModals}
         />
       )
     })
@@ -77,7 +82,7 @@ const ClassificationList = () => {
       if (res) {
         await api.delete(`classifications/${id}`)
 
-        closeModal()
+        closeAllModals()
         addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
         loadClassifications()
       }
@@ -85,13 +90,13 @@ const ClassificationList = () => {
   }
 
   const handleCreated = () => {
-    closeModal()
+    closeAllModals()
     addToast({ title: 'Sucesso', description: 'Classificação criada com sucesso!' })
     loadClassifications()
   }
 
   const handleEdited = () => {
-    closeModal()
+    closeAllModals()
     addToast({ title: 'Sucesso', description: 'Classificação editada com sucesso!' })
     loadClassifications()
   }

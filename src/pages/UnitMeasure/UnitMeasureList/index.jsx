@@ -17,7 +17,7 @@ const CultivationList = () => {
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
-  const { openModal, closeModal } = useModal()
+  const { openModal, closeAllModals } = useModal()
 
   const [unitMeasures, setUnitMeasures] = useState([])
 
@@ -32,11 +32,12 @@ const CultivationList = () => {
 
   const openModalCreate = () => {
     openModal({
+      id: 'createUnitMeasure',
       title: 'Nova Unidade de Medida',
       content: (
         <CreateUnitMeasureForm
           onCreated={handleCreated}
-          onCancel={closeModal}
+          onCancel={closeAllModals}
         />
       )
     })
@@ -44,11 +45,12 @@ const CultivationList = () => {
 
   const openModalView = (id) => [
     openModal({
+      id: 'viewUnitMeasure',
       title: 'Unidade de Medida',
       content: (
         <UnitMeasureView 
           entityId={id}
-          onClose={closeModal}
+          onClose={closeAllModals}
           onEditClick={() => openModalEdit(id)}
           onRemoveClick={() => handleRemove(id)}
         />
@@ -57,13 +59,16 @@ const CultivationList = () => {
   ]
 
   const openModalEdit = (id) => {
+    closeAllModals()
+
     openModal({
+      id: 'editUnitMeasure',
       title: 'Editar Unidade de Medida',
       content: (
         <EditUnitMeasureForm
           entityId={id}
           onEdited={handleEdited}
-          onCancel={closeModal}
+          onCancel={closeAllModals}
         />
       )
     })
@@ -77,7 +82,7 @@ const CultivationList = () => {
       if (res) {
         await api.delete(`unitMeasures/${id}`)
 
-        closeModal()
+        closeAllModals()
         addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
         loadUnitMeasures()
       }
@@ -85,13 +90,13 @@ const CultivationList = () => {
   }
 
   const handleCreated = () => {
-    closeModal()
+    closeAllModals()
     addToast({ title: 'Sucesso', description: 'Unidade de medida criada com sucesso!' })
     loadUnitMeasures()
   }
 
   const handleEdited = () => {
-    closeModal()
+    closeAllModals()
     addToast({ title: 'Sucesso', description: 'Unidade de medida editada com sucesso!' })
     loadUnitMeasures()
   }

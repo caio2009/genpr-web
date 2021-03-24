@@ -22,66 +22,9 @@ const Stock = () => {
     loadProductions()
   }, [])
 
-  // const isStockItemDuplicated = (a, b) => {
-  //   return (
-  //     a.cultivation.id === b.cultivation.id &&
-  //     a.classification.id === b.classification.id &&
-  //     a.unitMeasure.id === b.unitMeasure.id
-  //   )
-  // }
-
-  // const stockItems = useMemo(() => {
-  //   let stockItems = []
-
-  //   for (let production of harvests) {
-  //     let isDuplicate = false
-
-  //     for (let item of stockItems) {
-  //       if (isStockItemDuplicated(item, production)) {
-  //         isDuplicate = true
-  //         break
-  //       }
-  //     }
-
-  //     if (isDuplicate) {
-  //       const index = stockItems.findIndex(item => item.cultivation.id === production.cultivation.id && item.classification.id === production.classification.id && item.unitMeasure.id === production.unitMeasure.id)
-  //       stockItems[index].availableQuantity += production.availableQuantity
-  //       stockItems[index].fields.push({ 
-  //         ...production.field,
-  //         availableQuantity: production.availableQuantity 
-  //       })
-  //       continue
-  //     }
-
-  //     stockItems.push({
-  //       cultivation: {
-  //         id: production.cultivation.id,
-  //         name: production.cultivation.name.concat(` ${production.cultivation.variety}`),
-  //         imageUrl: production.cultivation.imageUrl
-  //       },
-  //       classification: {
-  //         id: production.classification.id,
-  //         name: production.classification.name
-  //       },
-  //       unitMeasure: {
-  //         id: production.unitMeasure.id,
-  //         abbreviation: production.unitMeasure.abbreviation
-  //       },
-  //       availableQuantity: production.availableQuantity,
-  //       fields: [{
-  //         ...production.field,
-  //         availableQuantity: production.availableQuantity
-  //       }]
-  //     })
-  //   }
-
-  //   stockItems.sort((a, b) => a.cultivation.name.localeCompare(b.cultivation.name))
-
-  //   return stockItems
-  // }, [harvests])
-
   const openModalDetails = (index) => {
     openModal({
+      id: 'productDetails',
       title: 'Detalhes do Produto',
       content: (
         <StockItemDetail item={stockItems[index]} />

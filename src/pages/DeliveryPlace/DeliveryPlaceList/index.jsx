@@ -17,12 +17,12 @@ const CultivationList = () => {
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
-  const { openModal, closeModal } = useModal()
+  const { openModal, closeAllModals } = useModal()
 
   const [deliveryPlaces, setClassifications] = useState([])
 
   const loadDeliveryPlaces = async () => {
-    const res = await api.get('deliveryPlaces')
+    const res = await api.get('delivery-places')
     setClassifications(res.data)
   }
 
@@ -32,11 +32,12 @@ const CultivationList = () => {
 
   const openModalCreate = () => {
     openModal({
+      id: 'createDeliveryPlace',
       title: 'Novo Local de Entrega',
       content: (
         <CreateDeliveryPlaceForm
           onCreated={handleCreated}
-          onCancel={closeModal}
+          onCancel={closeAllModals}
         />
       )
     })
@@ -44,11 +45,12 @@ const CultivationList = () => {
 
   const openModalView = (id) => {
     openModal({
+      id: 'viewDeliveryPlace',
       title: 'Local de Entrega',
       content: (
         <DeliveryPlaceView 
           entityId={id}
-          onCloes={closeModal}
+          onCloes={closeAllModals}
           onEditClick={() => openModalEdit(id)}
           onRemoveClick={() => handleRemove(id)}
         />
@@ -57,13 +59,16 @@ const CultivationList = () => {
   }
 
   const openModalEdit = (id) => {
+    closeAllModals()
+
     openModal({
+      id: 'editDeliveryPlace',
       title: 'Editar Local de Entrega',
       content: (
         <EditDeliveryPlaceForm
           entityId={id}
           onEdited={handleEdited}
-          onCancel={closeModal}
+          onCancel={closeAllModals}
         />
       )
     })
@@ -75,9 +80,9 @@ const CultivationList = () => {
       message: 'Realmente tem certeza de realizar essa operação de remoção?'
     }).then(async res => {
       if (res) {
-        await api.delete(`deliveryPlaces/${id}`)
+        await api.delete(`delivery-places/${id}`)
 
-        closeModal()
+        closeAllModals()
         addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
         loadDeliveryPlaces()
       }
@@ -85,13 +90,13 @@ const CultivationList = () => {
   }
 
   const handleCreated = () => {
-    closeModal()
+    closeAllModals()
     addToast({ title: 'Sucesso', description: 'Local de entrega criado com sucesso!' })
     loadDeliveryPlaces()
   }
 
   const handleEdited = () => {
-    closeModal()
+    closeAllModals()
     addToast({ title: 'Sucesso', description: 'Local de entrega editado com sucesso!' })
     loadDeliveryPlaces()
   }

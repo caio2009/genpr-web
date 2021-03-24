@@ -17,7 +17,7 @@ const CultivationList = () => {
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
-  const { openModal, closeModal } = useModal()
+  const { openModal, closeAllModals } = useModal()
 
   const [cultivations, setCultivations] = useState([])
 
@@ -32,11 +32,12 @@ const CultivationList = () => {
 
   const openModalCreate = () => {
     openModal({
+      id: 'createCultivation',
       title: 'Nova Cultura',
       content: (
         <CreateCultivationForm
           onCreated={handleCreated}
-          onCancel={closeModal}
+          onCancel={closeAllModals}
         />
       )
     })
@@ -44,11 +45,12 @@ const CultivationList = () => {
 
   const openModalView = (id) => {
     openModal({
+      id: 'viewCultivation',
       title: 'Cultura',
       content: (
         <CultivationView 
           entityId={id}
-          onClose={closeModal}
+          onClose={closeAllModals}
           onEditClick={() => openModalEdit(id)}
           onRemoveClick={() => handleRemove(id)}
         />
@@ -57,13 +59,16 @@ const CultivationList = () => {
   }
 
   const openModalEdit = (id) => {
+    closeAllModals()
+
     openModal({
+      id: 'editCultivation',
       title: 'Editar Cultura',
       content: (
         <EditCultivationForm
           entityId={id}
           onEdited={handleEdited}
-          onCancel={closeModal}
+          onCancel={closeAllModals}
         />
       )
     })
@@ -77,7 +82,7 @@ const CultivationList = () => {
       if (res) {
         await api.delete(`cultivations/${id}`)
 
-        closeModal()
+        closeAllModals()
         addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
         loadCultivations()
       }
@@ -85,13 +90,13 @@ const CultivationList = () => {
   }
 
   const handleCreated = () => {
-    closeModal()
+    closeAllModals()
     addToast({ title: 'Sucesso', description: 'Cultura criada com sucesso!' })
     loadCultivations()
   }
 
   const handleEdited = () => {
-    closeModal()
+    closeAllModals()
     addToast({ title: 'Sucesso', description: 'Cultura editada com sucesso!' })
     loadCultivations()
   }
