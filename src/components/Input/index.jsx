@@ -76,8 +76,8 @@ const Input = React.forwardRef(({
   }
 
   useEffect(() => {
-    (!!defaultValue || defaultValue === 0) && setFocus(true)
-  }, [defaultValue])
+    (!!defaultValue || defaultValue === 0 || readOnly) && setFocus(true)
+  }, [defaultValue, readOnly])
 
   useEffect(() => {
     setInputMode(inputMode)

@@ -22,6 +22,7 @@ const BuildOrder = () => {
 
   const openModalAddProducts = () => {
     openModal({
+      id: 'addProduct',
       title: 'Adicionar Produto',
       content: (
         <AddProducts
@@ -33,6 +34,7 @@ const BuildOrder = () => {
 
   const openModalEditQuantityAndPrice = (index) => {
     openModal({
+      id: 'editQuantityAndPrice',
       title: 'Quantidade e Preço',
       content: (
         <EditQuantityAndPrice
@@ -43,12 +45,13 @@ const BuildOrder = () => {
     })
   }
 
-  const handleProductAdd = (productsToAdd) => {
-    setCartData([...cart, ...productsToAdd])
+  const handleProductAdd = (products) => {
+    closeModal('addProduct')
+    setCartData([...cart, ...products])
   }
 
   const handleEditQuantityAndPrice = (product) => {
-    closeModal()
+    closeModal('edtiQuantityAndPrice')
 
     const newCart = [...cart]
 

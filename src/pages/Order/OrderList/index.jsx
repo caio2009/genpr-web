@@ -18,17 +18,17 @@ const OrderList = () => {
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
-  const { openModal, closeModal } = useModal()
+  const { openModal, closeAllModals } = useModal()
 
   const [orders, setOrders] = useState([])
 
-  const loadClassifications = async () => {
+  const loadOrders = async () => {
     const res = await api.get('orders')
     setOrders(res.data)
   }
 
   useEffect(() => {
-    loadClassifications()
+    loadOrders()
   }, [])
 
   const goBuildOrder = () => {
@@ -37,12 +37,13 @@ const OrderList = () => {
 
   const openModalEdit = (id) => {
     openModal({
+      id: 'editOrder',
       title: 'Editar Venda',
       content: (
         <EditOrderForm
           entityId={id}
           onEdited={handleEdited}
-          onCancel={closeModal}
+          onCancel={closeAllModals}
         />
       )
     })
@@ -57,15 +58,15 @@ const OrderList = () => {
         await api.delete(`orders/${id}`)
 
         addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
-        loadClassifications()
+        loadOrders()
       }
     })
   }
 
   const handleEdited = () => {
-    closeModal()
+    closeAllModals()
     addToast({ title: 'Sucesso', description: 'Venda editada com sucesso!' })
-    loadClassifications()
+    loadOrders()
   }
 
   const handleOpenOptionDialog = (e, id) => {

@@ -4,26 +4,33 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useConfirmDialog } from '@hooks/confirmDialog'
 import { useModal } from '@hooks/modal'
+import { useGlobal } from '@hooks/global'
 import colors from '@styles/colors'
 
 import api from '@services/api'
 import errorMessages from '../errorMessages'
 import { format } from 'date-fns'
+import currencyFormat from '@utils/currencyFormat'
 
 import { FiTrash } from 'react-icons/fi'
 import { FlexRow, IconButton, Subtitle } from '@styles/components'
-import { Cart, CartItem, ItemDescription, ItemQuantity, ItemControl } from '@pages/Order/BuildOrder/styles'
+import { Cart, CartItem, ItemDescription, ItemQuantity, ItemControl, Empty } from '@pages/Order/BuildOrder/styles'
 import Input from '@components/Input'
 import InputDate from '@components/InputDate'
 import Autocomplete from '@components/Autocomplete'
 import Button from '@components/Button'
 import EditQuantityAndPrice from '@pages/Order/BuildOrder/components/EditQuantityAndPrice'
+import AddProducts from '@pages/Order/BuildOrder/components/AddProducts'
 
 const schema = yup.object().shape({
-  name: yup.string().required(errorMessages.required)
+  licensePlate: yup.string().required(errorMessages.required),
+  customer: yup.string().required(errorMessages.required),
+  deliveryPlace: yup.string().required(errorMessages.required),
+  date: yup.date()
 })
 
 const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
+  const isMounted = useRef(true)
   const customerInputRef = useRef(null)
 
   const { register, control, setValue, getValues, handleSubmit, errors } = useForm({
@@ -31,32 +38,83 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
   })
   const { openConfirmDialog } = useConfirmDialog()
   const { openModal, closeModal } = useModal()
+  const { cart, setCartData } = useGlobal()
+
+  const totalPriceInputRef = useRef(null)
 
   const [order, setOrder] = useState(null)
   const [filteredNumberPlates, setFilteredLicensePlates] = useState([])
   const [filteredDeliveryPlaces, setFilteredDeliveryPlaces] = useState([])
   const [customerId, setCustomerId] = useState(undefined)
+  const [licensePlateId, setLicensePlateId] = useState(undefined)
+  const [deliveryPlaceId, setDeliveryPlaceId] = useState(undefined)
 
-  const loadOrder = useCallback(async () => {
-    if (id) {
+  const loadOrder = useCallback(async (isMounted) => {
+    if (id && isMounted) {
       const res = await api.get(`orders/${id}`)
-      setOrder(res.data)
+      const order = res.data
 
-      if (res.data.customerId) {
-        setCustomerId(res.data.customerId)
+      setOrder(order)
+      setCartData(order.orderItems)
+
+      if (order.customer.name) {
+        setValue('customer', order.customer.name)
+        setCustomerId(order.customer.id)
+      } else {
+        setValue('customer', order.customer)
+      }
+
+      if (order.licensePlate.id) {
+        setLicensePlateId(order.licensePlate.id)
+      }
+
+      if (order.deliveryPlace.id) {
+        setDeliveryPlaceId(order.deliveryPlace.id)
       }
     }
-  }, [id])
+  }, [id, setValue, setCartData])
+
+  const loadTotalPrice = useCallback(() => {
+    const totalPrice = cart.map(product => product.quantity * product.unitPrice).reduce((prev, curr) => prev + curr, 0)
+    totalPriceInputRef.current.value = currencyFormat(totalPrice)
+  }, [cart])
 
   const onSubmit = async (data) => {
-    await api.put(`classifications/${id}`, { ...data, customerId })
+    const totalPrice = cart.map(product => product.quantity * product.unitPrice).reduce((prev, curr) => prev + curr, 0)
+
+    const orderItems = []
+
+    cart.forEach(product => {
+      orderItems.push({
+        unitPrice: product.unitPrice,
+        quantity: product.quantity,
+        harvestId: product.harvestId
+      })
+    })
+
+    await api.put(`orders/${id}`, {
+      ...data,
+      totalPrice,
+      customerId,
+      licensePlateId,
+      deliveryPlaceId,
+      orderItems
+    })
+
+    setCartData([])
 
     onEdited()
   }
 
   useEffect(() => {
-    loadOrder()
+    loadOrder(isMounted.current)
+
+    return () => { isMounted.current = false }
   }, [loadOrder, id])
+
+  useEffect(() => {
+    loadTotalPrice()
+  }, [loadTotalPrice])
 
   const filterLicensePlates = async (value, { isSelected }) => {
     if (isSelected) {
@@ -68,7 +126,7 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
     }
 
     if (value) {
-      const res = await api.get('licensePlates')
+      const res = await api.get('license-plates')
       const licensePlates = res.data
 
       setFilteredLicensePlates(licensePlates.filter(licensePlate => licensePlate.code.toLowerCase().includes(value.toLowerCase())).map(licensePlate => ({ label: licensePlate.code })))
@@ -79,7 +137,7 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
   }
 
   const getCostumerByNumberPlate = async () => {
-    const licensePlate = getValues('licensePlate')
+    const licensePlate = getValues('license-plate')
 
     if (licensePlate) {
       const res = await api.get(`licensePlates/query?code=${licensePlate}`)
@@ -89,7 +147,6 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
         customerInputRef.current.value = data.customer.name
         setValue('customer', data.customer.name)
         setCustomerId(data.customer.id)
-        console.log(getValues('customerId'))
       }
     }
   }
@@ -97,12 +154,12 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
   const filterDeliveryPlaces = async (value, { isSelected }) => {
     if (isSelected) {
       setFilteredDeliveryPlaces([])
-      setValue('deliveryPlace', value)
+      setValue('delivery-place', value)
       return
     }
 
     if (value) {
-      const res = await api.get('deliveryPlaces')
+      const res = await api.get('delivery-places')
       const deliveryPlaces = res.data
 
       setFilteredDeliveryPlaces(deliveryPlaces.filter(deliveryPlace => deliveryPlace.description.toLowerCase().includes(value.toLowerCase())).map(deliveryPlace => ({ label: deliveryPlace.description })))
@@ -114,6 +171,7 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
 
   const openModalEditQuantityAndPrice = (index) => {
     openModal({
+      id: 'quantityAndPrice',
       title: 'Quantidade e Preço',
       content: (
         <EditQuantityAndPrice
@@ -124,30 +182,57 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
     })
   }
 
+  const openModalAddProduct = () => {
+    openModal({
+      id: 'addProduct',
+      title: 'Adicionar Produto',
+      content: (
+        <AddProducts
+          onAdd={handleAddProduct}
+          orderItems={order.orderItems}
+        />
+      )
+    })
+  }
+
   const handleEditQuantityAndPrice = (product) => {
-    closeModal()
+    closeModal('quantityAndPrice')
 
-    const newOrderItems = [...order.orderItems]
+    const newCart = [...cart]
 
-    const index = newOrderItems.findIndex(orderItem => orderItem.harvestId === product.harvestId)
-    newOrderItems[index] = product
+    const index = newCart.findIndex(el => el.harvestId === product.harvestId)
+    newCart[index] = product
 
-    setOrder({ ...order, orderItems: newOrderItems })
+    setCartData(newCart)
+
+    // const newOrderItems = [...order.orderItems]
+
+    // const index = newOrderItems.findIndex(orderItem => orderItem.harvestId === product.harvestId)
+    // newOrderItems[index] = product
+
+    // setOrder({ ...order, orderItems: newOrderItems })
   }
 
   const removeProduct = (e, index) => {
     e.stopPropagation()
+    e.preventDefault()
 
     openConfirmDialog({
       title: 'Confirmação de Remoção',
       message: 'Tem certeza que deseja remover esse item da venda?'
     }).then(res => {
       if (res) {
-        const newOrderItems = [...order.orderItems]
-        newOrderItems.splice(index, 1)
-        setOrder({ ...order, orderItems: newOrderItems })
+        const newCart = [...cart]
+        newCart.splice(index, 1)
+        setCartData(newCart)
       }
     })
+  }
+
+  const handleAddProduct = (products) => {
+    closeModal('addProduct')
+    setCartData([...cart, ...products])
+    // setOrder({ ...order, orderItems: [...order.orderItems, ...products] })
   }
 
   return (
@@ -158,7 +243,7 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
         label="Placa do veículo *"
         uppercase
         options={filteredNumberPlates}
-        defaultValue={order?.licensePlate || order?.licensePlate.code}
+        defaultValue={order?.licensePlate.code || order?.licensePlate}
         onChange={filterLicensePlates}
         error={errors.licensePlate}
       />
@@ -171,7 +256,7 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
           <Input
             ref={customerInputRef}
             label="Cliente *"
-            defaultValue={order?.customer || order?.customer.name}
+            defaultValue={order?.customer.name || order?.customer}
             onChange={(value) => setValue('customer', value)}
             error={errors.customer}
           />
@@ -183,54 +268,69 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
         name="deliveryPlace"
         label="Local de entrega *"
         options={filteredDeliveryPlaces}
-        defaultValue={order?.deliveryPlace || order?.deliveryPlace.description}
+        defaultValue={order?.deliveryPlace.description || order?.deliveryPlace}
         onChange={filterDeliveryPlaces}
         error={errors.deliveryPlace}
       />
 
-      <Controller
+      {order?.date && <Controller
         control={control}
         name="date"
-        defaultValue={new Date(order?.date)}
+        defaultValue={new Date(order.date)}
         render={() => (
           <InputDate
             label="Data da venda *"
             onChange={(value) => setValue('date', new Date(value))}
-            defaultValue={order?.date && format(new Date(order?.date), 'yyyy-MM-dd')}
+            defaultValue={order.date && format(new Date(order.date), 'yyyy-MM-dd')}
             error={errors.date}
           />
         )}
+      />}
+
+      <Input
+        ref={totalPriceInputRef}
+        name="totalPrice"
+        label="Preço total *"
+        readOnly
       />
 
       <br />
 
-      <Subtitle>
-        Produtos da venda
-      </Subtitle>
+      <FlexRow alignItems="center" justifyContent="space-between">
+        <Subtitle>
+          Produtos da venda
+        </Subtitle>
+
+        <Button onClick={openModalAddProduct}>
+          Adicionar
+        </Button>
+      </FlexRow>
+
+      <br />
 
       <Cart>
-        {order?.orderItems.map((item, index) => (
+        {cart.map((product, index) => (
           <CartItem key={index} onClick={() => openModalEditQuantityAndPrice(index)}>
             <ItemDescription>
               <strong>
-                {item.cultivation.fullname} {item.classification.name} {item.unitMeasure.abbreviation}
+                {product.cultivation.fullname} {product.classification.name} {product.unitMeasure.abbreviation}
               </strong>
 
               <p>
-                {/* Origem: {item.ruralProperty.name} / {item.field.name} */}
+                {product.ruralProperty.name} / {product.field.name}
               </p>
 
               <p>
-                Preço Unitário: R$ {item.unitPrice}
+                Preço Unitário: {currencyFormat(product.unitPrice)}
               </p>
 
               <p>
-                Subtotal: R$ {item.unitPrice * item.quantity}
+                Subtotal: {currencyFormat(product.unitPrice * product.quantity)}
               </p>
             </ItemDescription>
 
             <ItemQuantity>
-              <strong>X {item.quantity}</strong>
+              <strong>X {product.quantity}</strong>
             </ItemQuantity>
 
             <ItemControl>
@@ -240,6 +340,12 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
             </ItemControl>
           </CartItem>
         ))}
+
+        {!cart.length && (
+          <Empty>
+            <i>Nenhum produto foi adicionado.</i>
+          </Empty>
+        )}
       </Cart>
 
       <br />
