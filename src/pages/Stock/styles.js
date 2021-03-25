@@ -5,7 +5,7 @@ export const StockItemsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
 
-  @media screen and (max-width: 375px) {
+  @media screen and (max-width: 720px) {
     flex-direction: column;
   }
 ` 
@@ -29,7 +29,7 @@ export const StockItem = styled.div`
     width: calc(50% - .25rem);
   }
 
-  @media screen and (max-width: 375px) {
+  @media screen and (max-width: 720px) {
     width: 100%;
   }
 `

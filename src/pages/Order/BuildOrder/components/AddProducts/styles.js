@@ -7,7 +7,7 @@ export const StockItemsContainer = styled.div`
 
   margin: -.25rem;
 
-  @media screen and (max-width: 375px) {
+  @media screen and (max-width: 720px) {
     flex-direction: column;
   }
 `
@@ -31,7 +31,7 @@ export const StockItem = styled.div`
     width: calc(50% - .5rem);
   }
 
-  @media screen and (max-width: 375px) {
+  @media screen and (max-width: 720px) {
     width: calc(100% - .5rem);
   }
 `

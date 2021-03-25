@@ -95,7 +95,7 @@ const AddQuantityAndPrice = ({ product, onAdd }) => {
                   </h4>
 
                   <p>
-                    Qtd. Disponível: {harvest.availableQuantity - (cart.filter(product => product.harvestId === harvest.id).map(product => product.quantity).reduce((prev, curr) => prev + curr, 0)) - (quantityValues[harvest.id] || 0)}
+                    Qtd. Disponível: {harvest.availableQuantity - (cart.filter(product => !product.id && product.harvestId === harvest.id).map(product => product.quantity).reduce((prev, curr) => prev + curr, 0)) - (quantityValues[harvest.id] || 0)}
                   </p>
                 </div>
 
