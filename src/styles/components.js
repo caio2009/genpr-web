@@ -125,4 +125,5 @@ export const AvatarImg = styled.img`
   width: ${props => props.size ? `${props.size}rem` : '4rem'};
   height: ${props => props.size ? `${props.size}rem` : '4rem'};
   border-radius: 50%;
+  background: ${colors.white};
 `

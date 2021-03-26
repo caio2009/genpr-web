@@ -7,6 +7,8 @@ import { Container, Title, AvatarImg } from '@styles/components'
 import { StockItemsContainer, StockItem, StockItemData, CultivationName, ClassificationName, Quantity, UnitMeasureAbbreviation } from './styles'
 import StockItemDetail from './components/StockItemDetail'
 
+import vegetablesImage from '../../assets/images/vegetables.svg'
+
 const Stock = () => {
   const { openModal } = useModal()
 
@@ -41,7 +43,7 @@ const Stock = () => {
       <StockItemsContainer>
         {stockItems.map((item, index) => (
           <StockItem key={index} onClick={() => openModalDetails(index)}>
-            <AvatarImg src={item.cultivation.imageUrl} size={4.75} />
+            <AvatarImg src={item.cultivation.imageUrl || vegetablesImage} size={4.75} />
 
             <StockItemData>
               <CultivationName>

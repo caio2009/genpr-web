@@ -4,6 +4,8 @@ import { useConfirmDialog } from '@hooks/confirmDialog'
 import { useOptionDialog } from '@hooks/optionDialog'
 import { useModal } from '@hooks/modal'
 
+import api from '@services/api'
+
 import { FiMoreVertical } from 'react-icons/fi'
 import { Container, Title, Subtitle, List, ListItem, ListItemBox, FlexRow, IconButton, AvatarImg } from '@styles/components'
 import Button from '@components/Button'
@@ -11,7 +13,7 @@ import CreateCultivationForm from '@components/Forms/CreateCultivationForm'
 import EditCultivationForm from '@components/Forms/EditCultivationForm'
 import CultivationView from '@components/Containers/ModalViews/CultivationView'
 
-import api from '@services/api'
+import vegetablesImage from '../../../assets/images/vegetables.svg'
 
 const CultivationList = () => {
   const { addToast } = useToast()
@@ -132,7 +134,7 @@ const CultivationList = () => {
             onClick={() => openModalView(item.id)}
           >
             <ListItemBox style={{ marginRight: 16 }}>
-              {item.imageUrl && <AvatarImg src={item.imageUrl} />}
+              <AvatarImg src={item.imageUrl || vegetablesImage} />
             </ListItemBox>
 
             <ListItemBox grow={1}>

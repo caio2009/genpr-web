@@ -8,6 +8,8 @@ import { AvatarImg } from '@styles/components'
 import { StockItemsContainer, StockItem, StockItemData, CultivationName, ClassificationName, Quantity, UnitMeasureAbbreviation } from './styles'
 import AddQuantityAndPrice from '../AddQuantityAndPrice'
 
+import vegetablesImage from '../../../../../assets/images/vegetables.svg'
+
 const AddProducts = ({ onAdd, orderItems }) => {
   const { cart } = useGlobal()
   const { openModal, closeModal } = useModal()
@@ -52,7 +54,7 @@ const AddProducts = ({ onAdd, orderItems }) => {
       <StockItemsContainer>
         {stockItems.map((item, index) => (
           <StockItem key={index} onClick={() => openModalAddQuantityAndPrice(index)}>
-            <AvatarImg src={item.cultivation.imageUrl} size={4.75} />
+            <AvatarImg src={item.cultivation.imageUrl || vegetablesImage} size={4.75} />
 
             <StockItemData>
               <CultivationName>
