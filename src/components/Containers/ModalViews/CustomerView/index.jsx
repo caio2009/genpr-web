@@ -12,7 +12,7 @@ const CustomerView = ({ entityId: id, onClose, onEditClick, onRemoveClick }) => 
 
   const loasCustomer = useCallback(async () => {
     if (id) {
-      const res = await api.get(`customers/${id}?_embed=numberPlates`)
+      const res = await api.get(`customers/${id}`)
       setCustomer(res.data)
     }
   }, [id])
@@ -61,7 +61,7 @@ const CustomerView = ({ entityId: id, onClose, onEditClick, onRemoveClick }) => 
       </Subtitle>
 
       <List>
-        {customer?.numberPlates.length ? customer?.numberPlates.map((item, index) => (
+        {customer?.licensePlates.length ? customer?.licensePlates.map((item, index) => (
           <ListItem key={index}>
             <ListItemBox grow={1}>
               <p>Código: {item.code}</p>

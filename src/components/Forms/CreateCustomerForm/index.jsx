@@ -26,21 +26,17 @@ const CreateCustomerForm = ({ onCreated, onCancel }) => {
   })
   const { openDialog, closeDialog } = useDialog()
 
-  const [numberPlates, setNumberPlates] = useState([])
+  const [licensePlates, setLicensePlates] = useState([])
 
   const onSubmit = async (data) => {
-    const res = await api.post('customers', data)
-
-    for (let numberPlate of numberPlates) {
-      await api.post('numberPlates', { ...numberPlate, customerId: res.data.id })
-    }
+    await api.post('customers', { ...data, licensePlates })
 
     onCreated()
   }
 
   const handleAddNumberPlate = (data) => {
     closeDialog()
-    setNumberPlates([...numberPlates, data])
+    setLicensePlates([...licensePlates, data])
   }
 
   const openDialogCreateNubmerPlate = () => {
@@ -56,9 +52,9 @@ const CreateCustomerForm = ({ onCreated, onCancel }) => {
   }
 
   const removeNumberPlate = (index) => {
-    const newNumberPlates = [...numberPlates]
-    newNumberPlates.splice(index, 1)
-    setNumberPlates(newNumberPlates)
+    const newlicensePlates = [...licensePlates]
+    newlicensePlates.splice(index, 1)
+    setLicensePlates(newlicensePlates)
   }
 
   return (
@@ -108,7 +104,7 @@ const CreateCustomerForm = ({ onCreated, onCancel }) => {
       <br />
 
       <List>
-        {numberPlates.length ? numberPlates.map((item, index) => (
+        {licensePlates.length ? licensePlates.map((item, index) => (
           <ListItem key={index}>
             <ListItemBox grow={1}>
               <p>Código: {item.code}</p>

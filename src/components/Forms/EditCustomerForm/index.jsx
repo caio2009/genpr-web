@@ -28,14 +28,14 @@ const EditCustomerForm = ({ entityId: id, onEdited, onCancel }) => {
   const { openDialog, closeDialog } = useDialog()
 
   const [customer, setCustomer] = useState(null)
-  const [numberPlates, setNumberPlates] = useState([])
-  const [removedNumberPlates, setRemovedNumberPlates] = useState([])
+  const [licensePlates, setLicensePlates] = useState([])
+  const [removedLicensePlates, setRemovedLicensePlates] = useState([])
 
   const loadCustomer = useCallback(async () => {
     if (id) {
-      const res = await api.get(`customers/${id}?_embed=numberPlates`)
+      const res = await api.get(`customers/${id}?_embed=licensePlates`)
       setCustomer(res.data)
-      setNumberPlates(res.data.numberPlates)
+      setLicensePlates(res.data.licensePlates)
     }
   }, [id])
 
@@ -44,39 +44,21 @@ const EditCustomerForm = ({ entityId: id, onEdited, onCancel }) => {
   }, [loadCustomer])
 
   const onSubmit = async (data) => {
-    await api.put(`customers/${id}`, data)
-
-    // remove number plate
-    for (let { id } of removedNumberPlates) {
-      await api.delete(`numberPlates/${id}`)
-    }
-
-    // add and edit number plate
-    for (let numberPlate of numberPlates) {
-      const findedNumbePlate = customer.numberPlates.find(x => x.id === numberPlate.id)
-
-      if (findedNumbePlate) {
-        if (JSON.stringify(numberPlate) !== JSON.stringify(findedNumbePlate)) {
-          await api.put(`numberPlates/${numberPlate.id}`, numberPlate)
-        }
-      } else {
-        await api.post('numberPlates', { ...numberPlate, customerId: customer.id })
-      }
-    }
+    await api.put(`customers/${id}`, { ...data, licensePlates })
 
     onEdited()
   }
 
   const handleAddNumberPlate = (data) => {
     closeDialog()
-    setNumberPlates([...numberPlates, data])
+    setLicensePlates([...licensePlates, data])
   }
 
   const handleEditNumberPlate = (data, index) => {
     closeDialog()
-    const newNumberPlates = [...numberPlates]
-    newNumberPlates[index] = data
-    setNumberPlates(newNumberPlates)
+    const newlicensePlates = [...licensePlates]
+    newlicensePlates[index] = data
+    setLicensePlates(newlicensePlates)
   }
 
   const openDialogAddNumberPlate = () => {
@@ -96,7 +78,7 @@ const EditCustomerForm = ({ entityId: id, onEdited, onCancel }) => {
       title: 'Editar placa',
       content: (
         <EditNumberPlateForm
-          data={numberPlates[index]}
+          data={licensePlates[index]}
           onEdited={(data) => handleEditNumberPlate(data, index)}
           onCancel={closeDialog}
         />
@@ -105,11 +87,11 @@ const EditCustomerForm = ({ entityId: id, onEdited, onCancel }) => {
   }
 
   const removeNumberPlate = (index) => {
-    setRemovedNumberPlates([ ...removedNumberPlates, numberPlates[index] ])
+    setRemovedLicensePlates([ ...removedLicensePlates, licensePlates[index] ])
 
-    const newNumberPlates = [...numberPlates]
-    newNumberPlates.splice(index, 1)
-    setNumberPlates(newNumberPlates)
+    const newlicensePlates = [...licensePlates]
+    newlicensePlates.splice(index, 1)
+    setLicensePlates(newlicensePlates)
   }
 
   return (
@@ -162,7 +144,7 @@ const EditCustomerForm = ({ entityId: id, onEdited, onCancel }) => {
       <br />
 
       <List>
-        {numberPlates.length ? numberPlates.map((item, index) => (
+        {licensePlates.length ? licensePlates.map((item, index) => (
           <ListItem key={index} onClick={() => openDialogEditNumberPlate(index)}>
             <ListItemBox grow={1}>
               <p>Código: {item.code}</p>
