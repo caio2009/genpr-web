@@ -127,3 +127,26 @@ export const AvatarImg = styled.img`
   border-radius: 50%;
   background: ${colors.white};
 `
+
+export const SelectContainer = styled.div`
+  flex: 1;
+  padding: .5rem;
+  background: #eee;
+  transition: background-color .2s;
+  cursor: pointer;
+
+  p {
+    text-transform: uppercase;
+    font-weight: bold;
+
+    & + p {
+      margin-top: .5rem;
+      color: #555;
+      font-weight: normal;
+    }
+  }
+
+  &:hover {
+    background: ${shade(0.1, '#eee')};
+  }
+`

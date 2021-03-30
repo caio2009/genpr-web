@@ -5,9 +5,9 @@ import { useDrawer } from '../../hooks/drawer'
 import { Container, DrawerContainer, Item } from './styles'
 
 const Drawer = () => {
-  const { isOpened, toggleDrawer } = useDrawer();
+  const { isOpened, toggleDrawer } = useDrawer()
 
-  const history = useHistory();
+  const history = useHistory()
 
   const drawerRef = useRef(null)
 
@@ -27,7 +27,7 @@ const Drawer = () => {
   const items = [
     { text: 'Início', to: '/' },
     { text: 'Propriedades Rurais', to: '/propriedades-rurais' },
-    { text: 'Colheitas', to: '/' },
+    { text: 'Colheitas', to: '/colheitas' },
     { text: 'Culturas', to: '/culturas' },
     { text: 'Classificações', to: '/classificacoes' },
     { text: 'Unidades de Medida', to: '/unidades-medida' },
@@ -38,7 +38,7 @@ const Drawer = () => {
   ]
 
   return (
-    <Container show={isOpened}>
+    <Container show={isOpened} onClick={() => toggleDrawer(false)}>
       <DrawerContainer ref={drawerRef}>
         {items.map((item, index) => (
           <Item key={index} onClick={() => goTo(item.to)}>{item.text}</Item>

@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useToast } from '@hooks/Toast/toast'
 import { useConfirmDialog } from '@hooks/confirmDialog'
 import { useOptionDialog } from '@hooks/optionDialog'
@@ -7,162 +6,105 @@ import { useModal } from '@hooks/modal'
 import { useSelectDialog } from '@hooks/selectDialog'
 
 import api from '@services/api'
-import { format, getYear, getMonth } from 'date-fns'
+import { getYear, getMonth } from 'date-fns'
 import months from '@global/months'
 
+import { Container, Title, FlexRow, SelectContainer, List, ListItem, ListItemBox, Subtitle, IconButton, ListEmpty } from '@styles/components'
 import { FiMoreVertical } from 'react-icons/fi'
-import { Container, Title, FlexRow, List, ListEmpty, ListItem, ListItemBox, IconButton, Subtitle, SelectContainer } from '@styles/components'
-import { FieldInfo, InfoField } from './styles'
-import Button from '@components/Button'
 import Accordion from '@components/Accordion'
-import EditFieldForm from '@components/Forms/EditFieldForm'
+import Button from '@components/Button'
 import CreateHarvestForm from '@components/Forms/CreateHarvestForm'
 import EditHarvestForm from '@components/Forms/EditHarvestForm'
 import HarvestView from '@components/Containers/ModalViews/HarvestView'
 
-const ManageRP = () => {
-  const { id } = useParams()
+const HarvestList = () => {
   const { addToast } = useToast()
   const { openConfirmDialog } = useConfirmDialog()
   const { openOptionDialog } = useOptionDialog()
-  const { openModal, closeModal } = useModal()
+  const { openModal, closeAllModals } = useModal()
   const { openSelectDialog } = useSelectDialog()
 
   const today = new Date()
 
-  const [field, setField] = useState(null)
   const [mappedHarvest, setMappedHarvests] = useState([])
-  const [infoDisplay, setInfoDisplay] = useState(false)
+  const [ruralProperties, setRuralProperties] = useState([])
+  const [fields, setFields] = useState([])
+  const [years, setYears] = useState([])
+  const [selectedRuralProperty, setSelectedRuralProperty] = useState(null)
+  const [selectedField, setSelectedField] = useState(null)
   const [selectedYear, setSelectedYear] = useState(() => getYear(today))
   const [selectedMonth, setSelectedMonth] = useState(() => getMonth(today))
-  const [years, setYears] = useState([])
 
-  const loadField = useCallback(async () => {
-    const res = await api.get(`fields/${id}`)
-    setField(res.data)
-  }, [id])
+  const loadRuralProperties = async () => {
+    const res = await api.get('rural-properties')
 
-  const loadHarvests = useCallback(async () => {
-    const res = await api.get(`harvests/query?field_id=${id}&year=${selectedYear}&month=${selectedMonth + 1}`)
-    setMappedHarvests(res.data)
-  }, [id, selectedYear, selectedMonth])
-
-  const loadYears = useCallback(async () => {
-    const res = await api.get(`harvests/years?field_id=${id}`)
-    setYears(res.data)
-  }, [id])
+    setRuralProperties(res.data)
+  }
 
   useEffect(() => {
-    loadField()
-    loadHarvests()
+    loadRuralProperties()
+  }, [])
+
+  const loadFields = useCallback(async () => {
+    if (selectedRuralProperty) {
+      const res = await api.get(`rural-properties/${selectedRuralProperty.id}/fields`)
+      setFields(res.data)
+    }
+  }, [selectedRuralProperty])
+
+  useEffect(() => {
+    loadFields()
+  }, [selectedRuralProperty, loadFields])
+
+  const loadYears = useCallback(async () => {
+    if (selectedField) {
+      const res = await api.get(`harvests/years?field_id=${selectedField.id}`)
+      setYears(res.data)
+    }
+  }, [selectedField])
+
+  useEffect(() => {
     loadYears()
-  }, [loadField, loadHarvests, loadYears])
+  }, [selectedField, loadYears])
 
-  const openModalEditField = () => {
-    openModal({
-      title: 'Editar Talhão',
-      content: (
-        <EditFieldForm
-          entityId={id}
-          onEdited={handleFieldEdited}
-          onCancel={closeModal}
-        />
-      )
-    })
-  }
+  const loadHarvests = useCallback(async () => {
+    if (selectedField) {
+      const res = await api.get(`harvests/query?field_id=${selectedField.id}&year=${selectedYear}&month=${selectedMonth + 1}`)
+      setMappedHarvests(res.data)
+    }
+  }, [selectedField, selectedYear, selectedMonth])
 
-  const openModalCreateHarvest = () => {
-    openModal({
-      title: 'Nova Colheita',
-      content: (
-        <CreateHarvestForm
-          ruralProperty={{ name: field?.ruralProperty.name }}
-          field={{ id: field?.id, name: field?.name }}
-          cultivation={{ fullname: field?.cultivation.fullname }}
-          onCreated={handleHarvestCreated}
-          onCancel={closeModal}
-        />
-      )
-    })
-  }
-
-  const openModalViewHarvest = (id) => {
-    openModal({
-      title: 'Colheita',
-      content: (
-        <HarvestView
-          entityId={id}
-          onClose={closeModal}
-          onEditClick={() => openModalEditHarvest(id)}
-          onRemoveClick={() => handleRemoveHarvest(id)}
-        />
-      )
-    })
-  }
-
-  const openModalEditHarvest = (id) => {
-    openModal({
-      title: 'Editar Colheita',
-      content: (
-        <EditHarvestForm
-          entityId={id}
-          onEdited={handleHarvestEdited}
-          onCancel={closeModal}
-        />
-      )
-    })
-  }
-
-  const handleFieldEdited = () => {
-    closeModal()
-    addToast({ title: 'Sucesso', description: 'Talhão editado com sucesso!' })
-    loadField()
-  }
-
-  const handleRemoveHarvest = (id) => {
-    openConfirmDialog({
-      title: 'Confirmação de Remoção',
-      message: 'Realmente tem certeza de realizar essa operação de remoção?'
-    }).then(async res => {
-      if (res) {
-        await api.delete(`harvests/${id}`)
-
-        closeModal()
-        addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
-        loadHarvests()
-      }
-    })
-  }
-
-  const handleHarvestCreated = () => {
-    closeModal()
-    addToast({ title: 'Sucesso', description: 'Colheita criada com sucesso!' })
+  useEffect(() => {
     loadHarvests()
+  }, [selectedField, selectedYear, selectedMonth, loadHarvests])
+
+  const openSelectRuralProperty = () => {
+    openSelectDialog({
+      title: 'Selecione uma propriedade rural',
+      options: ruralProperties.map(ruralProperty => ({ value: ruralProperty.id, label: ruralProperty.name }))
+    }).then(value => {
+      setSelectedRuralProperty(ruralProperties.find(ruralProperty => ruralProperty.id === value))
+    })
   }
 
-  const handleHarvestEdited = () => {
-    closeModal()
-    addToast({ title: 'Sucesso', description: 'Colheita editada com sucesso!' })
-    loadHarvests()
+  const openSelectField = () => {
+    if (!selectedRuralProperty) {
+      addToast({ title: 'Erro', description: 'Selecione uma propriedade rural!', type: 'error' })
+      return;
+    } 
+
+    openSelectDialog({
+      title: 'Selecione um talhão',
+      options: fields.map(field => ({ value: field.id, label: field.name }))
+    }).then(value => {
+      setSelectedField(fields.find(field => field.id === value))
+    })
   }
-
-  const handleOpenOptionDialog = (e, id) => {
-    e.stopPropagation()
-
-    openOptionDialog([
-      { label: 'Editar', action: () => openModalEditHarvest(id) },
-      { label: 'Remover', action: () => handleRemoveHarvest(id) }
-    ])
-  }
-
-  const yearsOptions = useMemo(() => {
-    return years.map(year => ({ value: year, label: year }))
-  }, [years])
 
   const openSelectYear = () => {
     openSelectDialog({
       title: 'Selecione um ano',
-      options: yearsOptions
+      options: years.map(year => ({ value: year, label: year }))
     }).then(value => {
       setSelectedYear(value)
     })
@@ -177,68 +119,113 @@ const ManageRP = () => {
     })
   ]
 
+  const openModalCreateHarvest = () => {
+    if (!selectedField) {
+      addToast({ title: 'Erro', description: 'Selecione um talhão!', type: 'error' })
+      return;
+    } 
+
+    openModal({
+      id: 'createHarvest',
+      title: 'Nova Colheita',
+      content: (
+        <CreateHarvestForm
+          ruralProperty={{ name: selectedRuralProperty?.name }}
+          field={{ id: selectedField?.id, name: selectedField?.name }}
+          cultivation={{ fullname: selectedField?.cultivation.fullname }}
+          onCreated={handleHarvestCreated}
+          onCancel={closeAllModals}
+        />
+      )
+    })
+  }
+
+  const openModalViewHarvest = (id) => {
+    openModal({
+      id: 'viewHarvest',
+      title: 'Colheita',
+      content: (
+        <HarvestView
+          entityId={id}
+          onClose={closeAllModals}
+          onEditClick={() => openModalEditHarvest(id)}
+          onRemoveClick={() => handleRemoveHarvest(id)}
+        />
+      )
+    })
+  }
+
+  const openModalEditHarvest = (id) => {
+    openModal({
+      id: 'editHarvest',
+      title: 'Editar Colheita',
+      content: (
+        <EditHarvestForm
+          entityId={id}
+          onEdited={handleHarvestEdited}
+          onCancel={closeAllModals}
+        />
+      )
+    })
+  }
+
+  const handleRemoveHarvest = (id) => {
+    openConfirmDialog({
+      title: 'Confirmação de Remoção',
+      message: 'Realmente tem certeza de realizar essa operação de remoção?'
+    }).then(async res => {
+      if (res) {
+        await api.delete(`harvests/${id}`)
+
+        closeAllModals()
+        addToast({ title: 'Sucesso', description: 'Remoção realizada com sucesso!' })
+        loadHarvests()
+      }
+    })
+  }
+
+  const handleHarvestCreated = () => {
+    closeAllModals()
+    addToast({ title: 'Sucesso', description: 'Colheita criada com sucesso!' })
+    loadHarvests()
+  }
+
+  const handleHarvestEdited = () => {
+    closeAllModals()
+    addToast({ title: 'Sucesso', description: 'Colheita editada com sucesso!' })
+    loadHarvests()
+  }
+
+  const handleOpenOptionDialog = (e, id) => {
+    e.stopPropagation()
+
+    openOptionDialog([
+      { label: 'Editar', action: () => openModalEditHarvest(id) },
+      { label: 'Remover', action: () => handleRemoveHarvest(id) }
+    ])
+  }
+
   return (
     <Container page>
-      <Title>
-        Gerenciar Talhão
-      </Title>
+      <FlexRow justifyContent="space-between">
+        <Title>Colheitas</Title>
 
-      <Subtitle>
-        Informações do Talhão
-      </Subtitle>
-
-      <FieldInfo>
-        <div style={{ display: infoDisplay ? 'block' : 'none', marginBottom: '.25rem' }}>
-          <FlexRow>
-            <InfoField style={{ flex: 1 }}>
-              <h4>Nome</h4>
-              <p className="no-break-line">{field?.name}</p>
-            </InfoField>
-
-            <InfoField style={{ flex: 1 }}>
-              <h4>Área</h4>
-              {field?.area ?
-                <p>{field.area} ha</p> :
-                <p><i>Não informado</i></p>}
-            </InfoField>
-          </FlexRow>
-
-          <FlexRow>
-            <InfoField style={{ flex: 1 }}>
-              <h4>Cultura</h4>
-              <p>{field?.cultivation.fullname}</p>
-            </InfoField>
-
-            <InfoField style={{ flex: 1 }}>
-              <h4>Data de abertura</h4>
-              <p>{field?.openingDate && format(new Date(field.openingDate), 'dd/MM/yyyy')}</p>
-            </InfoField>
-          </FlexRow>
-
-          <InfoField>
-            <h4>Propriedade Rural</h4>
-            <p>{field?.ruralProperty.name}</p>
-          </InfoField>
-
-          <Button variant="warning" full onClick={openModalEditField}>
-            Editar Informações
-          </Button>
-        </div>
-
-        <Button full onClick={() => setInfoDisplay(!infoDisplay)}>
-          {infoDisplay ? 'Esconder' : 'Mostrar'}
-        </Button>
-      </FieldInfo>
-
-      <FlexRow>
-        <Title marginBottom={0} style={{ flex: 1 }}>
-          Colheitas
-        </Title>
-
-        <Button onClick={openModalCreateHarvest}>
-          Criar
-        </Button>
+        <Button onClick={openModalCreateHarvest}>Criar</Button>
       </FlexRow>
+
+      <br />
+
+      <SelectContainer onClick={openSelectRuralProperty}>
+        <p>Propriedade Rural</p>
+        <p>{selectedRuralProperty?.name || 'Selecione uma propriedade rural'}</p>
+      </SelectContainer>
+
+      <br />
+
+      <SelectContainer onClick={openSelectField}>
+        <p>Talhão</p>
+        <p>{selectedField?.name || 'Selecione um talhão'}</p>
+      </SelectContainer>
 
       <br />
 
@@ -299,4 +286,4 @@ const ManageRP = () => {
   )
 }
 
-export default ManageRP
+export default HarvestList

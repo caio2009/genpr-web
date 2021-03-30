@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { shade } from 'polished'
 
 export const FieldInfo = styled.div`
   background: #eee;
@@ -15,27 +14,5 @@ export const InfoField = styled.div`
 
   p {
     color: #555;
-  }
-`
-
-export const YearMonthContainer = styled.div`
-  display: flex;
-  background: #eee;
-
-  div {
-    flex: 1;
-    padding: .5rem;
-    text-align: center;
-    transition: background-color .2s;
-    cursor: pointer;
-
-    p {
-      /* font-size: 1rem; */
-      text-transform: uppercase;
-    }
-
-    &:hover {
-      background: ${shade(0.1, '#eee')};
-    }
   }
 `

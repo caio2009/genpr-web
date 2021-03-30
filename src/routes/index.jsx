@@ -29,6 +29,8 @@ import CustomerList from '@pages/Customer/CustomerList'
 
 import DeliveryPlaceList from '@pages/DeliveryPlace/DeliveryPlaceList'
 
+import HarvestList from '@pages/Harvest/HarvestList'
+
 const Routes = () => {
   return (
     <Switch>
@@ -60,6 +62,8 @@ const Routes = () => {
       <Route path="/clientes" component={CustomerList} exact />
 
       <Route path="/locais-entrega" component={DeliveryPlaceList} exact />
+
+      <Route path="/colheitas" component={HarvestList} exact />
     </Switch>
   )
 }
