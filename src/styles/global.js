@@ -19,7 +19,7 @@ export default createGlobalStyle`
   }
 
   h1, h2, h3, h4, h5, h6, p {
-    @media screen and (max-width: 375px) {
+    @media screen and (max-width: 767px) {
       user-select: none;
     }
   }

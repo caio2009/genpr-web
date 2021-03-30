@@ -10,7 +10,7 @@ import AddQuantityAndPrice from '../AddQuantityAndPrice'
 
 import vegetablesImage from '../../../../../assets/images/vegetables.svg'
 
-const AddProducts = ({ onAdd, orderItems }) => {
+const AddProducts = ({ onAdd, orderItems = [] }) => {
   const { cart } = useGlobal()
   const { openModal, closeModal } = useModal()
 

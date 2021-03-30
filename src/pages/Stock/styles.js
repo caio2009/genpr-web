@@ -5,7 +5,7 @@ export const StockItemsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
 
-  @media screen and (max-width: 720px) {
+  @media screen and (max-width: 767px) {
     flex-direction: column;
   }
 ` 
@@ -25,11 +25,11 @@ export const StockItem = styled.div`
     background: ${shade(0.1, '#eee')};
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
     width: calc(50% - .25rem);
   }
 
-  @media screen and (max-width: 720px) {
+  @media screen and (max-width: 767px) {
     width: 100%;
   }
 `

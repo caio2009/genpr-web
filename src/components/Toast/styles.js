@@ -50,7 +50,7 @@ export const Wrapper = styled.div`
 
   animation: ${hideToast} linear .4s paused;
 
-  @media screen and (max-width: 375px) {
+  @media screen and (max-width: 767px) {
     max-width: 100%;
     width: 100%;
   }
