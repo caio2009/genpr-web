@@ -7,8 +7,8 @@ const ModalContext = createContext(null)
 const ModalProvider = ({ children }) => {
   const [data, setData] = useState([])
 
-  const openModal = ({ id, title, content, actions, fullPage }) => {
-    const newModal = { id, title, content, actions, fullPage }
+  const openModal = ({ id, title, content, actions, fullPage, hasHeader }) => {
+    const newModal = { id, title, content, actions, fullPage, hasHeader }
 
     setData(state => [...state, newModal])
   }
@@ -23,15 +23,16 @@ const ModalProvider = ({ children }) => {
 
   return (
     <ModalContext.Provider value={{ openModal, closeModal, closeAllModals }}>
-      {data.map(model => (
+      {data.map(modal => (
         <Modal
-          key={model.id}
+          key={modal.id}
           show={true}
-          closeModal={() => closeModal(model.id)}
-          title={model.title}
-          content={model.content}
-          actions={model.actions}
-          fullPage={model.fullPage}
+          closeModal={() => closeModal(modal.id)}
+          title={modal.title}
+          content={modal.content}
+          actions={modal.actions}
+          fullPage={modal.fullPage}
+          hasHeader={modal.hasHeader !== undefined ? modal.hasHeader : true}
         />
       ))}
       {children}

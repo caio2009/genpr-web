@@ -13,6 +13,8 @@ import Button from '@components/Button'
 import AddProducts from './components/AddProducts'
 import EditQuantityAndPrice from './components/EditQuantityAndPrice'
 
+import currencyFormat from '@utils/currencyFormat'
+
 const BuildOrder = () => {
   const history = useHistory()
   const { cart, setCartData } = useGlobal()
@@ -94,7 +96,7 @@ const BuildOrder = () => {
         Realizar Venda
       </Title>
 
-      <Button full={window.screen.width <= 375} onClick={openModalAddProducts}>
+      <Button full={window.screen.width <= 767} onClick={openModalAddProducts}>
         Adicionar Produto
       </Button>
 
@@ -117,11 +119,11 @@ const BuildOrder = () => {
               </p>
 
               <p>
-                Preço Unitário: R$ {Number(item.unitPrice).toFixed(2)}
+                Preço Unitário: {currencyFormat(item.unitPrice)}
               </p>
 
               <p>
-                Subtotal: R$ {Number(item.unitPrice * item.quantity).toFixed(2)}
+                Subtotal: {currencyFormat(item.unitPrice * item.quantity)}
               </p>
             </ItemDescription>
 
@@ -150,7 +152,7 @@ const BuildOrder = () => {
         </span>
 
         <span>
-          R$ {cart.map(product => product.quantity * product.unitPrice).reduce((prev, curr) => prev + curr, 0).toFixed(2)}
+          {currencyFormat(cart.map(product => product.quantity * product.unitPrice).reduce((prev, curr) => prev + curr, 0))}
         </span>
       </TotalPrice>
 

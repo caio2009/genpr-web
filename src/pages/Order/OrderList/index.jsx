@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useToast } from '@hooks/Toast/toast'
 import { useConfirmDialog } from '@hooks/confirmDialog'
@@ -9,9 +9,11 @@ import { FiMoreVertical } from 'react-icons/fi'
 import { Container, Title, List, ListItem, ListItemBox, FlexRow, IconButton } from '@styles/components'
 import Button from '@components/Button'
 import EditOrderForm from '@components/Forms/EditOrderForm'
+import CreatedOrderModal from '../CreatedOrderModal'
 
 import api from '@services/api'
 import { format } from 'date-fns'
+import currencyFormat from '@utils/currencyFormat'
 
 const OrderList = () => {
   const history = useHistory()
@@ -21,6 +23,30 @@ const OrderList = () => {
   const { openModal, closeAllModals } = useModal()
 
   const [orders, setOrders] = useState([])
+
+  const openCreatedOrderModal = useCallback(async (orderId) => {
+    if (orderId) {
+      const res = await api.get(`orders/${orderId}`)
+      const order = res.data
+
+      openModal({
+        id: 'success',
+        content: (
+          <CreatedOrderModal order={order} />
+        )
+      })
+    }
+
+    // eslint-disable-next-line
+  }, [])
+
+  useEffect(() => {
+    // if a new order have been created than open a modal
+    // displaying a success message
+    openCreatedOrderModal(history.location.state?.orderId)
+
+    // eslint-disable-next-line
+  }, [])
 
   const loadOrders = async () => {
     const res = await api.get('orders')
@@ -103,8 +129,8 @@ const OrderList = () => {
               <h4>Venda {format(new Date(item.date), 'dd/MM/yyyy')}</h4>
               <p>Cliente: {item.customer.name || item.customer}</p>
               <p>Local de entrega: {item.deliveryPlace.description || item.deliveryPlace}</p>
-              <p>Placa do veículo: {item.licensePlate.code || item.licensePlate}</p>
-              <p>Total: {item.totalPrice}</p>
+              <p>Placa do veículo: {item.licensePlate.code || item.licensePlate || 'Não informado'}</p>
+              <p>Total: {currencyFormat(item.totalPrice)}</p>
             </ListItemBox>
 
             <ListItemBox>

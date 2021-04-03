@@ -9,6 +9,7 @@ import { useToast } from '@hooks/Toast/toast'
 import api from '@services/api'
 import errorMessages from '../../../components/Forms/errorMessages'
 import { format } from 'date-fns'
+import currencyFormat from '@utils/currencyFormat'
 
 import { Container, Title, Subtitle } from '@styles/components'
 import { Cart, CartItem, ItemDescription, ItemQuantity } from '../BuildOrder/styles'
@@ -18,7 +19,7 @@ import Autocomplete from '@components/Autocomplete'
 import Button from '@components/Button'
 
 const schema = yup.object().shape({
-  licensePlate: yup.string().required(errorMessages.required),
+  licensePlate: yup.string(),
   customer: yup.string().required(errorMessages.required),
   deliveryPlace: yup.string().required(errorMessages.required),
   date: yup.date()
@@ -52,15 +53,14 @@ const FinishOrder = () => {
       })
     })
 
-    await api.post('orders', { ...data, customerId, totalPrice, orderItems })
+    const res = await api.post('orders', { ...data, customerId, totalPrice, orderItems })
 
-    addToast({
-      title: 'Sucesso',
-      description: 'Venda realizada com sucesso!'
-    })
-
-    setCartData([])
-    history.push('/vendas/criar')
+    if (res.status === 201) {
+      history.push('/vendas', { orderId: res.data.id })
+      setCartData([])
+    } else {
+      addToast({ type: 'error', title: 'Error', description: 'Ocorreu um erro durante o registro da venda!' })
+    }
   }
 
   const filterLicensePlates = async (value, { isSelected }) => {
@@ -174,7 +174,7 @@ const FinishOrder = () => {
           name="totalPrice"
           label="Preço total *"
           readOnly
-          defaultValue={`R$ ${totalPrice}`}
+          defaultValue={currencyFormat(totalPrice)}
         />
 
         <br />
@@ -188,7 +188,7 @@ const FinishOrder = () => {
             <CartItem key={index}>
               <ItemDescription>
                 <strong>
-                  {item.cultivation.name} {item.classification.name} {item.unitMeasure.abbreviation}
+                  {item.cultivation.fullname} {item.classification.name} {item.unitMeasure.abbreviation}
                 </strong>
 
                 <p>
@@ -196,11 +196,11 @@ const FinishOrder = () => {
                 </p>
 
                 <p>
-                  Preço Unitário: R$ {item.unitPrice}
+                  Preço Unitário: {currencyFormat(item.unitPrice)}
                 </p>
 
                 <p>
-                  Subtotal: R$ {item.unitPrice * item.quantity}
+                  Subtotal: {currencyFormat(item.unitPrice * item.quantity)}
                 </p>
               </ItemDescription>
 
