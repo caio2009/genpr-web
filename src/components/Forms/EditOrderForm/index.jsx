@@ -204,13 +204,6 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
     newCart[index] = product
 
     setCartData(newCart)
-
-    // const newOrderItems = [...order.orderItems]
-
-    // const index = newOrderItems.findIndex(orderItem => orderItem.harvestId === product.harvestId)
-    // newOrderItems[index] = product
-
-    // setOrder({ ...order, orderItems: newOrderItems })
   }
 
   const removeProduct = (e, index) => {
@@ -232,11 +225,17 @@ const EditOrderForm = ({ entityId: id, onEdited, onCancel }) => {
   const handleAddProduct = (products) => {
     closeModal('addProduct')
     setCartData([...cart, ...products])
-    // setOrder({ ...order, orderItems: [...order.orderItems, ...products] })
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <Input
+        name="orderId"
+        label="Número da venda"
+        defaultValue={order?.id}
+        readOnly
+      />
+
       <Autocomplete
         ref={register}
         name="licensePlate"

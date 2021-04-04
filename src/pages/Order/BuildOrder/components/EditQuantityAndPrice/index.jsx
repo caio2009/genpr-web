@@ -27,7 +27,7 @@ const EditQuantityAndPrice = ({ product, onEdit }) => {
     }
 
     if (product?.unitPrice) {
-      setUnitPrice(product.unitPrice)
+      setUnitPrice(product.unitPrice.toFixed(2))
     }
   }, [product, loadHarvest])
 
@@ -69,7 +69,7 @@ const EditQuantityAndPrice = ({ product, onEdit }) => {
               </h4>
 
               <p>
-                Qtd. Disponível: {harvest?.availableQuantity + product.quantity - quantity}
+                Qtd. Disponível: {harvest?.availableQuantity - quantity}
               </p>
             </div>
 

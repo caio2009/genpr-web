@@ -126,7 +126,8 @@ const OrderList = () => {
             onClick={() => openModalEdit(item.id)}
           >
             <ListItemBox grow={1}>
-              <h4>Venda {format(new Date(item.date), 'dd/MM/yyyy')}</h4>
+              <h4>Venda {item.id}</h4>
+              <p>Data: {format(new Date(item.date), 'dd/MM/yyyy')}</p>
               <p>Cliente: {item.customer.name || item.customer}</p>
               <p>Local de entrega: {item.deliveryPlace.description || item.deliveryPlace}</p>
               <p>Placa do veículo: {item.licensePlate.code || item.licensePlate || 'Não informado'}</p>

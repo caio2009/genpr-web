@@ -30,7 +30,8 @@ const CreatedOrderModal = ({ order }) => {
           <td colspan="5"><hr /></td>
         </tr>
         <tr>
-          <td colspan="5">Data: ${format(new Date(order.date), 'dd/MM/yyyy')}</td>
+          <td colspan="3">Data: ${format(new Date(order.date), 'dd/MM/yyyy')}</td>
+          <td colspan="2">Nº: ${order.id}</td>
         </tr>
         <tr>
           <td colspan="5">Cliente: ${order.customer.name || order.customer}</td>

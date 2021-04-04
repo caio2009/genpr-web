@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useGlobal } from '@hooks/global'
 import { useConfirmDialog } from '@hooks/confirmDialog'
@@ -21,6 +21,12 @@ const BuildOrder = () => {
   const { openConfirmDialog } = useConfirmDialog()
   const { addToast } = useToast()
   const { openModal, closeModal } = useModal()
+
+  useEffect(() => {
+    setCartData([])
+
+    // eslint-disable-next-line
+  }, [])
 
   const openModalAddProducts = () => {
     openModal({
@@ -53,7 +59,7 @@ const BuildOrder = () => {
   }
 
   const handleEditQuantityAndPrice = (product) => {
-    closeModal('edtiQuantityAndPrice')
+    closeModal('editQuantityAndPrice')
 
     const newCart = [...cart]
 
